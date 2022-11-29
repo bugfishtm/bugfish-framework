@@ -131,6 +131,11 @@
 				if(!$password) {$pass = $this->genKey(32);} else {$pass = $password;}
 				return $this->mysqlcon->query("INSERT INTO ".$this->table_users."(user_name, user_mail, user_pass, user_rank, is_confirmed)
 				VALUES('".mysqli_real_escape_string($this->mysqlcon, $name)."', '".mysqli_real_escape_string($this->mysqlcon, $mail)."', '". $this->passCrypt($pass)."', '".$rankx."', '".$activated."')");}
+			// Check if a User Exists
+			public function exists($id) {
+				if(!is_numeric($id)) { return false; }
+				$r = mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table_users." WHERE id = '".$id."'");
+				if($rrx = mysqli_fetch_array($r)){ return true; } return false;}
 			// Check if a Username Exists
 			public function usernameExists($username) {
 				$r = mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table_users." WHERE LOWER(user_name) = '".mysqli_real_escape_string($this->mysqlcon, strtolower(trim($username)))."'");
@@ -161,7 +166,11 @@
 						$curref =  $new;			
 						return $this->mysqlcon->query("UPDATE ".$this->table_users." SET user_name = '".mysqli_real_escape_string($this->mysqlcon, trim($new))."' WHERE id = '".mysqli_real_escape_string($this->mysqlcon, $id)."'"); 					
 				} else {
-					if($this->user_id == $id AND strtolower(trim($this->user_name)) == strtolower(trim($new))) {
+					$isssame = false;
+					$r = mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table_users." WHERE id = '".mysqli_real_escape_string($this->mysqlcon, $id)."'");
+					if($rrx = mysqli_fetch_array($r)){ if(strtolower(trim($rrx["user_name"])) == strtolower(trim($new))) {$isssame = true;}}
+					
+					if($isssame) {
 						return true;
 					} elseif($this->usernameExistsActive($new)) {
 						return false;					
@@ -171,16 +180,17 @@
 					}
 				}								
 			}
-						
-				
-				
 			// Change a Users Mail Address
 			public function changeUserMail($id, $new)  {
 				if ($this->relevant_reference_username != "user_mail") {
 						$curref =  $new;			
 						return $this->mysqlcon->query("UPDATE ".$this->table_users." SET user_mail = '".mysqli_real_escape_string($this->mysqlcon, trim($new))."' WHERE id = '".mysqli_real_escape_string($this->mysqlcon, $id)."'"); 					
 				} else {
-					if($this->user_id == $id AND strtolower(trim($this->user_mail)) == strtolower(trim($new))) {
+					$isssame = false;
+					$r = mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table_users." WHERE id = '".mysqli_real_escape_string($this->mysqlcon, $id)."'");
+					if($rrx = mysqli_fetch_array($r)){ if(strtolower(trim($rrx["user_mail"])) == strtolower(trim($new))) {$isssame = true;}}
+					
+					if($isssame) {
 						return true;
 					} elseif($this->mailExistsActive($new)) {
 						return false;					
@@ -216,7 +226,7 @@
 					if($this->session_valid($_COOKIE[$this->cookies_pre."session_key"], $_COOKIE[$this->cookies_pre."session_userid"])) {
 						$_SESSION[$this->cookies_pre."x_users_key"];
 						$_SESSION[$this->cookies_pre."x_users_id"];
-						$_SESSION[$this->cookies_pre."x_users_ip"]  = $_SERVER["REMOTE_ADDR"];
+						$_SESSION[$this->cookies_pre."x_users_ip"]  = @$_SERVER["REMOTE_ADDR"];
 						$this->session_restore();
 					 return true;} else { $this->cookie_delete();}} return false; } return true; }
 		
@@ -248,7 +258,7 @@
 			private function session_create($key, $userid) {
 			if(!$this->multi_login) { if(!$this->log_sessions) { $this->mysqlcon->query("DELETE FROM ".$this->table_sessions." WHERE key_type = '".$this->key_session."' AND user_id = '".$userid."'");
 			} else { $this->mysqlcon->query("UPDATE ".$this->table_sessions." SET is_active = 0 WHERE key_type = '".$this->key_session."' AND user_id = '".$userid."'");}} 
-			if($this->save_ip_in_db) {$thenewip = $_SERVER["REMOTE_ADDR"];} else {$thenewip = "hidden";}
+			if($this->save_ip_in_db) {$thenewip = @$_SERVER["REMOTE_ADDR"];} else {$thenewip = "hidden";}
 			$this->mysqlcon->query("INSERT INTO ".$this->table_sessions."(user_id, key_type, session_key, is_active, request_ip, use_date)
 			VALUES('".$userid."', '".$this->key_session."', '".$key."', '1', '".$thenewip."', CURRENT_TIMESTAMP())");}	
 			// Session: Delete If Logged Out or with ID
@@ -269,25 +279,27 @@
 				$this->table_users		=	$table_users;
 				$this->table_sessions	=	$table_sessions;
 				// Start Session if not Exists and Ban Var Initialize if Not Initialized
-				if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+				if (session_status() !== PHP_SESSION_ACTIVE) { @session_start(); }
 			}	
 
 		// Initialize Login after Configs have been made
 			public function init() {
 				// Restore Session If there Is a Login
-				if(@$_SESSION[$this->cookies_pre."x_users_ip"] == $_SERVER["REMOTE_ADDR"]
+				if(@$_SESSION[$this->cookies_pre."x_users_ip"] == @$_SERVER["REMOTE_ADDR"]
 					AND isset($_SESSION[$this->cookies_pre."x_users_key"])
 					AND isset($_SESSION[$this->cookies_pre."x_users_id"])) {
 						if(!$this->session_valid($_SESSION[$this->cookies_pre."x_users_key"], $_SESSION[$this->cookies_pre."x_users_id"])) {
 							unset($_SESSION[$this->cookies_pre."x_users_key"]);
 							unset($_SESSION[$this->cookies_pre."x_users_ip"]);
 							unset($_SESSION[$this->cookies_pre."x_users_id"]);
+							unset($_SESSION[$this->cookies_pre."x_users_stay"]);
 							$this->cookie_restore_session();} 
 						else {  $this->session_restore();}
 				} else {
 					unset($_SESSION[$this->cookies_pre."x_users_key"]);
 					unset($_SESSION[$this->cookies_pre."x_users_id"]);
 					unset($_SESSION[$this->cookies_pre."x_users_ip"]);
+					unset($_SESSION[$this->cookies_pre."x_users_stay"]);
 					$this->cookie_restore_session();}				
 			}
 
@@ -301,9 +313,11 @@
 				$_SESSION[$this->cookies_pre."x_users_ip"] = false;
 				$_SESSION[$this->cookies_pre."x_users_key"] = false;
 				$_SESSION[$this->cookies_pre."x_users_id"]  = false;
+				$_SESSION[$this->cookies_pre."x_users_stay"]  = false;
 				unset($_SESSION[$this->cookies_pre."x_users_ip"]);
 				unset($_SESSION[$this->cookies_pre."x_users_key"]);
 				unset($_SESSION[$this->cookies_pre."x_users_id"]);
+				unset($_SESSION[$this->cookies_pre."x_users_stay"]);
 			}
 			
 		// Login Request to Get a User Logged in with REF and PASSWORD
@@ -313,7 +327,7 @@
 			// Request Codes: 3 - Wrong Password
 			// Request Codes: 2 - User-Ref not Existant
 			// Request Codes: 1 - Login OK
-			public function login_request($ref, $password) {
+			public function login_request($ref, $password, $stayLoggedIn = false) {
 				// Drop if Session Ban Banned
 				if($this->isBanned()) {$this->login_request_code = 6; return false; } 
 				$r	=	mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table_users." WHERE LOWER(".$this->relevant_reference_username.") = \"".mysqli_real_escape_string($this->mysqlcon, strtolower(trim($ref)))."\"");
@@ -335,7 +349,7 @@
 						
 						// Create Session and Cookies
 						$this->session_create($gennewkey, $f["id"]);
-						$this->cookie_add($f["id"], $gennewkey);
+						if($stayLoggedIn) { $this->cookie_add($f["id"], $gennewkey); }
 						
 						// Set up Variables
 						 $this->user_id 			= $f["id"];
@@ -360,9 +374,10 @@
 						 }
 
 						// Set up Session Variables
-						 $_SESSION[$this->cookies_pre."x_users_ip"]  = $_SERVER["REMOTE_ADDR"];
+						 $_SESSION[$this->cookies_pre."x_users_ip"]  = @$_SERVER["REMOTE_ADDR"];
 						 $_SESSION[$this->cookies_pre."x_users_key"] = $gennewkey;
-						 $_SESSION[$this->cookies_pre."x_users_id"]  = $f["id"];		
+						 $_SESSION[$this->cookies_pre."x_users_id"]  = $f["id"];
+						if($stayLoggedIn) { $_SESSION[$this->cookies_pre."x_users_stay"]  = true; } else { $_SESSION[$this->cookies_pre."x_users_stay"] = false; }						 
 						 
 						 // Request Code 1 is for Successfull Login
 						 $this->login_request_code = 1;
@@ -385,7 +400,7 @@
 			private function rec_token_create($userid, $key) {
 				if(!$this->log_recovers) {$this->mysqlcon->query("DELETE FROM ".$this->table_sessions." WHERE key_type = '".$this->key_recover."' AND user_id = '".mysqli_real_escape_string($this->mysqlcon, $userid)."' ");	} else {
 				$this->mysqlcon->query("UPDATE ".$this->table_sessions." SET is_active = 0 WHERE key_type = '".$this->key_recover."' AND user_id = '".mysqli_real_escape_string($this->mysqlcon, $userid)."' AND is_active = 1 ");}				
-				if($this->save_ip_in_db) {$thenewip = $_SERVER["REMOTE_ADDR"];} else {$thenewip = "hidden";}
+				if($this->save_ip_in_db) {$thenewip = @$_SERVER["REMOTE_ADDR"];} else {$thenewip = "hidden";}
 				$this->mysqlcon->query("INSERT INTO ".$this->table_sessions."(user_id, key_type, session_key, is_active, request_ip)
 				VALUES('".mysqli_real_escape_string($this->mysqlcon, $userid)."', '".$this->key_recover."', '".$key."', '1', '".$thenewip."')");}				
 			// Check if a Rec or Activation Token is Valid
@@ -502,7 +517,7 @@
 			private function cmwc_token_create($userid, $key) {
 				if(!$this->log_user_mailchange) {$this->mysqlcon->query("DELETE FROM ".$this->table_sessions." WHERE key_type = '".$this->key_mail_change."' AND user_id = '".mysqli_real_escape_string($this->mysqlcon, $userid)."' ");	} else {
 				$this->mysqlcon->query("UPDATE ".$this->table_sessions." SET is_active = 0 WHERE key_type = '".$this->key_mail_change."' AND user_id = '".mysqli_real_escape_string($this->mysqlcon, $userid)."' AND is_active = 1 ");}				
-				if($this->save_ip_in_db) {$thenewip = $_SERVER["REMOTE_ADDR"];} else {$thenewip = "hidden";}
+				if($this->save_ip_in_db) {$thenewip = @$_SERVER["REMOTE_ADDR"];} else {$thenewip = "hidden";}
 				$this->mysqlcon->query("INSERT INTO ".$this->table_sessions."(user_id, key_type, session_key, is_active, request_ip)
 				VALUES('".mysqli_real_escape_string($this->mysqlcon, $userid)."', '".$this->key_mail_change."', '".$key."', '1', '".$thenewip."')");}			
 			// User Request Mail Change and Confirm

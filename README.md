@@ -1,6 +1,15 @@
 # Bugfish Framework
 
 # Classes
+## x_class_simplePerms
+### Constructor
+	__construct($mysql, $tablename, $section = "undefined")
+### Functions
+	flush($ref) : Flush a Ref from the Perms Table
+	removePerm($ref, $permname) : Remove Permission Name from Ref
+	hasPerm($ref, $permname) : Check if Ref has Perm Name
+	addPerm($ref, $permname) : Add new Perm to Ref
+	getPerm($ref) : Get Perms array for Ref
 ## x_class_users
 ### Constructor
 	__construct($mysqlcon, $table_users, $table_sessions, $preecokie = "x_users_")
@@ -42,6 +51,7 @@
 			changeUserMail($id, $new)
 			changeUserShadowMail($id, $new)
 	addUser($name, $mail, $password = false, $rank = false, $activated = false)
+	exists($id)
 	usernameExists($username)
 	usernameExistsActive($username)
 	mailExists($mail)
@@ -208,6 +218,7 @@
 	__construct($mysql, $tablename, $maxvalue = 50000)	
 	isblocked() : Check if Current IP is Blocked
 	raise() : Raise Current IPs Counter	
+	counter($ip = false) : Get Value for Current or Optional entered IP
 ## x_class_hits
 	onlyarrivals($bool = true) Only coutn arrivals to spare sessions storage  
 	enabled($bool = true)	Disable or Enable the Hits Check for this Page

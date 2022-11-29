@@ -29,6 +29,13 @@
 			return false;		
 		}
 		
+		public function counter($ip = false) {
+			if(!$ip) { $rres = @mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table." WHERE ip_adr = '".$this->ip."' AND failures > ".$this->max.";"); }
+			else { $rres = @mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table." WHERE ip_adr = '".$ip."' AND failures > ".$this->max.";"); }
+			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	return $sresult["failure"]; }
+			return 0;		
+		}
+		
 		public function raise() {
 			$rres = @mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table." WHERE ip_adr = '".$this->ip."';"); 
 			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	

@@ -29,8 +29,7 @@ CREATE TABLE IF NOT EXISTS `x_class_users` (
   `is_confirmed` tinyint(1) DEFAULT '0' COMMENT 'User Activation Status',
   `is_blocked` tinyint(1) DEFAULT '0' COMMENT 'User Blocked/Disabled Status',
   `section` varchar(64) DEFAULT NULL COMMENT 'Users Section',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `Unique Mail` (`user_mail`,`section`) USING BTREE
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Data exporting was unselected.

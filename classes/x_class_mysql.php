@@ -119,7 +119,7 @@
 					if(!$firstrun) {$build_second .= ", ";}$build_first .= $key;
 					$build_second .= "'".$value."'";
 					$firstrun = false;}
-					$nnnnquery	=	'INSERT INTO '.$table.'('.$build_first.') VALUES('.$build_second.');';
+					$nnnnquery	=	'INSERT INTO '.$table.'('.$build_first.') VALUES('.$this->escape($build_second).');';
 					return $this->logLastError(@mysqli_query($this->mysqlcon, $nnnnquery), $nnnnquery);					
 				}
 			}
