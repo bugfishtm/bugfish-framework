@@ -14,9 +14,15 @@
 		location.search.substr(1).split("&") .forEach(function (item) {
 		  tmp = item.split("="); if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]); });
 		return result;}
-
+	function x_get(parameterName) {
+		var result = null, tmp = [];
+		location.search.substr(1).split("&") .forEach(function (item) {
+		  tmp = item.split("="); if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]); });
+		return result;}
+		
 /* Search for A String in URL / True if Found / False if Not */
 	function xjs_inUrl(parameterName) {return window.location.href.includes(parameterName);}
+	function x_inUrl(parameterName) {return window.location.href.includes(parameterName);}
 
 /* Hide or Show Object with ID */
 	function xjs_hide_id(id) 	{id.css("display", "none");}

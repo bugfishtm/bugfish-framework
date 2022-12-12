@@ -7,17 +7,17 @@
 				\/                 \/     \/                \/       \/  Cookie Banner Functions */
 
 	function x_cookieBanner_Pre($precookie = "", $redirect = true) { 
-		if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+		if (session_status() !== PHP_SESSION_ACTIVE) {@session_start();}
 		if(@$_SESSION[$precookie ."x_cookieBanner"] == true) { return false; }
 		$set = false;
-			if(@$_POST["x_cookieBanner"] == "request") { $_SESSION[$precookie ."x_cookieBanner"] = true; $set = true; }
-			if(@$_GET["x_cookieBanner"] == "request")  { $_SESSION[$precookie ."x_cookieBanner"] = true; $set = true; }
+			if(@$_POST["x_cookieBanner"] == "submit") { $_SESSION[$precookie ."x_cookieBanner"] = true; $set = true; }
+			if(@$_GET["x_cookieBanner"] == "submit")  { $_SESSION[$precookie ."x_cookieBanner"] = true; $set = true; }
 			if($set AND $redirect) { Header("Location: ".@$_SERVER['REQUEST_URI']); exit(); }
 	}
 
 	function x_cookieBanner($precookie = "", $use_post = false, $text = false) { 
-		if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-		if(@$_GET["x_cookieBanner"] == "request")  { $_SESSION[$precookie ."x_cookieBanner"] = true; }
+		if (session_status() !== PHP_SESSION_ACTIVE) {@session_start();}
+		if(@$_GET["x_cookieBanner"] == "submit")  { $_SESSION[$precookie ."x_cookieBanner"] = true; }
 		if(@$_SESSION[$precookie ."x_cookieBanner"] == true) { return false; }
 		
 		if($text == false) { $text =  "This Website is using <a href='/cookies' target='_blank'>Session Cookies</a> for Site Functionality.";}

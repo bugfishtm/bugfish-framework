@@ -64,7 +64,7 @@
 			
 		// Session Ban Functions
 			private $sessionban_limit = false;
-			public function isBanned() {if(is_numeric($this->sessionban_limit)){if($_SESSION[$this->cookies_pre."x_users_sec"] > $this->sessionban_limit){return true;} else{return false;}} else {return false;}}
+			public function isBanned() {if(is_numeric($this->sessionban_limit)){if(@!is_numeric($_SESSION[$this->cookies_pre."x_users_sec"])){$_SESSION[$this->cookies_pre."x_users_sec"] = 0;} if(@$_SESSION[$this->cookies_pre."x_users_sec"] > $this->sessionban_limit){return true;} else{return false;}} else {return false;}}
 			public function sessionban_limit($int = 50) {$this->sessionban_limit = $int;}
 			public function resetFailure() {$_SESSION[$this->cookies_pre."x_users_sec"] = 0;} 
 			public function raiseFailure(){if(is_numeric($this->sessionban_limit)) {if(@!is_numeric($_SESSION[$this->cookies_pre."x_users_sec"])){$_SESSION[$this->cookies_pre."x_users_sec"] = 0;} $_SESSION[$this->cookies_pre."x_users_sec"] = $_SESSION[$this->cookies_pre."x_users_sec"] + 1;} else {$this->resetFailure();}} 				

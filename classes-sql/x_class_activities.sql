@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS `x_class_activities` (
   `created` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
   `status` tinyint(1) DEFAULT NULL COMMENT '0:Wait 1:OK 2: Sys 3:Start',
   `upvotes` int DEFAULT '0' COMMENT 'Upvote Counter for Starter Status',
+  `section` varchar(64) DEFAULT NULL COMMENT 'Related Section',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1227 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
