@@ -1,5 +1,8 @@
-# Bugfish Framework
 
+# Bugfish Framework
+This is my personal Framework with a great bandwith of different classes and functions to make my work with php and other languages easier. Use it as you wish.
+## Help and Issues
+If you encounter issues do not hesistate to write in my forum at www.bugfish.eu
 # Classes
 ## x_class_simplePerms
 ### Constructor
@@ -269,6 +272,9 @@
 	Provide form code to check with last CSRF	
  
 # Functions 
+## x_structdata  
+	x_structdata_article($publisher_name, $publisher_logo, $publisher_website, $image, $url, $title, $published_date, $modified_date) {}  
+	x_structdata_websoftware($publisher_name, $publisher_logo, $publisher_website, $image, $url, $title, $published_date, $modified_date) {}
 ## x_eventBox
 	x_eventBoxPrep($text, $type = "x", $precookie = "", $morecss = "", $buttontext = "X")	: Prepare EventBox / Only one is Possible with this Function
 			text = the message  
@@ -323,7 +329,28 @@
 	xjs_popup(var_text, var_entrie = "Close") : Generate a Quick Popup which needs CSS Desiging with id = xjs_popup / xjs_popup_inner / xjs_popup_close
 
 # Dolibarr
+## Dolibarr Library 
+### Date Related 
+**m\_month\_num\_to\_name($number)** : Return Month Name or Error if Wrong (input number 1-12 to get german month name) 
 
+### Button Creation 
+**m\_button\_sql( $db, $name, $url, $query, $get, $break = false, \$style = "")**
+Add a Button to Execute a Simple SQL !  \$msgerr = "Fehler!", \$msgok = "Erfolgreich!",  Function 
+**m\_button\_link($name, $url, $break = false, $style, $reacttourl = true)**  Add a Default Button Linked to another Page 
+### MySQL Processing 
+**m\_db\_rowsbycleanresult(\$db, \$sql\_res)**   Get Array by provising a finished result 
+**m\_db\_row($db, $query)**  Get a Single Array with $array["fieldname"] = \$value back  
+**m\_db\_row\_insert($db, \$table, \$array, \$filter =**  Insert into a Database with array ["fieldname"] = **true)**  \$value; 
+**m\_db\_rows($db, $query)**  Get a Multiple Array with $array[COUNT]["fieldname"] = $value back 
+### Parameters 
+**m\_isset($var)**  If var is Empty or "" than false 
+### Table Functions to create Tables 
+**m\_table\_simple($title, \$array, $titlelist, $tableid, $alignarray = false, \$imgeforlist = 'generic')** = Print a Simple Table
+**m\_table\_complex($title, \$array, \$titlelist,$formid = "", \$alignarray = false, \$imgeforlist ="generic")** = Print a Complex Table with Search  
+
+### Get User Informations 
+**m\_login\_id($db, \$tmp = false)**  // Get the current rowID of logged in User, if error than false 
+**m\_login\_name\_from\_id ($db, $userid)**  // Get the current name of User by UserID, if error than false 
 # License
 Copyright 2022 www.bugfish.eu Jan-Maurice Dahlmanns (Bugfish)
 This Product is running with MIT LICENSE

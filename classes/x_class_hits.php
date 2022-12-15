@@ -51,7 +51,7 @@
 		public function show() {
 			if($this->enabled) {
 				$r = mysqli_fetch_array(mysqli_query($this->mysqlcon, "SELECT * FROM `". $this->mysqltable ."` WHERE full_url = \"".mysqli_real_escape_string($this->mysqlcon,$this->urlpath)."\";"), MYSQLI_BOTH);
-				return "Switch: ".$this->formatNumber($r["switches"])." | Arrive: ".$this->formatNumber($r["arrivals"])."";	
+				return "Switch: ".@$this->formatNumber($r["switches"])." | Arrive: ".@$this->formatNumber($r["arrivals"])."";	
 			} else {return "No Counters";}
 		}		
 		
