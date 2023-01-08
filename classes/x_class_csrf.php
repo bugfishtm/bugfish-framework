@@ -6,7 +6,9 @@
 		 |______  /______/  \______  /\___  /   |___/_______  /\___|_  / 
 				\/                 \/     \/                \/       \/  CSRF Class	*/	
 	class x_class_csrf {
-		// Class Variables Private
+		######################################################
+		// Variables and Configurations
+		######################################################
 		private $c_extension 		= false;
 		private $c_key		 		= false; 
 			public function get() {return $this->c_key;} 
@@ -20,30 +22,37 @@
 		private $c_disableRenewal 	= false; 
 			public function disableRenewal($bool = true) {$this->c_disableRenewal = $bool;} 
 			public function isDisabled() {return $this->c_disableRenewal;}		
-			
+		
+		######################################################		
 		// Construct and Generate a Session Key
+		######################################################
 		function __construct($cookie_extension = "", $second_valid = 300, $disableRenew = false) {
 			if (session_status() === PHP_SESSION_NONE) {session_start();}
 			$this->c_extension  	 = $cookie_extension;
 			$this->c_disableRenewal  = $disableRenew;
 			$this->c_valid_time 	 = $second_valid;
 			$this->c_key			 = mt_rand(100000000,900000000);
-			$this->l_key			 = @$_SESSION[$this->c_extension."x_csrf"];
-			$this->l_key_time		 = @$_SESSION[$this->c_extension."x_csrf_time"];
+			$this->l_key			 = @$_SESSION[$this->c_extension."xc_csrf"];
+			$this->l_key_time		 = @$_SESSION[$this->c_extension."xc_csrf_tms"];
 		}
-			
+		
+		######################################################
 		// Check if Submitted CSRF if Valid with CSRF Before in Session
+		######################################################
 		public function check($code, $override_valid_time = false) {
 			if(!$override_valid_time) { $override_valid_time = $this->c_valid_time;}
-			if(@$code == @$_SESSION[$this->c_extension."x_csrf"] AND @$code != NULL AND @trim($code) != "") {
-				if((time() - @$_SESSION[$this->c_extension."x_csrf_time"]) < $override_valid_time 
-					AND @$_SESSION[$this->c_extension."x_csrf_time"] != NULL AND isset($_SESSION[$this->c_extension."x_csrf_time"])) {
+			if(@$code == @$_SESSION[$this->c_extension."xc_csrf"] AND @$code != NULL AND @trim($code) != "") {
+				if((time() - @$_SESSION[$this->c_extension."xc_csrf_tms"]) < $override_valid_time 
+					AND @$_SESSION[$this->c_extension."xc_csrf_tms"] != NULL AND isset($_SESSION[$this->c_extension."xc_csrf_tms"])) {
 						return true;
 				} return false;
 			}
 			return false;
 		}
 
+		######################################################
+		// Check Last Key for Actions
+		######################################################
 		public function check_lkey($code, $override_valid_time = false) {
 			if(@$this->l_key_time == false) { 
 				$cct = "undef"; 
@@ -58,12 +67,14 @@
 			} 
 			return false;
 		} 
-			
+		
+		######################################################
 		// Deconstruct and Apply new CSRF to Session
+		######################################################
 		function __destruct() {
 			if(!$this->c_disableRenewal) {
-				$_SESSION[$this->c_extension."x_csrf"] = $this->c_key;
-				$_SESSION[$this->c_extension."x_csrf_time"]  = time();
+				$_SESSION[$this->c_extension."xc_csrf"] = $this->c_key;
+				$_SESSION[$this->c_extension."xc_csrf_tms"]  = time();
 			}
 		}			
 	}

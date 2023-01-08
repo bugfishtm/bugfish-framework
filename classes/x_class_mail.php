@@ -7,15 +7,23 @@
 				\/                 \/     \/                \/       \/  PHPMailer Extension Control Class */	
 	use PHPMailer\PHPMailer\PHPMailer;
 	class x_class_mail {
+		######################################################
+		// Class Variables
+		######################################################
 		public 	$debugmessage   = false;
-		
-		private $cursection   	= "global";  
+		private $cursection   	= "";  
 		private $mysqlcon  		= false; // MySQL for Logging
 		private $mysqltable		= false; // Table for Logging
-		private $mysqllogmode	= 1;     // Mode for Logging
-			public function logDisable() { $this->mysqlcon = false; $this->mysqltable = false; $this->mysqllogmode = false; $this->cursection = ""; }
-			public function logEnable($connection, $table, $mode = 1, $section = "") { $this->mysqlcon = $connection; $this->mysqltable = $table; $this->mysqllogmode = $mode; $this->cursection = $section; }
-			
+		private $mysqllogmode	= false;     // Mode for Logging
+			public function logDisable($bool = true) { $this->mysqlcon = false; $this->mysqltable = false; $this->mysqllogmode = false; $this->cursection = ""; }
+			public function logEnable($connection, $table, $mode = 1, $section = "") { $this->mysqlcon = $connection; $this->mysqltable = $table; $this->mysqllogmode = $mode; $this->cursection = $section; 
+				$val = false; try {
+					$val = mysqli_query($this->mysqlcon, 'SELECT 1 FROM `'.$this->mysqltable.'`');
+				} catch (Exception $e){ 
+					 $this->create_table();
+				} if($val === FALSE) { $this->create_table();}
+			}
+
 		private $Host     		= false;	 // The host example : server.domain
 		private $SMTPAuth 		= false;	 // Needs Auth?
 		private $Username 		= "";        // The Username for Auth
@@ -33,8 +41,27 @@
 		private $addReplyToName = false; 	private $addReplyToMail = false; public function initReplyTo($mail, $name) {$this->addReplyToMail = $mail;$this->addReplyToName = $name;}
 		private $test_mode   	= false; 	public function enableTestMode($val) { $this->test_mode = $val; } 
 		private $keep_alive   	= false; 	public function keep_alive($bool = false) { $this->keep_alive = $bool; } 
+
+		######################################################
+		// Table Init
+		######################################################
+		private function create_table() {
+			mysqli_query($this->mysqlcon, "CREATE TABLE IF NOT EXISTS `".$this->mysqltable."` (
+											  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
+											  `receiver` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Mail Receiver',
+											  `subject` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Mail Subject',
+											  `msgtext` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Mail Text',
+											  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
+											  `success` tinyint(1) DEFAULT NULL COMMENT '1 - Mail OK | Else - Mail Error',
+											  `debugmsg` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Debug Message',
+											  `section` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Related Section',
+											  PRIMARY KEY (`id`)
+											) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;");
+		}
 		
-		// Construct the Mail Class
+		######################################################
+		// Construct
+		######################################################
 		function __construct($host, $port = 25, $auth_type = false, $user = false, $pass = false) {
 			$this->Host 		 = $host; // The host example : server.domain
 			if($auth_type == "ssl" OR $auth_type == "tls") { $this->SMTPAuth 	 = true; } else { $this->SMTPAuth 	 = false; } 
@@ -43,13 +70,17 @@
 			$this->SMTPSecure 	 = $auth_type; // "tls" or "ssl"
 			$this->Port 		 = $port; } // The Port of Server example: 25
 			
-		// Log Mails if Activated
+		######################################################
+		// Log Mail if Activated
+		######################################################
 		private function logMail($mailcontent, $subject, $to, $success, $debugerror) {
 			if(is_array($to)) { $to = serialize($to); }
 			if(is_string($this->mysqltable)) {if(($success == 1 AND ($this->mysqllogmode == 3 OR $this->mysqllogmode == 1)) OR ($success == 0 AND ($this->mysqllogmode == 2 OR $this->mysqllogmode == 1))) {
 		$stmt = $this->mysqlcon->prepare("INSERT INTO ".$this->mysqltable."(receiver, subject, msgtext, success, debugmsg, section) VALUES('".mysqli_real_escape_string($this->mysqlcon, $to)."', '".mysqli_real_escape_string($this->mysqlcon, $subject)."', ?, '".$success."', '".mysqli_real_escape_string($this->mysqlcon, $debugerror)."', '".$this->cursection."');"); $stmt->bind_param('s', $mailcontent);$stmt->execute();}}}
 		
-		// Send Mail with SMTP
+		######################################################
+		// Send Mail
+		######################################################
 		public function send($to, $toname, $title, $mailContent, $ishtml = false, $FOOTER = false, $HEADER = false, $attachments = false) {
 			// Create Object PHPMailer
 			$tmp_mailer = new PHPMailer;
@@ -124,5 +155,5 @@
 				unset($tmp_mailer);
 				return false;}				
 		}
-	}
+	} 
 ?>
