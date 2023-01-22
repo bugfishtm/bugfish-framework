@@ -1,7 +1,10 @@
 
 
+
 # Bugfish Framework
 See www.bugfish.eu for informations (Forum or Wiki) Or in Readme Files inside Folders.  This is the Bugfish Framework, for easier Coding.  It Contains different Classes and Functions, see below for instructions and library. Languages are Javascript / Jquery / PHP / Html / CSS
+# xfp-template
+In this folder is a websites template to build up a website with different functions included in the framework. Its more for internal purpose, more focus in this framework is on the provided classes and functions.
 # Classes Framework
 ## x_class_comment
 	This Class does need tables!

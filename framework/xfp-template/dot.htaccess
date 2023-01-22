@@ -1,0 +1,52 @@
+##########################################
+## Bugfish MRoD HTACCESS File
+
+###########################################
+## Enable Rewriting
+###########################################
+	RewriteEngine On
+
+###########################################
+## HTTP -> HTTPS Rewrite
+###########################################
+	RewriteCond %{HTTPS} !=on
+	RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+	RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+	RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+###########################################
+## Error Redirects
+###########################################
+	ErrorDocument 400 /error/400
+	ErrorDocument 401 /error/401
+	ErrorDocument 403 /error/403
+	ErrorDocument 404 /error/404
+	ErrorDocument 500 /error/500
+	
+###########################################
+## SEO Url Rewrite
+###########################################
+	RewriteBase /
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php?x32rnx=$1 [L,QSA]
+	
+###########################################
+## Permissions
+###########################################
+	RewriteRule ^(_hidden|_temp) - [F,L]
+
+	<Files "settings.php">  
+	  Order Allow,Deny
+	  Deny from all
+	</Files>
+	
+	<Files "functions.php">  
+	  Order Allow,Deny
+	  Deny from all
+	</Files>
+	
+	<Files "init.php">  
+	  Order Allow,Deny
+	  Deny from all
+	</Files>

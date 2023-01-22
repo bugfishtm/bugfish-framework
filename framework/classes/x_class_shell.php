@@ -4,9 +4,9 @@
 		 |    |  _/    |   /   \  ___ |    __)  |   |\_____  \/    ~    \
 		 |    |   \    |  /\    \_\  \|     \   |   |/        \    Y    /
 		 |______  /______/  \______  /\___  /   |___/_______  /\___|_  / 
-				\/                 \/     \/                \/       \/  Activities Control Class	*/
+				\/                 \/     \/                \/       \/  Shell Control Class	*/
 	
-	class x_class_chatbot {
+	class x_class_shell {
 		
 		
 		

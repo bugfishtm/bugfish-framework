@@ -128,7 +128,7 @@ class x_class_user {
 	}
 		
 	## Token Validation Functions	
-	public function actication_token_valid($user, $token) { return $this->token_valid($user, $token, $this->key_activation); }
+	public function activation_token_valid($user, $token) { return $this->token_valid($user, $token, $this->key_activation); }
 	public function recover_token_valid($user, $token) { return $this->token_valid($user, $token, $this->key_recover); }
 	public function mail_edit_token_valid($user, $token) { return $this->token_valid($user, $token, $this->key_mail_edit); }
 	public function session_token_valid($user, $token) { return $this->token_valid($user, $token, $this->key_session); }
@@ -365,8 +365,11 @@ class x_class_user {
 											  `last_activation` datetime DEFAULT NULL COMMENT 'Activation Date Counter for new Requests',
 											  `last_mail_edit` datetime DEFAULT NULL COMMENT 'Last Mail Change Request Date',
 											  `req_reset` datetime DEFAULT NULL COMMENT 'Reset Date Counter for new Requests',
+											  `block_reset` int(1) DEFAULT NULL COMMENT 'Block Resets for this user',
 											  `req_activation` datetime DEFAULT NULL COMMENT 'Activation Date Counter for new Requests',
+											  `block_activation` int(1) DEFAULT NULL COMMENT 'Block Activation for this User',
 											  `req_mail_edit` datetime DEFAULT NULL COMMENT 'Last Mail Change Request Date',
+											  `block_mail_edit` datetime DEFAULT NULL COMMENT 'Block Mail Edits for this User',
 											  `last_login` datetime DEFAULT NULL COMMENT 'Last Login Date',
 											  `user_confirmed` tinyint(1) DEFAULT '0' COMMENT 'User Activation Status',
 											  `user_blocked` tinyint(1) DEFAULT '0' COMMENT 'User Blocked/Disabled Status',

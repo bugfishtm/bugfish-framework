@@ -58,7 +58,10 @@
 
 		######################################################
 		// Check Current Block Status
-		######################################################	 $this->prepare_ip($this->ip)	
+		######################################################	
+		public function blocked() { $this->isBlocked(); } 
+		public function banned() { $this->isBlocked(); } 
+		public function isbanned() { $this->isBlocked(); } 
 		public function isblocked() {
 			$rres = @mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table." WHERE ip_adr = '".$this->prepare_ip($this->ip)."' AND failures > ".$this->max.";"); 
 			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	return true; }
@@ -78,6 +81,7 @@
 		######################################################
 		// Raise Counter for Current IP
 		######################################################		
+		public function increase() { $this->raise(); } 
 		public function raise() {
 			$rres = @mysqli_query($this->mysqlcon, "SELECT * FROM ".$this->table." WHERE ip_adr = '".$this->prepare_ip($this->ip)."';"); 
 			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	return @mysqli_query($this->mysqlcon, "UPDATE ".$this->table." SET failures = failures + 1 WHERE id = '".$sresult["id"]."';"); }
