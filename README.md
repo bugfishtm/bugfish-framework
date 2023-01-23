@@ -475,6 +475,9 @@ Config Function|Description|
 |xfpe_absolute | position absolute |
 
 # Function Framework
+## xfp_login
+## xfp_list
+## xfp_popup
 ## xfp_library
 |Runtime Variable|Description|
 |--|--|

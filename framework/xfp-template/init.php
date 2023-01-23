@@ -44,11 +44,9 @@
 
 		##########################################################################################################################################
 		##### Create Non Existing Tables    ######################################################################################################
-		$val = false; try {
-			$val = mysqli_query($this->mysqlcon, 'SELECT 1 FROM `'.XXXXXX.'`');
-		} catch (Exception $e){ 
-			xfpi_internal_tables($object["mysql"]);
-		} if($val === FALSE) {xfpi_internal_tables($object["mysql"]);}							
+		try {$val = mysqli_query($this->mysqlcon, 'SELECT 1 FROM `'.XXXXXX.'`');
+			 if(!$val) { xfpi_internal_tables($object["mysql"]); }
+		} catch (Exception $e){xfpi_internal_tables($object["mysql"]);}						
 
 		#####################################################################
 		##### Get Location    ###############################################
