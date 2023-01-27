@@ -47,7 +47,7 @@
 					echo '<meta name="copyright" content="'._XFP_ADMIN_NAME_.'" />'; } 
 		if(defined("_XFP_ADMIN_MAIL_")) { echo '<meta http-equiv="Reply-to" content="'._XFP_ADMIN_MAIL_.'" />';	}
 	}
-	function xfp_meta($mysql, $title, $description, $keywords = false, $robots = false, $cssarray = false, $img = false, $formexpire =  false, $fallbackimage = false, $nocache = true) {		
+	function xfp_meta($mysql, $title, $description, $keywords = false, $robots = false, $cssarray = false, $img = false, $formexpire =  false, $fallbackimage = false, $nocache = true, $canonical = false) {		
 		$description =  _XFP_META_DESC_PRE_.xfp_meta_prep($description)._XFP_META_DESC_POST_;
 		$title       = 	_XFP_META_TITLE_PRE_.xfp_meta_prep($title)._XFP_META_TITLE_POST_;	
 		echo "<title>".$title."</title>";	
@@ -75,6 +75,7 @@
 		}
 		if($formexpire != false) { echo '<meta name="expires" content="'.$formexpire.'" />'; }	
 		if($nocache != false) { echo '<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />'; echo '<meta http-equiv="Pragma" content="no-cache" />'; }	
+		if($canonical != false) { echo "<link rel='canonical' href='".$canonical."' />"; }
 		if($robots != false) { echo '<meta name="robots" content="'.trim($robots).'" />'; }	
 		if($keywords != false) { echo '<meta name="keywords" content="'.trim(htmlspecialchars($keywords)).'" />';	}
 		echo '<meta name="audience" content="all" />';

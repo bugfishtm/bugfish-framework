@@ -138,5 +138,14 @@ ul.main-menu li a.active {
   display:block;
 }
 
+.linkbox {
+	padding: 5px; background: #242424;
+	border-radius: 8px;
+	border: 2px solid white;
+	margin: 5px;
+	float:left;
+}
 
-
+a:hover {
+	color: white !important;
+}
