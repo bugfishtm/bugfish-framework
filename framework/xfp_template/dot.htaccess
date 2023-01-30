@@ -34,7 +34,7 @@
 ###########################################
 ## Permissions
 ###########################################
-	RewriteRule ^(_hidden|_temp) - [F,L]
+	RewriteRule ^(_hidden|_temp|_file|_cronjob) - [F,L]
 
 	<Files "settings.php">  
 	  Order Allow,Deny

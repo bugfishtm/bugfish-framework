@@ -32,8 +32,8 @@
 			$this->c_disableRenewal  = $disableRenew;
 			$this->c_valid_time 	 = $second_valid;
 			$this->c_key			 = mt_rand(100000000,900000000);
-			$this->l_key			 = @$_SESSION[$this->c_extension."xc_csrf"];
-			$this->l_key_time		 = @$_SESSION[$this->c_extension."xc_csrf_tms"];
+			$this->l_key			 = @$_SESSION[$this->c_extension."x_class_csrf"];
+			$this->l_key_time		 = @$_SESSION[$this->c_extension."x_class_csrf_tms"];
 		}
 		
 		######################################################
@@ -41,9 +41,9 @@
 		######################################################
 		public function check($code, $override_valid_time = false) {
 			if(!$override_valid_time) { $override_valid_time = $this->c_valid_time;}
-			if(@$code == @$_SESSION[$this->c_extension."xc_csrf"] AND @$code != NULL AND @trim($code) != "") {
-				if((time() - @$_SESSION[$this->c_extension."xc_csrf_tms"]) < $override_valid_time 
-					AND @$_SESSION[$this->c_extension."xc_csrf_tms"] != NULL AND isset($_SESSION[$this->c_extension."xc_csrf_tms"])) {
+			if(@$code == @$_SESSION[$this->c_extension."x_class_csrf"] AND @$code != NULL AND @trim($code) != "") {
+				if((time() - @$_SESSION[$this->c_extension."x_class_csrf_tms"]) < $override_valid_time 
+					AND @$_SESSION[$this->c_extension."x_class_csrf_tms"] != NULL AND isset($_SESSION[$this->c_extension."x_class_csrf_tms"])) {
 						return true;
 				} return false;
 			}
@@ -73,8 +73,8 @@
 		######################################################
 		function __destruct() {
 			if(!$this->c_disableRenewal) {
-				$_SESSION[$this->c_extension."xc_csrf"] = $this->c_key;
-				$_SESSION[$this->c_extension."xc_csrf_tms"]  = time();
+				$_SESSION[$this->c_extension."x_class_csrf"] = $this->c_key;
+				$_SESSION[$this->c_extension."x_class_csrf_tms"]  = time();
 			}
 		}			
 	}

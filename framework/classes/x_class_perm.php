@@ -19,7 +19,7 @@
 		// Table Initialization
 		######################################################
 		private function create_table() {
-			return mysqli_query($this->mysql, "CREATE TABLE IF NOT EXISTS `".$this->tablename."` (
+			return $this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->tablename."` (
 										  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
 										  `ref` int(10) NOT NULL COMMENT 'Related Ref',
 										  `content` text NOT NULL COMMENT 'Given Perms',
@@ -39,18 +39,12 @@
 			$this->tablename = $tablename;
 			$this->section = $section;
 			
-			$val = false; try {
-				$val = mysqli_query($this->mysql, 'SELECT 1 FROM `'.$this->tablename.'`');
+			try {
+				$val = $this->mysql->query('SELECT 1 FROM `'.$this->tablename.'`');
+				if($val == FALSE) { $this->create_table();}		
 			} catch (Exception $e){ 
 				 $this->create_table();
-			} if($val === FALSE) { $this->create_table();}		
-		}
-
-		######################################################
-		// Database Escape
-		######################################################
-		private function filter_db($val) {
-			return trim(mysqli_real_escape_string($this->mysql, $val));
+			} 
 		}
 
 		######################################################
@@ -58,7 +52,7 @@
 		######################################################
 		public function initPerm($ref) {
 			if(is_numeric($ref)) { 
-				$query = mysqli_query($this->mysql, "SELECT * FROM ".$this->tablename." WHERE ref = \"".$this->filter_db($ref)."\" AND section = '".$this->section."'");
+				$query = $this->mysql->query("SELECT * FROM ".$this->tablename." WHERE ref = \"".$ref."\" AND section = '".$this->section."'");
 				if ($result	=	mysqli_fetch_array($query) ) {
 					$newar	= unserialize($result["content"]);					
 					if(is_array($newar)) { $this->perm = $newar; return $newar; } else {$this->perm = array(); return array();}
@@ -72,7 +66,7 @@
 		######################################################
 		public function getPerm($ref) {
 			if(is_numeric($ref)) { 
-				$query = mysqli_query($this->mysql, "SELECT * FROM ".$this->tablename." WHERE ref = \"".$this->filter_db($ref)."\" AND section = '".$this->section."'");
+				$query = $this->mysql->query("SELECT * FROM ".$this->tablename." WHERE ref = \"".$ref."\" AND section = '".$this->section."'");
 				if ($result	=	mysqli_fetch_array($query) ) {
 					$newar	= unserialize($result["content"]);					
 					if(is_array($newar)) { return $newar; } else {return array();}
@@ -116,11 +110,11 @@
 		######################################################			
 		private function setPerm($ref, $array) {	
 			if(is_numeric($ref)) { 
-				$query = mysqli_query($this->mysql, "SELECT * FROM ".$this->tablename." WHERE ref = \"".$this->filter_db($ref)."\" AND section = '".$this->section."'");
+				$query = $this->mysql->query("SELECT * FROM ".$this->tablename." WHERE ref = \"".$ref."\" AND section = '".$this->section."'");
 				if ($result	=	mysqli_fetch_array($query) ) { 
-					mysqli_query($this->mysql, "UPDATE ".$this->tablename." SET content = '".$this->filter_db(serialize($array))."' WHERE ref = '".$this->filter_db($ref)."' AND section = '".$this->section."'  ");
+					$this->mysql->query("UPDATE ".$this->tablename." SET content = '".$this->mysql->escape(serialize($array))."' WHERE ref = '".$ref."' AND section = '".$this->section."'  ");
 				} else { 
-					mysqli_query($this->mysql, "INSERT INTO ".$this->tablename." (ref, content, section) VALUES('".$this->filter_db($ref)."', '".$this->filter_db(serialize($array))."', '".$this->section."')"); 
+					$this->mysql->query("INSERT INTO ".$this->tablename." (ref, content, section) VALUES('".$ref."', '".$this->mysql->escape(serialize($array))."', '".$this->section."')"); 
 				}
 				return true;
 			} return false; 		
@@ -145,7 +139,9 @@
 		// Flush a REF From the Perms Table
 		######################################################			
 		public function flush($ref) {
-			return mysqli_query($this->mysql, "DELETE FROM ".$this->tablename." WHERE ref = \"".$this->filter_db($ref)."\" AND section = '".$this->section."'");
+			if(is_numeric($ref)) {
+				return $this->mysql->query("DELETE FROM ".$this->tablename." WHERE ref = \"".$ref."\" AND section = '".$this->section."'");
+			} return false; 		
 		}
 	}
 ?>

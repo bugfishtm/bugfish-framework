@@ -39,7 +39,7 @@
 		// Create Table Init
 		######################################################			
 		private function create_table() {
-			mysqli_query($this->mysqlobj, "CREATE TABLE IF NOT EXISTS `".$this->table."` (
+			$this->mysqlobj->query("CREATE TABLE IF NOT EXISTS `".$this->table."` (
 											  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
 											  `target` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Target Name',
 											  `targetid` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Target ID',
@@ -74,7 +74,7 @@
 			}
 			
 			$val = false; try {
-				$val = mysqli_query($this->mysqlobj, 'SELECT 1 FROM `'.$this->table.'`');
+				$val = $this->mysqlobj->query( 'SELECT 1 FROM `'.$this->table.'`');
 			} catch (Exception $e){ 
 				 $this->create_table();
 			} if($val === FALSE) { $this->create_table();}
@@ -95,7 +95,7 @@
 		######################################################
 		function comment_show($hide_system_msg = false) {
 			echo '<div class="x_comment_comments">';
-			$q	=	@mysqli_query($this->mysqlobj, 'SELECT * FROM '.$this->table .' WHERE (status = 1 OR status = 2 OR status = 3) AND target = "'.$this->module.'" AND targetid = "'.$this->target.'"  ORDER BY id DESC');
+			$q	=	@$this->mysqlobj->query('SELECT * FROM '.$this->table .' WHERE (status = 1 OR status = 2 OR status = 3) AND target = "'.$this->module.'" AND targetid = "'.$this->target.'"  ORDER BY id DESC');
 			while($r=@mysqli_fetch_array($q)){ if(!$hide_system_msg OR $r["status"] == 1) { echo '<div class="x_comment_comments_post"><div class="x_comment_comments_title">'.$r["name"].' - '.$r["creation"].'</div><div class="x_comment_comments_text">'.$r["text"].'</div></div>'; } }			
 			echo "</div>";
 		}		
@@ -106,7 +106,7 @@
 		function comment_get($hide_system_msg = false) {
 			$array = array();
 			echo '<div class="x_comment_comments">';
-			$q	=	@mysqli_query($this->mysqlobj, 'SELECT * FROM '.$this->table .' WHERE (status = 1 OR status = 2 OR status = 3) AND target = "'.$this->module.'" AND targetid = "'.$this->target.'"  ORDER BY id DESC');
+			$q	=	@$this->mysqlobj->query('SELECT * FROM '.$this->table .' WHERE (status = 1 OR status = 2 OR status = 3) AND target = "'.$this->module.'" AND targetid = "'.$this->target.'"  ORDER BY id DESC');
 			while($r=@mysqli_fetch_array($q)){ if(!$hide_system_msg OR $r["status"] == 1) { array_push($array, $r); } }			
 			return $array;
 		}		
@@ -127,13 +127,6 @@
 				</form>					
 			</div>				
 		<?php }		
-
-		######################################################
-		// Init Form
-		######################################################
-		private function filter_db($val) {
-			return  mysqli_real_escape_string($this->mysqlobj, $val);
-		}
 		
 		######################################################
 		// Init Form
@@ -147,16 +140,16 @@
 			######################################################
 			// Insert System Entrie if Not Exists
 			######################################################
-			$q	= @mysqli_query($this->mysqlobj, 'SELECT * FROM '.$this->table .' WHERE status = 3 AND target = "'.$this->filter_db($this->module).'" AND targetid = "'.$this->filter_db($this->target).'"');
+			$q	= @$this->mysqlobj->query( 'SELECT * FROM '.$this->table .' WHERE status = 3 AND target = "'.$this->mysqlobj->escape($this->module).'" AND targetid = "'.$this->mysqlobj->escape($this->target).'"');
 			if(mysqli_num_rows($q) <= 0) {
-				@mysqli_query($this->mysqlobj, "INSERT INTO ".$this->table ." (target, targetid, name, text, status) VALUE('".$this->filter_db($this->module)."','".$this->filter_db($this->target)."','".$this->filter_db($this->sys_name)."', '".$this->filter_db($this->sys_text)."', 3);"); 
+				@$this->mysqlobj->query( "INSERT INTO ".$this->table ." (target, targetid, name, text, status) VALUE('".$this->mysqlobj->escape($this->module)."','".$this->mysqlobj->escape($this->target)."','".$this->mysqlobj->escape($this->sys_name)."', '".$this->mysqlobj->escape($this->sys_text)."', 3);"); 
 				$this->init_res = 1;
 			}
 
 			######################################################
 			// Endorse Counter Update
 			######################################################
-			$q	= @mysqli_query($this->mysqlobj, 'SELECT * FROM '.$this->table .' WHERE status = 3 AND target = "'.$this->filter_db($this->module).'" AND targetid = "'.$this->filter_db($this->target).'"');
+			$q	= @$this->mysqlobj->query( 'SELECT * FROM '.$this->table .' WHERE status = 3 AND target = "'.$this->mysqlobj->escape($this->module).'" AND targetid = "'.$this->mysqlobj->escape($this->target).'"');
 			if(mysqli_num_rows($q) > 0) {
 				if($r 	= @mysqli_fetch_array($q) ) {
 					$this->upvote = $r["upvotes"];
@@ -166,7 +159,7 @@
 			######################################################
 			// Comment Counter Update
 			######################################################
-			$q	= @mysqli_query($this->mysqlobj, 'SELECT * FROM '.$this->table .' WHERE target = "'.$this->filter_db($this->module).'" AND targetid = "'.$this->filter_db($this->target).'"');
+			$q	= @$this->mysqlobj->query( 'SELECT * FROM '.$this->table .' WHERE target = "'.$this->mysqlobj->escape($this->module).'" AND targetid = "'.$this->mysqlobj->escape($this->target).'"');
 			if(mysqli_num_rows($q) > 0) {
 				$this->comment = mysqli_num_rows($q);
 			} else { $this->comment = 0; } 
@@ -180,7 +173,7 @@
 					array_push($this->vote_arr, $this->module.$this->target);
 					$this->vote_done = true;
 					$this->init_res = 2;
-					@mysqli_query($this->mysqlobj, "UPDATE ".$this->table ." SET upvotes = upvotes + 1 WHERE target = '".$this->filter_db($this->module)."' AND targetid = '".$this->filter_db($this->target)."' AND status = 3");	
+					@$this->mysqlobj->query( "UPDATE ".$this->table ." SET upvotes = upvotes + 1 WHERE target = '".$this->mysqlobj->escape($this->module)."' AND targetid = '".$this->mysqlobj->escape($this->target)."' AND status = 3");	
 				}
 			}
 				
@@ -191,8 +184,12 @@
 				if (trim(@$_POST["x_comment_name"]) != "" AND trim(@$_POST["x_comment_text"]) != "" AND isset($_POST["x_comment_text"]) AND isset($_POST["x_comment_name"])){
 					if (trim(strtolower(@$_POST["x_comment_name"])) == $this->sys_name){$_POST["x_comment_name"] = "Guest_".trim(strtolower(@$_POST["x_comment_name"])); }
 					if (@$captcha_code_if_delivered == @$_POST["x_comment_captcha"]){
-						$comment_sql1	=	'INSERT INTO '.$this->table .'(name, creation, text, target, targetid, status)VALUES("'.$this->filter_db($_POST["x_comment_name"]).'", "'.date("Y-m-d H:i:s").'", "'.$this->filter_db($_POST["x_comment_text"]).'", "'.$this->filter_db($this->module).'", "'.$this->filter_db($this->target).'", 0)';
-						$comment_r1	=	mysqli_query($this->mysqlobj, $comment_sql1);
+						$bind[0]["value"] = $_POST["x_comment_name"];
+						$bind[0]["type"] = "s";
+						$bind[1]["value"] = $_POST["x_comment_text"];
+						$bind[1]["type"] = "s";
+						$comment_sql1	=	'INSERT INTO '.$this->table .'(name, creation, text, target, targetid, status)VALUES(?, "'.date("Y-m-d H:i:s").'", ?, "'.$this->mysqlobj->escape($this->module).'", "'.$this->mysqlobj->escape($this->target).'", 0)';
+						$comment_r1	=	$this->mysqlobj->query( $comment_sql1, $bind);
 						$this->init_res = 5;
 					} else { $this->init_res = 4; }
 				} else { $this->init_res = 3; }

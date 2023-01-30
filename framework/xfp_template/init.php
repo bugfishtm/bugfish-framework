@@ -11,7 +11,6 @@
 		##########################################################################################################################################
 		##### Table Creation     #################################################################################################################		
 		$mysql->query("CREATE TABLE IF NOT EXISTS ...");
-		$mysql->query("CREATE TABLE IF NOT EXISTS ...");
 		return true;}
 
 	/* Initialize */
@@ -44,7 +43,7 @@
 
 		##########################################################################################################################################
 		##### Create Non Existing Tables    ######################################################################################################
-		try {$val = mysqli_query($this->mysqlcon, 'SELECT 1 FROM `'.XXXXXX.'`');
+		try {$val = $object["mysql"]->query('SELECT 1 FROM `'.XXXXXX.'`');
 			 if(!$val) { xfpi_internal_tables($object["mysql"]); }
 		} catch (Exception $e){xfpi_internal_tables($object["mysql"]);}						
 
@@ -53,7 +52,7 @@
 		$object["location"] = xfp_navi_location_seo();
 		#####################################################################
 		##### Create User     ###############################################
-		$object["user"] = new x_class_user($object["mysql"]->mysqlcon, _TABLE_USER_, _TABLE_USER_SESSION_, _SITE_COOKIE_PREFIX_);
+		$object["user"] = new x_class_user($object["mysql"], _TABLE_USER_, _TABLE_USER_SESSION_, _SITE_COOKIE_PREFIX_);
 		$object["user"]->multi_login(false);
 		$object["user"]->login_recover_drop(true);
 		$object["user"]->login_field_mail();
@@ -75,7 +74,7 @@
 		$object["user"]->init();
 		#####################################################################
 		##### Create Vars      ##############################################	
-		$object["var"] = new x_class_var($object["mysql"]->mysqlcon, _TABLE_VAR_, "descriptor", "value");
+		$object["var"] = new x_class_var($object["mysql"], _TABLE_VAR_, "descriptor", "value");
 		$object["var"]->sections("section", _BTM_SITE_MODE_);
 		$object["var"]->initAsConstant();
 		#####################################################################
@@ -83,16 +82,16 @@
 		$object["csrf"] = new x_class_csrf(_SITE_COOKIE_PREFIX_, 300);
 		#####################################################################
 		##### Create IPBL      ##############################################						
-		$object["ipbl"] = new x_class_ipbl($object["mysql"]->mysqlcon, _TABLE_LOG_IPBL_, 10000);
+		$object["ipbl"] = new x_class_ipbl($object["mysql"], _TABLE_LOG_IPBL_, 10000);
 		#####################################################################
 		##### Create Perm      ##############################################			
-		$object["perm"] = new x_class_perm($object["mysql"]->mysqlcon, _TABLE_USER_PERM_);
+		$object["perm"] = new x_class_perm($object["mysql"], _TABLE_USER_PERM_);
 		#####################################################################
 		##### Save Current User Perms   #####################################	
 		$object["user"]->perm = $object["perm"]->getPerm($object["user"]->user_id);
 		#####################################################################
 		##### Create Log      ##############################################
-		$object["log"] = new x_class_log($object["mysql"]->mysqlcon, _TABLE_LOG_);
+		$object["log"] = new x_class_log($object["mysql"], _TABLE_LOG_);
 		#####################################################################
 		##### Captcha Setup      ############################################	
 		define('_CAPTCHA_FONT_',   	 _MAIN_FOLDER_."/_style/font_captcha.ttf");
@@ -109,9 +108,34 @@
 		return $object;
 	}
 
-	/* Site Elements */ 
-	function xfpi_internal_meta($object) { /* Init Needed Meta */ }	
-	function xfpi_internal_headline($object) { /* Init Needed Headline */ }	
-	function xfpi_internal_nav($object) { /* Init Needed Nav */ }			
-	function xfpi_internal_content($object) { /* Init Needed Nav */ }	
+
+	function xfpi_internal_meta($object) {
+		
+		
+	}	
+	
+	function xfpi_internal_headline($object) {
+		if($object["user"]->loggedIn) {
+			switch($object["location"][0]) {
+				case "example": xfp_headline("Example", "Example Site"); break;
+				case "error": xfp_headline("Site Error", "See below for more information!"); break;
+				default: xfp_headline("Start-Page", "Choose a section to begin!"); break;
+			}
+		} 
+	}	
+	
+	function xfpi_internal_nav($object) {
+		
+		
+	}
+	
+	function xfpi_internal_content($object) { 
+		if($object["user"]->loggedIn) {
+			switch($object["location"][0]) {
+				case "example": break;
+				case "error": xfpi_internal_error(); break;
+				default: xfpi_internal_start(); 
+			}
+		} else { $object["user"]->display_login(); }	
+	}	
 ?>

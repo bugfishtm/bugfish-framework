@@ -20,7 +20,7 @@
 		// Table Initialization
 		######################################################
 		private function create_table() {
-			return mysqli_query($this->mysqlcon, "CREATE TABLE IF NOT EXISTS `".$this->mysqltable."` (
+			return $this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->mysqltable."` (
 											  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
 											  `full_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Referer Domain',
 											  `hits` int NOT NULL DEFAULT '0' COMMENT 'Counter for Referer',
@@ -34,23 +34,14 @@
 		######################################################
 		// Constructor
 		######################################################
-		function __construct($mysqlvar, $table, $refurlnowww) {
-			$this->mysqlcon 	= $mysqlvar;
+		function __construct($mysql, $table, $refurlnowww) {
+			$this->mysql 		= $mysql;
 			$this->refurl 		= $refurlnowww;
 			$this->mysqltable 	= $table;
 			
-			$val = false; try {
-				$val = mysqli_query($this->mysqlcon, 'SELECT 1 FROM `'.$this->mysqltable.'`');
-			} catch (Exception $e){ 
-				 $this->create_table();
-			} if($val === FALSE) { $this->create_table();}
-		}
-
-		######################################################
-		// Filter String for Database
-		######################################################
-		private function filter_db($val) {
-			return mysqli_real_escape_string($this->mysqlcon, @$val);
+			try {$val = $this->mysql->query('SELECT 1 FROM `'.$this->mysqltable.'`');
+				if($val == FALSE) { $this->create_table();}
+			} catch (Exception $e){ $this->create_table();} 
 		}
 		
 		######################################################
@@ -71,13 +62,15 @@
 		function __destruct() {
 			if ( $parts = parse_url( @$_SERVER["HTTP_REFERER"] ) AND $this->enabled) {
 				$thecurrentreferer = $this->prepareUrl(@$parts[ "host" ]);
-				if(@trim($parts[ "host" ]) != $this->refurl AND @trim($parts[ "host" ]) != "www.".$this->refurl) {
-					$query = "SELECT * FROM `".$this->mysqltable."` WHERE full_url = '".$this->filter_db(@$thecurrentreferer)."';";
-					$sresult = @mysqli_fetch_array(@mysqli_query($this->mysqlcon, $query), MYSQLI_BOTH);
+				$bindar[0]["type"]	=	"s";
+				$bindar[0]["value"]	=	$thecurrentreferer;
+				if(@trim($parts[ "host" ]) != $this->refurl AND @trim($parts[ "host" ]) != "www.".$this->refurl AND trim($parts[ "host" ]) != "") {
+					$query = "SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;";
+					$sresult = @mysqli_fetch_array(@$this->mysql->query($query, $bindar), MYSQLI_BOTH);
 					if (!is_array($sresult)) { 
-						$query = @mysqli_query($this->mysqlcon, "INSERT INTO `".$this->mysqltable."` (full_url, hits) VALUES (\"".$this->filter_db(@$thecurrentreferer)."\", \"1\")");
+						$query = @$this->mysql->query("INSERT INTO `".$this->mysqltable."` (full_url, hits) VALUES (?, 1)", $bindar);
 					} else {
-						$query = @mysqli_query($this->mysqlcon, "UPDATE ".$this->mysqltable." SET hits = hits + 1 WHERE full_url = \"".$this->filter_db(@$thecurrentreferer)."\";");
+						$query = @$this->mysql->query("UPDATE ".$this->mysqltable." SET hits = hits + 1 WHERE full_url = ?;", $bindar);
 					}				
 				}
 			}

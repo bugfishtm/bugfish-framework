@@ -5,10 +5,7 @@
 		 |    |  _/  |  \/ ___\   __\|  |/  ___/  |  \ 
 		 |    |   \  |  / /_/  >  |  |  |\___ \|   Y  \
 		 |______  /____/\___  /|__|  |__/____  >___|  /
-				\/     /_____/               \/     \/  Index.php File */
-	require_once("./settings.php");
-	xfpi_internal_meta($object);
-	xfpi_internal_headline($object);
-	xfpi_internal_nav($object);
-	xfpi_internal_content($object)
+				\/     /_____/               \/     \/  Default Forwarding File for Hidden Areas*/
+	Header("Location: ../");
+	exit();
 ?>

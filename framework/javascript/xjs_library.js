@@ -11,15 +11,11 @@
 		location.search.substr(1).split("&") .forEach(function (item) {
 		  tmp = item.split("="); if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]); });
 		return result;}
-	function x_get(parameterName) {
-		var result = null, tmp = [];
-		location.search.substr(1).split("&") .forEach(function (item) {
-		  tmp = item.split("="); if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]); });
-		return result;}
+	function x_get(parameterName) {xjs_get(parameterName)}
 		
 /* Search for A String in URL / True if Found / False if Not */
-	function xjs_inUrl(parameterName) {return window.location.href.includes(parameterName);}
-	function x_inUrl(parameterName) {return window.location.href.includes(parameterName);}
+	function xjs_in_url(parameterName) {return window.location.href.includes(parameterName);}
+	function x_inUrl(parameterName) {return xjs_in_url(parameterName);}
 
 /* Hide or Show Object with ID */
 	function xjs_hide_id(id) 	{id.css("display", "none");}
@@ -27,7 +23,7 @@
 	function xjs_toggle_id(id) 	{if(id.css("display") != "none") { id.css("display", "none"); } else { id.css("display", "block"); } }
 
 /** Check if a Mail is valid **/
-	function xjs_isEmail(email)  { var re = /\S+@\S+\.\S+/; return re.test(email); }
+	function xjs_is_email(email)  { var re = /\S+@\S+\.\S+/; return re.test(email); }
 
 /** Create A Dynamic PopUp with X Button to Close **/
 	function xjs_popup(var_text, var_entrie = "Close") { 

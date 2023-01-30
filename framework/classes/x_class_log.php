@@ -9,7 +9,7 @@
 		######################################################
 		// Class Variables
 		######################################################
-		private $mysqlcon   	= false; 
+		private $mysql   		= false; 
 		private $table     		= false; 
 		private $section     	= false; 
 
@@ -17,12 +17,12 @@
 		// Table Initialization
 		######################################################
 		private function create_table() {
-			return mysqli_query($this->mysqlcon, "CREATE TABLE IF NOT EXISTS `".$this->table."` (
+			return $this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->table."` (
 												  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
 												  `type` tinyint(1) DEFAULT '0' COMMENT '0 - Unspecified 1 - Error 2 - Warning - 3 Notification',
 												  `message` text COMMENT 'The Logs Content',
+												  `section` VARCHAR(128) NULL COMMENT 'Related Section',
 												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
-												  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
 												  PRIMARY KEY (`id`)
 												) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;");
 		}
@@ -31,22 +31,14 @@
 		// Constructor
 		######################################################
 		function __construct($mysql, $tablename, $section = "") { 
-			$this->mysqlcon  = $mysql; 
+			$this->mysql  	= $mysql; 
 			$this->table     = $tablename; 
 			$this->section 	 = $section; 
 			
-			$val = false; try {
-				$val = mysqli_query($this->mysqlcon, 'SELECT 1 FROM `'.$this->table.'`');
-			} catch (Exception $e){ 
-				 $this->create_table();
-			} if($val === FALSE) { $this->create_table();}		
-		}
-
-		######################################################
-		// Prepare for Database
-		######################################################
-		private function filter_db($val) {
-			return trim(mysqli_real_escape_string($this->mysqlcon,$val));
+			try {
+				$val = $this->mysql->query('SELECT 1 FROM `'.$this->table.'`');
+				if($val == FALSE) { $this->create_table();}		
+			} catch (Exception $e){ $this->create_table(); } 
 		}
 		
 		######################################################
@@ -56,7 +48,10 @@
 		public function send($message, $type = 3) { return $this->message($message, $type); }
 		public function write($message, $type = 3) { return $this->message($message, $type); }
 		public function message($message, $type = 3) {
-			if(is_numeric($type)) { return mysqli_query($this->mysqlcon, "INSERT INTO `".$this->table."` (type, message) VALUES (\"".$type."\", \"".$this->filter_db($message)."\")");}
+			if(is_numeric($type)) { 
+				$bindar[0]["type"]	=	"s";
+				$bindar[0]["value"]	=	$message;
+				return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (\"".$type."\", ?, '".$this->section."')", $bindar);}
 			else { return false; }			
 		}		
 
@@ -65,7 +60,9 @@
 		######################################################		
 		public function info($message) { return $this->notify($message); }
 		public function notify($message) {
-			return mysqli_query($this->mysqlcon, "INSERT INTO `".$this->table."` (type, message) VALUES (3, \"".$this->filter_db($message)."\")");	
+			$bindar[0]["type"]	=	"s";
+			$bindar[0]["value"]	=	$message;
+			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (3, ?, '".$this->section."')", $bindar);
 		}
 
 		######################################################
@@ -73,21 +70,26 @@
 		######################################################		
 		public function warn($message) { return $this->warning($message); }
 		public function warning($message) {
-			return mysqli_query($this->mysqlcon, "INSERT INTO `".$this->table."` (type, message) VALUES (2, \"".$this->filter_db($message)."\")");	
+			$bindar[0]["type"]	=	"s";
+			$bindar[0]["value"]	=	$message;
+			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (2, ?, '".$this->section."')", $bindar);
 		}
 
 		######################################################
 		// Send Error
 		######################################################
 		public function err($message) { return $this->error($message); }
+		public function failure($message) { return $this->error($message); }
 		public function error($message) {
-			return mysqli_query($this->mysqlcon, "INSERT INTO `".$this->table."` (type, message) VALUES (1, \"".$this->filter_db($message)."\")");	
+			$bindar[0]["type"]	=	"s";
+			$bindar[0]["value"]	=	$message;
+			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (1, ?,'".$this->section."')", $bindar);
 		}
 
 		######################################################
 		// Clear Entrie/Entries
 		######################################################		
-		public function clear_entry($id) { if(is_numeric($id)) { return @mysqli_query($this->mysqlcon, "DELETE FROM ".$this->table." WHERE id = '".$id."';"); } else { return false; } }	
-		public function clear_table() { return @mysqli_query($this->mysqlcon, "DELETE FROM ".$this->table.";"); }	
+		public function clear_entry($id) { if(is_numeric($id)) { return @$this->mysql->query("DELETE FROM ".$this->table." WHERE id = '".$id."' AND section = '".$this->section."';"); } else { return false; } }	
+		public function clear_table() { return @$this->mysql->query("DELETE FROM ".$this->table." WHERE section = '".$this->section."';"); }	
 	}
 ?>

@@ -5,7 +5,11 @@
 		 |    |  _/  |  \/ ___\   __\|  |/  ___/  |  \ 
 		 |    |   \  |  / /_/  >  |  |  |\___ \|   Y  \
 		 |______  /____/\___  /|__|  |__/____  >___|  /
-				\/     /_____/               \/     \/  Cronjob File */
-	// Configurations Include
-	require_once(dirname(__FILE__) ."/settings.php");
+				\/     /_____/               \/     \/  Index.php File */
+	require_once("./settings.php");
+	xfpi_internal_meta($object);
+	xfpi_internal_headline($object);
+	xfpi_internal_nav($object);
+	xfpi_internal_content($object)
+	xfpi_internal_footer($object)
 ?>

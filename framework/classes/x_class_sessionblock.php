@@ -19,7 +19,7 @@
 		######################################################
 		function __construct($key, $maxcount, $block_time = false) {
 			if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-			$this->key = $key."xc_sessionblock";
+			$this->key = $key."x_class_sessionblock";
 			$this->maxcount = $maxcount;
 			$this->last_time = @$_SESSION[$this->key."_tms"];
 			$this->block_time = $block_time;

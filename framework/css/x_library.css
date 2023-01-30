@@ -3,8 +3,10 @@
 	 |    |  _/    |   /   \  ___ |    __)  |   |\_____  \/    ~    \
 	 |    |   \    |  /\    \_\  \|     \   |   |/        \    Y    /
 	 |______  /______/  \______  /\___  /   |___/_______  /\___|_  / 
-			\/                 \/     \/                \/       \/ CSS Elements	*/
-	/** Elements Padding **/
+			\/                 \/     \/                \/       \/  X_LIBRARY */
+	/* ################################################################## */
+	/* Padding
+	/* ################################################################## */
 	.xfpe_nopadding { padding: 0px 0px 0px 0px; }
 	.xfpe_nopadding_f { padding: 0px 0px 0px 0px !important; }
 	.xfpe_nopaddingtop { padding-top: 0px; }
@@ -96,7 +98,9 @@
 	.xfpe_paddingtopm45px_f { padding-top: -45px !important; }
 	.xfpe_paddingtopm55px_f { padding-top: -55px !important; }
 	
-	/** Elements Margin **/
+	/* ################################################################## */
+	/* Margin
+	/* ################################################################## */
 	.xfpe_marginauto { margin: auto; }
 	.xfpe_marginauto_f { margin: auto !important; }
 	.xfpe_nomargin { margin: 0px 0px 0px 0px; }
@@ -190,13 +194,17 @@
 	.xfpe_margintopm45px_f { margin-top: -45px !important; }
 	.xfpe_margintopm55px_f { margin-top: -55px !important; }
 	
-	/** Elements Float **/
+	/* ################################################################## */
+	/* Float
+	/* ################################################################## */
 	.xfpe_floatleft { float:left; }	
 	.xfpe_floatleft_f { float:left !important; }	
 	.xfpe_floatright { float:right; }	
 	.xfpe_floatright_f { float:right !important; }	
 
-	/** Elements Width PX **/
+	/* ################################################################## */
+	/* Width in PX
+	/* ################################################################## */
 	.xfpe_width100px { width: 100px; }
 	.xfpe_width200px { width: 200px; }
 	.xfpe_width300px { width: 300px; }
@@ -214,7 +222,9 @@
 	.xfpe_width700px_f { width: 700px !important; }
 	.xfpe_width800px_f { width: 800px !important; }
 	
-	/** Elements Max-Width PX **/
+	/* ################################################################## */
+	/* Max-Width in PX
+	/* ################################################################## */
 	.xfpe_maxwidth100px { max-width: 100px; }
 	.xfpe_maxwidth200px { max-width: 200px; }
 	.xfpe_maxwidth300px { max-width: 300px; }
@@ -232,7 +242,9 @@
 	.xfpe_maxwidth700px_f { max-width: 700px !important; }
 	.xfpe_maxwidth800px_f { max-width: 800px !important; }
 	
-	/** Elements Width PCT **/
+	/* ################################################################## */
+	/* Width in PCT
+	/* ################################################################## */
 	.xfpe_width25pct { width: 25%; }
 	.xfpe_width25pct_f { width: 25% !important; }
 	.xfpe_width50pct { width: 50%; }
@@ -240,7 +252,9 @@
 	.xfpe_width100pct { width: 100%; }
 	.xfpe_width100pct_f { width: 100% !important; }
 	
-	/** Elements Max-Width PCT **/
+	/* ################################################################## */
+	/* Max-Width in PCT
+	/* ################################################################## */
 	.xfpe_maxwidth25pct { max-width: 25%; }
 	.xfpe_maxwidth25pct_f { max-width: 25% !important; }
 	.xfpe_maxwidth50pct { max-width: 50%; }
@@ -248,7 +262,9 @@
 	.xfpe_maxwidth100pct { max-width: 100%; }
 	.xfpe_maxwidth100pct_f { max-width: 100% !important; }
 
-	/** Text Elements **/
+	/* ################################################################## */
+	/* Text Adjustments
+	/* ################################################################## */
 	.xfpe_textbreakall { white-space: pre; word-break: break-all; }	 
 	.xfpe_textbreakall_f { white-space: pre !important; word-break: break-all !important; }	
 	.xfpe_aligncenter { text-align:center; }	
@@ -258,23 +274,31 @@
 	.xfpe_alignright { text-align:right; }	
 	.xfpe_alignright_f { text-align:right !important; }
 
-	/** Text Elements **/	
+	/* ################################################################## */
+	/* Overflow
+	/* ################################################################## */
 	.xfpe_overflowhidden { overflow:hidden; }	
 	.xfpe_overflowhidden_f { overflow:hidden !important; }	
 	.xfpe_overflowscroll { overflow:scroll; }	
 	.xfpe_overflowscroll_f { overflow:scroll !important; }	
 	
-	/** Cursor Elements **/	
+	/* ################################################################## */
+	/* Cursor
+	/* ################################################################## */
 	.xfpe_cursorpointer { cursor:pointer; }
 	.xfpe_cursorpointer_f { cursor:pointer !important; }
 	
-	/** Cursor Elements **/	
+	/* ################################################################## */
+	/* Border
+	/* ################################################################## */	
 	.xfpe_bordernone { border:none; }
 	.xfpe_bordernone_f { border:none !important; }
 	.xfpe_outlinenone { outline:none; }
 	.xfpe_outlinenone_f { outline:none !important; }
 	
-	/** Font Size Elements **/
+	/* ################################################################## */
+	/* Font Size
+	/* ################################################################## */
 	.xfpe_font8px {font-size: 8px;}
 	.xfpe_font9px {font-size: 9px;}
 	.xfpe_font10px {font-size: 10px;}
@@ -310,7 +334,9 @@
 	.xfpe_font23px_f {font-size: 23px !important;}	
 	.xfpe_font24px_f {font-size: 24px !important;}	
 	
-	/** Position Elements **/	
+	/* ################################################################## */
+	/* Position
+	/* ################################################################## */	
 	.xfpe_absolute {position: absolute;}
 	.xfpe_absolute_f {position: absolute !important;}
 	.xfpe_fixed {position: fixed;}
@@ -318,7 +344,9 @@
 	.xfpe_relative {position: relative;}
 	.xfpe_relative_f {position: relative !important;}
 	
-	/** Optimization Elements **/	
+	/* ################################################################## */
+	/* Optimization
+	/* ################################################################## */
 	.xfpe_t3d {-webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0);}
 	.xfpe_t3d_f {-webkit-transform: translate3d(0, 0, 0) !important; transform: translate3d(0, 0, 0) !important;}
 	.xfpe_borderbox {-webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;}

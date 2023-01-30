@@ -26,7 +26,7 @@
 		// Table Initialization
 		######################################################
 		private function create_table() {
-			return mysqli_query($this->variable_msqlcon, "CREATE TABLE IF NOT EXISTS `".$this->variable_table."` (
+			return $this->variable_msqlcon->query("CREATE TABLE IF NOT EXISTS `".$this->variable_table."` (
 												  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
 												  `descriptor` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Descriptor for Constant',
 												  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci COMMENT 'Value for Constant',
@@ -48,19 +48,18 @@
 			$this->db_r_c_value     = $value; 
 			$this->variable_table   = $tablename; 
 
-			$val = false; try {
-				$val = mysqli_query($this->variable_msqlcon, 'SELECT 1 FROM `'.$this->variable_table.'`');
-			} catch (Exception $e){ 
-				 $this->create_table();
-			} if($val === FALSE) { $this->create_table();}
+			try {
+				$val = $this->variable_msqlcon->query('SELECT 1 FROM `'.$this->variable_table.'`');
+				if($val == FALSE) { $this->create_table();}
+			} catch (Exception $e){ $this->create_table();} 
 		}
 			
 		######################################################
 		// Init as Constant
 		######################################################
 		public function initAsConstant($strict = true){ 
-			if(!$strict) { $rres = @mysqli_query($this->variable_msqlcon, "SELECT * FROM ".$this->variable_table.""); }
-			else { $rres = @mysqli_query($this->variable_msqlcon, "SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$this->sections_name."'); "); 
+			if(!$strict) { $rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table.""); }
+			else { $rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$this->sections_name."'); "); 
 				}
 			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	
 				if(!defined($sresult[$this->db_r_c_title])) {
@@ -75,8 +74,8 @@
 		######################################################
 		public function initAsArray($strict = true){ 
 			$tmparray = array();
-			if(!$strict) { $rres = @mysqli_query($this->variable_msqlcon, "SELECT * FROM ".$this->variable_table.""); }
-			else { $rres = @mysqli_query($this->variable_msqlcon, "SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$this->sections_name."'); "); 
+			if(!$strict) { $rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table.""); }
+			else { $rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$this->sections_name."'); "); 
 				}
 			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	
 				if(!defined($sresult[$this->db_r_c_title])) {
@@ -93,8 +92,8 @@
 		######################################################
 		public function init($strict = true){ 
 			$tmparray = array();
-			if(!$strict) { $rres = @mysqli_query($this->variable_msqlcon, "SELECT * FROM ".$this->variable_table.""); }
-			else { $rres = @mysqli_query($this->variable_msqlcon, "SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$this->sections_name."'); "); 
+			if(!$strict) { $rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table.""); }
+			else { $rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$this->sections_name."'); "); 
 				}
 			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	
 				if(!defined($sresult[$this->db_r_c_title])) {
@@ -113,17 +112,10 @@
 		public function addVar($name, $value, $null_section = false)  {
 			if($this->existVar($name, $strict)) { return false; }
 			if(!$this->sections || $null_section) {
-				return @mysqli_query($this->variable_msqlcon, "INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.") VALUES('".$this->filter_db(@$name)."', '".$this->filter_db(@$value)."');");
+				return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."');");
 			} else {
-				return @mysqli_query($this->variable_msqlcon, "INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.") VALUES('".$this->filter_db(@$name)."', '".$this->filter_db(@$value)."', \"".$this->sections_name."\");");			
+				return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', \"".$this->sections_name."\");");			
 			}			
-		}
-
-		######################################################
-		// Data Filter
-		######################################################
-		private function filter_db($val) {
-			return $this->filter_db(@$val);
 		}
 		
 		######################################################
@@ -132,16 +124,30 @@
 		public function setVar($name, $value, $strict = true, $addifnotexist = true) {
 			if($this->existVar($name, $strict)) {
 				if(!$this->sections || !$strict ) {
-					return @mysqli_query($this->variable_msqlcon, "UPDATE ".$this->variable_table." SET ".$this->db_r_c_value." = '".$this->filter_db(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->filter_db(@$name)."\";"); 
+					return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_value." = '".$this->variable_msqlcon->escape(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"); 
 				} else {
-					return @mysqli_query($this->variable_msqlcon, "UPDATE ".$this->variable_table." SET ".$this->db_r_c_value." = '".$this->filter_db(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->filter_db(@$name)."\" AND (".$this->db_r_c_section." = '".$this->sections_name."');"); 			
+					return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_value." = '".$this->variable_msqlcon->escape(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\" AND (".$this->db_r_c_section." = '".$this->sections_name."');"); 			
 				}
 			} elseif($addifnotexist) {
 				if(!$this->sections || !$strict) {
-					return @mysqli_query($this->variable_msqlcon, "INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.") VALUES('".$this->filter_db(@$name)."', '".$this->filter_db(@$value)."');");
+					return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."');");
 				} else {
-					return @mysqli_query($this->variable_msqlcon, "INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.") VALUES('".$this->filter_db(@$name)."', '".$this->filter_db(@$value)."', \"".$this->sections_name."\");");			
+					return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', \"".$this->sections_name."\");");			
 				}
+			}
+		}
+		
+		######################################################
+		// Setup Variable
+		######################################################
+		public function setupVar($name, $value, $descr, $section = false) {
+			if($this->existVar($name, true)) { return false; }
+			if($this->existVar($name, false) AND $section != false) { return false; }
+			
+			if(!$section) {
+					return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", description) VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', '".$this->variable_msqlcon->escape($descr)."');");
+			} else {
+					return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.", description) VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', \"".$this->sections_name."\", '".$this->variable_msqlcon->escape($descr)."');");			
 			}
 		}
 			
@@ -151,9 +157,9 @@
 		public function getVar($name, $strict = true) { 
 			if(!$this->existVar($name, $strict)) { return false; }
 			if(!$this->sections || !$strict ) {
-				$query = "SELECT * FROM `".$this->variable_table."` WHERE ".$this->db_r_c_title." = \"".$this->filter_db(@$name)."\";"; $sresult = @mysqli_fetch_array(@mysqli_query($this->variable_msqlcon, $query), MYSQLI_BOTH); return @$sresult["".$this->db_r_c_value.""];
+				$query = "SELECT * FROM `".$this->variable_table."` WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"; $sresult = @mysqli_fetch_array(@mysqli_query($this->variable_msqlcon, $query), MYSQLI_BOTH); return @$sresult["".$this->db_r_c_value.""];
 			} else {
-				$query = "SELECT * FROM `".$this->variable_table."` WHERE (".$this->db_r_c_section." = '".$this->sections_name."' ) AND ".$this->db_r_c_title." = \"".$this->filter_db(@$name)."\";"; $sresult = @mysqli_fetch_array(@mysqli_query($this->variable_msqlcon, $query), MYSQLI_BOTH); return @$sresult["".$this->db_r_c_value.""];
+				$query = "SELECT * FROM `".$this->variable_table."` WHERE (".$this->db_r_c_section." = '".$this->sections_name."' ) AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"; $sresult = @mysqli_fetch_array(@mysqli_query($this->variable_msqlcon, $query), MYSQLI_BOTH); return @$sresult["".$this->db_r_c_value.""];
 			}	
 		}
 
@@ -162,9 +168,9 @@
 		######################################################
 		public function existVar($name, $strict = true) { 
 			if(!$this->sections || !$strict ) {
-				$query = "SELECT * FROM `".$this->variable_table."` WHERE ".$this->db_r_c_title." = \"".$this->filter_db(@$name)."\";"; if($sresult = @mysqli_fetch_array(@mysqli_query($this->variable_msqlcon, $query), MYSQLI_BOTH)) { return true; } else { return false;}
+				$query = "SELECT * FROM `".$this->variable_table."` WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"; if($sresult = @mysqli_fetch_array(@mysqli_query($this->variable_msqlcon, $query), MYSQLI_BOTH)) { return true; } else { return false;}
 			} else {
-				$query = "SELECT * FROM `".$this->variable_table."` WHERE (".$this->db_r_c_section." = '".$this->sections_name."' ) AND ".$this->db_r_c_title." = \"".$this->filter_db(@$name)."\";"; if($sresult = @mysqli_fetch_array(@mysqli_query($this->variable_msqlcon, $query), MYSQLI_BOTH)) { return true;  } else { return false;}
+				$query = "SELECT * FROM `".$this->variable_table."` WHERE (".$this->db_r_c_section." = '".$this->sections_name."' ) AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"; if($sresult = @mysqli_fetch_array(@mysqli_query($this->variable_msqlcon, $query), MYSQLI_BOTH)) { return true;  } else { return false;}
 			}	
 		}
 		
@@ -174,9 +180,9 @@
 		public function delVar($name, $strict = true) {
 			if(!$this->existVar($name, $strict)) { return true; }			
 			if(!$this->sections || !$strict ) {
-				return @mysqli_query($this->variable_msqlcon, "DELETE FROM ".$this->variable_table." WHERE ".$this->db_r_c_title." = \"".mysqli_real_escape_string($this->mysqlcon, @$name)."\";");
+				return @$this->variable_msqlcon->query("DELETE FROM ".$this->variable_table." WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");
 			} else {
-				return @mysqli_query($this->variable_msqlcon, "DELETE FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$this->sections_name."') AND ".$this->db_r_c_title." = \"".mysqli_real_escape_string($this->mysqlcon, @$name)."\";");					
+				return @$this->variable_msqlcon->query("DELETE FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$this->sections_name."') AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");					
 			} 
 		}
 		
@@ -186,9 +192,9 @@
 		public function increaseVar($name, $strict = true){
 			if(!$this->existVar($name, $strict)) { return false; }
 			if(!$this->sections || !$strict ) {
-				return @mysqli_query($this->variable_msqlcon, "UPDATE ".$this->variable_table." SET ".$this->db_r_c_title." = ".$this->db_r_c_title." + 1 WHERE ".$this->db_r_c_title." = \"".mysqli_real_escape_string($this->mysqlcon, @$name)."\";");	
+				return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_title." = ".$this->db_r_c_title." + 1 WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");	
 			} else {
-				return @mysqli_query($this->variable_msqlcon, "UPDATE ".$this->variable_table."SET ".$this->db_r_c_title." = ".$this->db_r_c_title." + 1 WHERE (".$this->db_r_c_section." = '".$this->sections_name."') AND ".$this->db_r_c_title." = \"".mysqli_real_escape_string($this->mysqlcon, @$name)."\";");					
+				return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table."SET ".$this->db_r_c_title." = ".$this->db_r_c_title." + 1 WHERE (".$this->db_r_c_section." = '".$this->sections_name."') AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");					
 			}
 		}
 			
@@ -198,9 +204,9 @@
 		public function decreaseVar($name, $strict = true){
 			if(!$this->existVar($name, $strict)) { return false; }
 			if(!$this->sections || !$strict ) {
-				return @mysqli_query($this->variable_msqlcon, "UPDATE ".$this->variable_table." SET ".$this->db_r_c_title." = ".$this->db_r_c_title." - 1 WHERE ".$this->db_r_c_title." = \"".mysqli_real_escape_string($this->mysqlcon, @$name)."\";");	
+				return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_title." = ".$this->db_r_c_title." - 1 WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");	
 			} else {
-				return @mysqli_query($this->variable_msqlcon, "UPDATE ".$this->variable_table."SET ".$this->db_r_c_title." = ".$this->db_r_c_title." - 1 WHERE (".$this->db_r_c_section." = '".$this->sections_name."') AND ".$this->db_r_c_title." = \"".mysqli_real_escape_string($this->mysqlcon, @$name)."\";");					
+				return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table."SET ".$this->db_r_c_title." = ".$this->db_r_c_title." - 1 WHERE (".$this->db_r_c_section." = '".$this->sections_name."') AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");					
 			}				
 		}
 	}
