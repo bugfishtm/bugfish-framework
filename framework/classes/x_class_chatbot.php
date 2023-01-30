@@ -6,8 +6,78 @@
 		 |______  /______/  \______  /\___  /   |___/_______  /\___|_  / 
 				\/                 \/     \/                \/       \/  Shell Control Class	*/
 	class x_class_shell {
+		/*	
+CREATE TABLE IF NOT EXISTS `seven_sparky_suggest` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
+  `text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Suggest Text',
+  `atid` int DEFAULT NULL COMMENT 'Related ID',
+  `status` int NOT NULL DEFAULT '1' COMMENT 'Status (Unrelated)',
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
+  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Unique` (`text`(100))
+) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;		
 		
-	/*		####################################
+CREATE TABLE IF NOT EXISTS `seven_sparky_cat` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
+  `title` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Category Title',
+  `tocat` int DEFAULT NULL COMMENT 'Refers to Answer Category',
+  `sector` varchar(12) NOT NULL,
+  `tocommand` int DEFAULT NULL COMMENT 'Refers to Answer Command',
+  `toworkflow` int DEFAULT NULL COMMENT 'Refers to Answer Workflow',
+  `reply` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Refers to Answer Reply Direct',
+  `relation` int DEFAULT NULL COMMENT 'Relation Icon for Reaction Image',
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
+  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Schluessel 2` (`title`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;		
+		
+CREATE TABLE IF NOT EXISTS `seven_sparky_cat_text` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
+  `text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Group Text',
+  `group` int NOT NULL COMMENT 'Group ID',
+  `relation` int DEFAULT NULL COMMENT 'Reaction Image Name',
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
+  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=198 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;		
+		
+		CREATE TABLE IF NOT EXISTS `seven_sparky_command` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
+  `command` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'PHP Command',
+  `name` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Command Identifier',
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
+  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Schluessel 2` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+		
+		
+		
+CREATE TABLE IF NOT EXISTS `seven_sparky_question` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
+  `text` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Question Text',
+  `relation` int DEFAULT '0' COMMENT 'Reaction Image',
+  `directworkflow` int DEFAULT NULL COMMENT 'Go To Workflow',
+  `directcommand` int DEFAULT NULL COMMENT 'Go To Command',
+  `directreply` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Go To Reply',
+  `directtocat` int DEFAULT NULL COMMENT 'Go To Cat for Reply',
+  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
+  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `Schluessel 2` (`text`(100)) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=COMPACT;		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		####################################
 	##### Bot Table Configurations
 	####################################		
 	define('_CHATBOT_TABLE_COMMAND_',   _BTM_PREFIX_."sparky_command");  
