@@ -64,7 +64,7 @@
 		######################################################
 		// Request with Authentication
 		######################################################
-		public function auth_request($urlextension, $type, $header = false, $ext = false, $ovr_domain = false, $ovr_username = false, $ovr_password = false, $proxy = false, $cert = false) {
+		public function auth_request($urlextension, $type, $body = false, $bodytype = array('Content-Type: text/plain'),  $header = false, $ext = false, $ovr_domain = false, $ovr_username = false, $ovr_password = false, $proxy = false, $cert = false) {
 			$this->last_info = false;
 			if($ovr_domain) { $finalurl = $ovr_domain.$urlextension; } else {  $finalurl= $this->curldomain.$urlextension; }
 			if($ovr_username) { $finaluser = $ovr_username.$urlextension; } else {  $finaluser= $this->username; }
@@ -77,7 +77,7 @@
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_URL, $finalurl);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
-			//curl_setopt($ch, CURLOPT_HTTPHEADER, array($header));
+			if($header) { curl_setopt($ch, CURLOPT_HTTPHEADER, array($header)); }
 			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 			
 			if($proxy) {
@@ -92,7 +92,13 @@
 				curl_setopt($ch, CURLOPT_SSLCERT, $this->cert_pemfile);
 				if($this->cert_pass) { curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $this->cert_pass = $cert_pass;); }
 			}
-				
+
+			if($body) {
+				curl_setopt($ch, CURLOPT_POST,           1 );
+				curl_setopt($ch, CURLOPT_POSTFIELDS,     $body ); 
+				if($bodytype) { curl_setopt($ch, CURLOPT_HTTPHEADER,     $bodytype); } else { curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); }
+			}
+			
 			$output = curl_exec($ch); 
 			$this->last_info = fcurl_getinfo($ch);
 			curl_close($ch);	
@@ -100,18 +106,9 @@
 		}
 		
 		######################################################
-		// Upload a single file
-		######################################################
-		public function upload($filename) {
-			curl_setopt($curl_handle, CURLOPT_POST, 1);
-			$args['file'] = new CurlFile('filename.png', 'image/png');
-			curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $args);			
-		}
-		
-		######################################################
 		// Request without Authentication
 		######################################################
-		public function request($urlextension, $type, $header = false, $ext = false, $ovr_domain = false, $proxy = false, $cert = false) {
+		public function request($urlextension, $type, $body = false, $bodytype = array('Content-Type: text/plain'), $header = false, $ext = false, $ovr_domain = false, $proxy = false, $cert = false) {
 			$this->last_info = false;
 			if($ovr_domain) { $finalurl = $ovr_domain.$urlextension; } else {  $finalurl= $this->curldomain.$urlextension; }
 
@@ -120,7 +117,7 @@
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_URL, $finalurl);
 			curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
-			//curl_setopt($ch, CURLOPT_HTTPHEADER, array($header));
+			if($header) { curl_setopt($ch, CURLOPT_HTTPHEADER, array($header)); }
 			curl_setopt($ch, CURLOPT_TIMEOUT, 30);
 			
 			if($proxy) {
@@ -134,6 +131,12 @@
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->cert_verifypeer);
 				curl_setopt($ch, CURLOPT_SSLCERT, $this->cert_pemfile);
 				if($this->cert_pass) { curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $this->cert_pass = $cert_pass;); }
+			}
+			
+			if($body) {
+				curl_setopt($ch, CURLOPT_POST,           1 );
+				curl_setopt($ch, CURLOPT_POSTFIELDS,     $body ); 
+				if($bodytype) { curl_setopt($ch, CURLOPT_HTTPHEADER,     $bodytype); } else { curl_setopt($ch, CURLOPT_HTTPHEADER,     array('Content-Type: text/plain')); }
 			}
 				
 			$output = curl_exec($ch); 
@@ -155,6 +158,8 @@
 			curl_setopt($ch, CURLOPT_TIMEOUT, 600);
 			curl_setopt($ch, CURLOPT_FILE, $fp); 
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			
+			if($header) { curl_setopt($ch, CURLOPT_HTTPHEADER, array($header)); }
 			
 			if($proxy) {
 				curl_setopt($ch, CURLOPT_PROXY, $this->proxy_ip);

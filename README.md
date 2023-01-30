@@ -20,6 +20,10 @@
 |Function|Description|
 | --|-- |
 |last_info| last curl info out of last request|
+|set_auth($username, $password)| Set Default Auth Basic|
+|set_curldomain($path)| Set Default Curl Domain Pre-Extension|
+|set_proxy($proxy_ip, $proxy_port, $proxy_pass = false, $proxy_prot = 'HTTP')| Set Proxy Settings|
+|set_cert($cert_verifypeer, $cert_pemfile, $cert_pass = false)| Set SSL Cert Settings|
 |xml_to_array($xml)|xml_to_array conversion|
 |xml_to_json($xml)|xml_to_json conversion|
 |json_to_array($json)|json_to_array conversion|
