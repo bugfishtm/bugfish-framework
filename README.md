@@ -12,7 +12,24 @@
 	This is my personal framework, feel free to use it as you wish.  
 	But watch out for the chabot script as it may tries to
 	take over earth. For help visit bugfish.eu!
-	
+
+## x_class_curl
+	Class to control a Curl Requests.
+	No Mysql / No Tables / No Sessions / No Cookies
+	  
+|Function|Description|
+| --|-- |
+|last_info| last curl info out of last request|
+|xml_to_array($xml)|xml_to_array conversion|
+|xml_to_json($xml)|xml_to_json conversion|
+|json_to_array($json)|json_to_array conversion|
+|json_to_xml($json)|json_to_xml conversion|
+|array_to_xml($array)|array_to_xml conversion|
+|array_to_json($array)|array_to_json conversion|
+|auth_request($urlextension, $type, $header = false, $body = false, $ext = false, $ovr_domain = false, $ovr_username = false, $ovr_password = false, $proxy = false, $cert = false)| Request with Basic Auth |
+|request($urlextension, $type,$body = false, $header = false, $ext = false, $ovr_domain = false, $proxy = false, $cert = false)|Request without Basic Auth |
+|download($url, $localfile, $header = false, $ext = false, $proxy = false, $cert = false)| Download File from URL to Localfile |
+
 ## x_class_chatbot
 	Class to control a chatbot area.
 	Mysql / Tables (auto-installed) 
