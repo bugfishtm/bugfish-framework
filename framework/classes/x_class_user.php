@@ -172,7 +172,7 @@ class x_class_user {
 					} else { return 0;}
 				} 			
 			} elseif($this->key_recover == $type) {
-				$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE id = '".$user"'");
+				$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE id = '".$user."'");
 				if($res=mysqli_fetch_array($r)){
 					if(is_numeric($this->wait_recover_min)) {
 						if(isset($f["req_recover"])) { return $this->check_interval_value($f["req_recover"], '-'.$this->wait_recover_min.' minutes');}
@@ -717,11 +717,11 @@ class x_class_user {
 			$this->mail_edit_token_create($f["id"], $token);
 			$this->ref				= $f;
 			$this->ref["token"] 	= $token;				
-			$this->ref["user_shadow"] 	= trim(strtolower($newmail);
+			$this->ref["user_shadow"] 	= trim(strtolower($newmail));
 
 			$this->mail_ref_user = $f["id"];
 			$this->mail_ref_token = $token;
-			$this->mail_ref_receiver = trim(strtolower($newmail);
+			$this->mail_ref_receiver = trim(strtolower($newmail));
 			
 			$this->mc_request_code = 1; return 1;
 		} $this->mc_request_code = 2; return 2;
@@ -729,8 +729,8 @@ class x_class_user {
 
 	public function mail_edit_confirm($userid, $token, $run = true, $runifdata = false) {
 		if($run) {
-			if($runifdata AND ((trim($userid) == "" OR $userid == false) OR (trim($token) == "" OR $token == false)) { return false; }
-			$bind[0]["value"] = $token);
+			if($runifdata AND ((trim($userid) == "" OR $userid == false) OR (trim($token) == "" OR $token == false))) { return false; }
+			$bind[0]["value"] = $token;
 			$bind[0]["type"] = "s";		
 			$this->ref = false;
 			$this->mc_request_code = false;
@@ -764,32 +764,6 @@ class x_class_user {
 		}
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 		// Display Messages
 		public $display_return_code	=	false;
 		public $display_return_type	=	false;
@@ -891,7 +865,7 @@ class x_class_user {
 						if ($captchakey == $_POST["x_class_user_csrf"] AND trim($_POST["x_class_user_csrf"]) != "" AND isset($_POST["x_class_user_csrf"])) {
 							if(($needusername AND isset($_POST["x_class_user_name"]) AND trim($_POST["x_class_user_name"])) != "" OR (!$needusername)) {
 								if(!$needusername) { $_POST["x_class_user_name"] = "undefined";}
-								if(addUser($name, $_POST["x_class_user_mail"], $_POST["x_class_user_pass"], $rank, $confirmed, true);) { $this->display_message_set("ok", "ok"); return true; }
+								if(addUser($name, $_POST["x_class_user_mail"], $_POST["x_class_user_pass"], $rank, $confirmed, true)) { $this->display_message_set("ok", "ok"); return true; }
 								else {$this->display_message_set("error", "error"); return true; }
 							
 							} else { $this->display_message_set("empty", "error"); return true; }

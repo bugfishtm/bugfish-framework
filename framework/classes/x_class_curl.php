@@ -90,7 +90,7 @@
 			if($cert) {
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->cert_verifypeer);
 				curl_setopt($ch, CURLOPT_SSLCERT, $this->cert_pemfile);
-				if($this->cert_pass) { curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $this->cert_pass = $cert_pass;); }
+				if($this->cert_pass) { curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $this->cert_pass = $cert_pass); }
 			}
 
 			if($body) {
@@ -130,7 +130,7 @@
 			if($cert) {
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->cert_verifypeer);
 				curl_setopt($ch, CURLOPT_SSLCERT, $this->cert_pemfile);
-				if($this->cert_pass) { curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $this->cert_pass = $cert_pass;); }
+				if($this->cert_pass) { curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $this->cert_pass = $cert_pass); }
 			}
 			
 			if($body) {
@@ -171,7 +171,7 @@
 			if($cert) {
 				curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->cert_verifypeer);
 				curl_setopt($ch, CURLOPT_SSLCERT, $this->cert_pemfile);
-				if($this->cert_pass) { curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $this->cert_pass = $cert_pass;); }
+				if($this->cert_pass) { curl_setopt($ch, CURLOPT_SSLCERTPASSWD, $this->cert_pass = $cert_pass); }
 			}
 			
 			$output = curl_exec($ch); 
