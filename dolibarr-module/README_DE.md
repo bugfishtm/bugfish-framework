@@ -13,19 +13,19 @@ Die Klassen und Funktionen aus dem Framework werden immer eingebunden, dafür mu
 		}
 
 ## Modul-Systeme
-### Trigger and Object Logging
+### Trigger and Object Log
 
 Trigger und Objektinformationen im Bezug zu diesem Trigger werden abgefangen und können in der Trigger Sektion unter Hilfsprogramme im Menüpunkt xFramework angeschaut werden. 
 
-### Javascript Error Login
+### Javascript Error Log
 
 Javascript Fehlern die bei Nutzern entstanden sind können im Protokoll unter Hilfsprogramme -> xFramework -> Javascript Loggin eingesehen werden.
 
-### MySQL Error Logging (only for querys used with x_class_mysql)
+### MySQL Error Log (only for querys used with x_class_mysql)
 
 MySQL Fehlermeldungen die in Nutzung mit der x_class_mysql entstanden sind können in der Sektion unter Hilfsprogramme im Menüpunkt xFramework angeschaut werden.
 
-### Mail Class Logging
+### Mail Class Log
 
 Wenn die Logging Funktion der Mail Klasse eingeschaltet wurde, können hier Informationen zu fehlerhaften oder versendeten Mails eingesehen werden.
 
@@ -46,20 +46,20 @@ Felder sind mit folgendem präfix für Funktionen gekennzeichnet: mn_ [main tabl
 |x_c_mail($host, $port, $auth, $user, $pass, $from_name, $from_mail)|Create a Quick xMailer Object, Host: example.de, port: 25/587/465, Auth: tls/ssl /false, User: username, Pass: pass, From_name: Sender Name, From_Mail: Sender Mail|
 |x_l_js()|Load Content of Javascript Functions for JS Files |
 
-### Function for Triggers to check for Changes
+### Funktion für Trigger zum Prüfen auf Änderungen
 
 |Funktion | Beschreibung|
 |-|-|
 |d_get_change(\$db, $refid, $ref, $fieldname)|Get Array with x[from] x[to] else is false if error, maybe if this is a new process, Db -> doli db object, $refid -> id of current object, $ref -> table element, $fieldname -> database fieldname to check|
 |d_is_change(\$db, $refid, $ref, $fieldname)|True if changed, False if not changed may error if this is first time this ref is added in database, Db -> doli db object, $refid -> id of current object, $ref -> table element, $fieldname -> database fieldname to check|
 
-### Function to write Message to Module Messages Area
+### Funktion zum Schreiben von Nachrichten in den Nachrichtenbereich des Moduls
 
 
 |Funktion | Beschreibung|
 |-|-|
-|d_message($db, $modulename, $message)|Write something to the modules message area, Db: db object from MITEC|
-|message: Message you want to provide (filter if needed with $db->escape())| modulename: the name under which section the message appears in the message overview|
+|d_message($db, $modulename, $message)|Schreiben Sie etwas in den Nachrichtenbereich des Moduls, Db: db-Objekt|
+|message: Message you want to provide (filter if needed with $db->escape())| modulename: der Name, unter dem die Nachricht in der Nachrichtenübersicht erscheint|
 
 ## Berechtigungen
 | Name | Standard Aktiviert| Beschreibung|
