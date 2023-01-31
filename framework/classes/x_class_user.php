@@ -10,6 +10,8 @@ class x_class_user {
 	private $mysql=false; // x_class_mysql Object
 	private $dt_keys=false; // Table for Keys
 	private $dt_users=false; // Table for Users
+	private $dt_fields=false; // Table for Extrafields 
+		public function activate_extrafields($tablename) { $this->dt_fields = $tablename; }
 	
 	## Private Key Informations
 	private $key_activation = 1; // Activate and Set Pass || Activate
@@ -23,6 +25,7 @@ class x_class_user {
 	public $mail_ref_token=false;	// Outdated Reference
 	public $mail_ref_receiver=false;	// Outdated Reference
 	public $info=false;	// Current Logged In User Information
+	public $fields=false;	// Current Logged In User Extrafields
 	public $user=false;	// Same as Info
 	public $perm=false;	// To Save Perms, not used by this class - can be used for external Informations
 
@@ -72,6 +75,10 @@ class x_class_user {
 	private $min_activation = 6;public function min_activation($int = 6){$this->min_activation = $int;} // Token Valid Length in Minutes for Activation
 	private $min_recover = 6;public function min_recover($int = 6){$this->min_recover = $int;} // Token Valid Length in Minutes for Recover
 	private $min_mail_edit = 6;public function min_mail_edit($int = 6){$this->min_mail_edit = $int;} // Token Valid Length in Minutes for Mail Change
+	
+	## Auto-Block user after X tries?
+	private $autoblock = false; public function autoblock($int = false) { $this->autoblock = $int; } // Activate Autoblock after X fail Logins?
+	
 	
 	## Sessions Setup
 	private $sessions = "x_users";
@@ -137,6 +144,63 @@ class x_class_user {
 		return $this->mysql->query("INSERT INTO ".$this->dt_users."(user_name, user_mail, user_pass, user_rank, user_confirmed)
 		VALUES('".trim($this->mysql->escape($name))."', '".trim($this->mysql->escape($mail))."', '". $this->password_crypt($pass)."', '".$rankx."', '".$activated."')");
 	}
+	public function get_extra($id) {
+		if(is_numeric($id)) {
+			$ar = $this->mysql->select("SELECT * FROM ".$this->dt_users." WHERE id = '".$id."'");
+			if(is_array($ar)) {
+				return unserialize($ar["extradata"]);
+			} return false;
+		} return false;
+	}
+	public function set_extra($id, $array) {
+		if(is_numeric($id) AND is_array($array)) {
+			$bind[0]["type"] = "s";
+			$bind[0]["value"] = serialize($array);
+			return $this->mysql->query("UPDATE ".$this->dt_users." SET extradata = ? WHERE id = '".$id."'", $bind);
+		} return false;
+	}
+	# Extrafield Handling
+	private function init_extrafield($id) {
+		if(!$this->dt_fields) { return true; }
+		if(is_numeric($id)) {
+			$ar = $this->mysql->select("SELECT * FROM ".$this->dt_fields." WHERE fk_user = '".$id."'");
+			if(!is_array($ar)) {
+				return $this->mysql->query("INSERT INTO ".$this->dt_fields."(fk_user) VALUES('".$id."')");
+			} return true;
+		} else { return false; }
+	}
+	public function get_extrafields($id) { 
+		if(!$this->dt_fields) { return true; }
+		$this->init_extrafield($id);
+		if(is_numeric($id)) {
+			$ar = $this->mysql->select("SELECT * FROM ".$this->dt_fields." WHERE fk_user = '".$id."'");
+			if(is_array($ar)) {
+				return $ar;
+			} return false;
+		} return false;	
+	}
+	public function get_extrafield($id, $fieldname) { 
+		if(!$this->dt_fields) { return true; }
+		$this->init_extrafield($id);
+		if(is_numeric($id)) {
+			$ar = $this->mysql->select("SELECT * FROM ".$this->dt_fields." WHERE fk_user = '".$id."'");
+			if(is_array($ar)) {
+				return $ar[$fieldname];
+			} return false;
+		} return false;	
+	}
+	public function set_extrafield($id, $fieldname, $value) { 
+		if(!$this->dt_fields) { return true; }
+		$this->init_extrafield($id);
+		if($id AND is_string($fieldname)) { 
+			$bind[0]["type"] = "s";
+			$bind[0]["value"] = $value;		
+			return $this->mysql->query("UPDATE ".$this->dt_fields." SET ".$fieldname." = ? WHERE fk_user = '".$id."'", $bind);
+		} else { return false; }
+	}
+	# Extrafield Table Modifications
+	public function add_extrafield($fieldstring) { return $this->mysql->query("ALTER TABLE ".$this->dt_fields." ADD ".$fieldstring." ;");}
+	public function del_extrafield($fieldname) { return $this->mysql->query("ALTER TABLE ".$this->dt_fields." DROP COLUMN ".$fieldname." ;"); }
 	
 	## Check Time Interval Function	
 	private function check_interval($datetimeref, $strstring = '-1 hours') {
@@ -400,6 +464,7 @@ class x_class_user {
 		$tmp["x_users_ip"]		=	false;
 		$tmp["x_users_id"]		=	false;
 		$tmp["loggedIn"]		=	false;
+		$tmp["loggedin"]		=	false;
 		$this->user_rank = false;
 		$this->rank = false;
 		$this->user_id = false;
@@ -413,7 +478,8 @@ class x_class_user {
 		$this->user_loggedIn = false;
 		$this->user_loggedin = false;
 		$this->info = false;
-		$this->info = false;
+		$this->fields = false;
+		$this->perm = false;
 		$this->user = false;
 	}
 	private function object_user_set($userid) {
@@ -424,6 +490,7 @@ class x_class_user {
 		$tmp["x_users_ip"]		=	@$_SESSION[$this->sessions."x_users_ip"];
 		$tmp["x_users_id"]		=	@$_SESSION[$this->sessions."x_users_id"];
 		$tmp["loggedIn"]		=	true;
+		$tmp["loggedin"]		=	true;
 		$this->user_rank = $tmp["user_rank"];
 		$this->rank = $tmp["user_rank"];
 		$this->user_id = $tmp["x_users_id"];
@@ -433,10 +500,11 @@ class x_class_user {
 		$this->user_mail = $tmp["user_mail"];
 		$this->mail = $tmp["user_mail"];
 		$this->loggedIn = true;
-		$this->loggedon = true;
+		$this->loggedin = true;
 		$this->user_loggedIn = true;
 		$this->user_loggedin = true;
 		$this->info = $tmp;
+		$this->fields = $this->get_extrafields($tmp["x_users_id"]);
 		$this->user = $tmp;
 	}
 
@@ -461,16 +529,22 @@ class x_class_user {
 		} catch (Exception $e){ 
 			 $this->create_table();
 		} if($val === FALSE) { $this->create_table();}
+		
+		if($this->dt_fields) { $val = false; try {
+			$val = $this->mysql->query('SELECT 1 FROM `'.$this->dt_fields.'`');
+		} catch (Exception $e){ 
+			 $this->create_table();
+		} if($val === FALSE) { $this->create_table();} }
 	}
 	
 	### Table Restore
 	private function create_table() {
 			$this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->dt_users."` (
 											  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-											  `user_name` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'undefined' COMMENT 'Users Name for Login if Ref',
-											  `user_pass` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Users Pass for Login',
-											  `user_mail` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Users Mail for Login if Ref',
-											  `user_shadow` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Users Store for Mail if Renew',
+											  `user_name` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'undefined' COMMENT 'Users Name for Login if Ref',
+											  `user_pass` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Users Pass for Login',
+											  `user_mail` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Users Mail for Login if Ref',
+											  `user_shadow` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Users Store for Mail if Renew',
 											  `user_rank` tinyint NOT NULL DEFAULT '0' COMMENT 'Users Rank',
 											  `created_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
 											  `modify_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
@@ -485,10 +559,11 @@ class x_class_user {
 											  `req_mail_edit` datetime DEFAULT NULL COMMENT 'Last Mail Change Request Date',
 											  `block_mail_edit` datetime DEFAULT NULL COMMENT 'Block Mail Edits for this User',
 											  `last_login` datetime DEFAULT NULL COMMENT 'Last Login Date',
+											  `extradata` TEXT DEFAULT NULL COMMENT 'Additional Data',
 											  `user_confirmed` tinyint(1) DEFAULT '0' COMMENT 'User Activation Status',
 											  `user_blocked` tinyint(1) DEFAULT '0' COMMENT 'User Blocked/Disabled Status',
 											  PRIMARY KEY (`id`)
-											) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;");
+											) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
 			$this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->dt_keys."` (
 											`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique Session ID',
 											`fk_user` int(10) NOT NULL COMMENT 'Related User ID',
@@ -496,12 +571,19 @@ class x_class_user {
 											`creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date for max Session Days',
 											`modification` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
 											`refresh_date` datetime DEFAULT NULL COMMENT 'Last Use Date set by session_restore!',
-											`session_key` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT 'Session Authentification Token and Key!',
+											`session_key` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Session Authentification Token and Key!',
 											`is_active` tinyint(1) DEFAULT '0' COMMENT '1 - Active 0 - Expired!',
-											`request_ip` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Requested IP if enabled set at creation!',
-											`execute_ip` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL COMMENT 'Executed IP if enabled set at Invalidation!',
+											`request_ip` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Requested IP if enabled set at creation!',
+											`execute_ip` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Executed IP if enabled set at Invalidation!',
 											PRIMARY KEY (`id`)
-										) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;");		
+										) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");	
+			if($this->dt_fields) { $this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->dt_fields."` (
+											`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique Session ID',
+											`fk_user` int(10) NOT NULL COMMENT 'Related User ID',
+											`creation` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date for max Session Days',
+											`modification` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
+											PRIMARY KEY (`id`)
+											) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");}										
 	}
 
 	public function login_request($ref, $password, $stayLoggedIn = false) {
@@ -538,7 +620,16 @@ class x_class_user {
 				$this->mysql->query("UPDATE ".$this->dt_users." SET fails_in_a_row = 0 WHERE id = '".$f["id"]."'");
 				$this->login_request_code = 1;
 				return 1;
-			} else { $this->mysql->query("UPDATE ".$this->dt_users." SET fails_in_a_row = fails_in_a_row + 1 WHERE id = '".$f["id"]."'"); $this->login_request_code = 3; return 3; }									
+			} else { $this->mysql->query("UPDATE ".$this->dt_users." SET fails_in_a_row = fails_in_a_row + 1 WHERE id = '".$f["id"]."'");  
+				if(is_numeric($this->autoblock)) {
+					if($f["fails_in_a_row"] > $this->autoblock) {
+						$this->block_user($f["id"]); 
+						
+						$this->login_request_code = 6; return 6;
+					}
+				}
+				$this->login_request_code = 3; return 3;
+			}									
 		} $this->login_request_code = 2; return 2; 
 	}
 

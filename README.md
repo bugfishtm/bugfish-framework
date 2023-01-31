@@ -80,7 +80,7 @@
 	Mysql /Tables (auto-installed) / Sessions / Cookies optional
 |Constructor Function|Description|
 | --|-- |
-|__construct($x_class_mysql, $table_users, $table_sessions, $preecokie = "x_users_")| Construct with x_class_mysql object and Table names (will be auto-generated) |
+|__construct($x_class_mysql, $table_users, $table_sessions, $preecokie = "x_users_")| Construct with x_class_mysql object and Table names (will be auto-generated) Tables are for Users, Sessions|
 ------------
 |Public Variables |Description|
 | --|-- |
@@ -89,6 +89,7 @@
 |mail_ref_token |Outdated Ref User Token to Send in Mails |
 |mail_ref_receiver |Outdated Ref User Mail to Send Mails To |
 |info/user| Array with Current User Informations from Table|
+|fields| Array with Current User Extrafields|
 |perm|Variable to use for external scripts not by this class. Feel free to use.|
 |user_rank/rank| Users Rank |
 |user_id/id| User ID |
@@ -105,6 +106,7 @@
 ------------
 |Ajustment Function|Description|
 | --|-- |
+|activate_extrafields($tablename)| Activate Extrafield System with Table Name (will be auto created)|
 |multi_login($bool = false)| Allow Multi Login|
 |login_recover_drop($bool = false)|Deactivate Password Reset Token on Successfull Login|
 |login_field_manual($string)|Choose Custom Login Field which should be unique!|
@@ -123,6 +125,7 @@
 |min_activation($int = 6)|Activate Token Expire Minutes |
 |min_recover($int = 6)|Recover Token Expire Minutes |
 |min_mail_edit($int = 6)| Mail Edit Token Expire Minutes |
+|autoblock($int = false)| Activate Auto Block of User after X failed Logins, false for deactivate|
 |sessions_days($int = 7)| Session Valid for X Days|
 |cookies_use($bool = true)| Allow Use of Cookies|
 |cookies_days($int = 7)| Cookies valid for X Days|
@@ -167,6 +170,16 @@
 |changeUserShadowMail($id, $new)|Change a Users Shadow Mail (Mail which is not activated Yet|
 |changeUserMail($id, $new)| Change a Users Mail |
 |addUser($name, $mail, $password = false, $rank = false, $activated = false, $delunconfirmedwhennew = false)| Add a New User|
+|get_extra($id)| Get extradata as array from user (You can store your own data for user here in an array if needed, there is an extradata field in users table) |
+|set_extra($id, $array)| Set extra data from array for user (You can store your own data for user here in an array if needed, there is an extradata field in users table) |
+------------
+|User Extrafield Functions|Description|
+| --|-- |
+|add_extrafield($fieldstring)| Add Column to Extrafield Table, NEVER ADD EXTRAFIELD WITH "NOT-NULL" STATEMENT |
+|del_extrafield($fieldname)| Del Column from Extrafield Table |
+|get_extrafields($id)| Get all User ID Extrafields in Array|
+|get_extrafield($id, $fieldname)| Get Single Extrafield Value in Variable|
+|set_extrafield($id, $fieldname, $value)| Set Extrafield of User|
 ------------
 |Check Token Functions|Description|
 | --|-- |
@@ -185,7 +198,7 @@
 | --|-- |
 |init()|Init the Login with all Configs (Should run once after Configuration has been changed with adjustment functions|
 |logout()|Logout the Current Logged In User|
-|login_request($ref, $pass, $cookies= false)|Return Code: 5 - User not confirmed<br /> Return Code: 4 - User Blocked<br /> Return Code: 3 - Wrong Password<br /> Return Code: 2 -Ref does not exist <br />Return Code: 1 - Login Successfull|
+|login_request($ref, $pass, $cookies= false)|Return Code: 5 - User not confirmed<br /> Return Code: 4 - User Blocked<br /> Return Code: 3 - Wrong Password<br /> Return Code: 2 -Ref does not exist <br />Return Code: 1 - Login Successfull <br /> 6- Pass Wrong and User Auto-Blocked after X tries (if activated)|
 ------------
 |Activation Functions|Description|
 | --|-- |
@@ -539,10 +552,11 @@ In this folder is a websites template to build up a website with different funct
 |xfp_navi_item($navname, $url, $titlealt, $level = 0, $isonempty = false) | Spawn Navigation Item |
 |xfp_navi_location_seo($param = \_XFP_MAIN_SEOVAR\_) | Get Location |
 
-### Misc Functions
+### Website Functions
 |Misc Function Name|Description|
 |--|--|
-|xfp_search($mysql, $table, $search_fields = array(), $get_fields = array(), $search_string, $uniqueref = "id")| Do a Database Search with Metascore!|
+|xfp_website_create_table($mysql, $tablename, $query)| Create Table if not Exists|
+|xfp_website_init($title, $meta_ext, $section)| Get Object for use in settings.php of xfp-template|
 
 ## x_library
 	This is a set of usefull functions for different purposes.
@@ -579,6 +593,7 @@ In this folder is a websites template to build up a website with different funct
 |x_captcha_key($preecookie = "")	|Get the last Captured Captcha Key|
 |x_rss_list($urltemp, $defaultcover, $limit = 25)	|Get RSS As List printed with following CSS Classes - x_rss_item x_rss_title x_rss_date x_rss_image|
 |x_rss_array($urltemp)	|GenerateArray from RSS with items - title - link - date - img|
+|x_search($mysql (x_mysql), $table (to search), $search_fields = array(), $get_fields = array(), $search_string, $uniqueref = "id")| Do a Database Search with Metascore!<br />Search Fields Array Key 0 = Fieldname Array Key 1 = Hit score <br /> Get Fields will be available in Output Array <br />|
 
 # Javascript Framework
 	This files can be included in javascript files

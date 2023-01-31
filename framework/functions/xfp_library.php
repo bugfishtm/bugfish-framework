@@ -181,98 +181,115 @@
 	function xfp_msg_boxnt($text) {  echo "<div class='xfp_content_box_text'>"; echo $text; echo "</div>"; }
 	function xfp_msg_notify_ok($cookie, $text)      {  return x_eventBoxPrep($text, "ok", $cookie); }
 	function xfp_msg_notify_warning($cookie, $text) {  return x_eventBoxPrep($text, "warn", $cookie); }
-	function xfp_msg_notify_error($cookie, $text)   {  return x_eventBoxPrep($text, "error", $cookie); }
-	
-	
+	function xfp_msg_notify_error($cookie, $text)   {  return x_eventBoxPrep($text, "error", $cookie); }	
 
+	// Create a Table if Not Exists
+	function xfp_website_create_table($mysql, $tablename, $query) {
+		try {$val = $mysql->query('SELECT 1 FROM `'.$tablename.'`');
+			 if(!$val) { return $mysql->query($query); }
+		} catch (Exception $e){ return $mysql->query($query); }
+	} 
+	
+	// Init xfp-template Frontpage
+	function xfp_website_init($title, $meta_ext, $section) {
+		// Rename Uploaded HTAccess to real Htaccess
+		if(file_exists(_SITE_PATH_."/dot.htaccess")) { rename(_SITE_PATH_."/dot.htaccess", _SITE_PATH_."/.htaccess"); }
 		
-	function xfp_search($mysql, $table, $search_fields = array(), $get_fields = array(), $search_string, $uniqueref = "id") {
-		// Abort if Search String if not Set
-		if(empty($search_string) OR trim(@$search_string) == "" OR @$search_string == false) { return false; }
-		
-		// Trim Search String
-		$search_string = trim($search_string);
-		
-		// Get Current Search Tag Array
-		if(strpos($search_string, " ") > -1) { 
-			$search_string = preg_replace('/\s+/', ' ', $search_string); 
-			$search_array =  explode(" ", $search_string);
-		} else {$search_array[0] = trim($search_string);}
-		
+		// Init Object Array
+		$object = array();
 
-		// Prepare Array for Binds for Search Query
-		$new_bind_array	=	array();
-		$counter = 0; // Search String Counter
-		$c_q	=	""; // Serach Query Counter
-		$bindcounter = 0;
+		#####################################################################
+		##### XFP Variables      ############################################
+		define("_XFP_MAIN_SEOVAR_", "x32rnx"); 
+		define("_XFP_COOKIES_", _SITE_COOKIE_PREFIX_);
+		define("_XFP_META_DESC_PRE_", "");
+		define("_XFP_META_DESC_POST_", " ".$meta_ext);
+		define("_XFP_META_TITLE_PRE_", "");
+		define("_XFP_META_TITLE_POST_", " - ".$title);
 		
+		#####################################################################
+		##### Captcha Setup      ############################################	
+		define('_CAPTCHA_FONT_',   	 _SITE_PATH_."/_style/font_captcha.ttf");
+		define('_CAPTCHA_WIDTH_',    "200"); 
+		define('_CAPTCHA_HEIGHT_',   "70");	
+		define('_CAPTCHA_SQUARES_',   mt_rand(4, 15));	
+		define('_CAPTCHA_ELIPSE_',    mt_rand(4, 15));	
+		define('_CAPTCHA_RANDOM_',    mt_rand(1000, 9999));
+
+		#####################################################################
+		##### TABLES           ##############################################						
+		define('_TABLE_USER_',   				_SQL_PREFIX_."user");  
+		define('_TABLE_USER_SESSION_',			_SQL_PREFIX_."user_session");
+		define('_TABLE_USER_PERM_',				_SQL_PREFIX_."user_perm");
+		define('_TABLE_LOG_IPBL_',				_SQL_PREFIX_."ipbl");
+		define('_TABLE_LOG_',					_SQL_PREFIX_."log");
+		define('_TABLE_LOG_MYSQL_',				_SQL_PREFIX_."log_sql");
+		define('_TABLE_LOG_MAIL_',				_SQL_PREFIX_."log_mail");
+		define('_TABLE_VAR_',					_SQL_PREFIX_."const");
+
+		#####################################################################
+		##### Get Location    ###############################################
+		$object["location"] = xfp_navi_location_seo();
+
+		#####################################################################
+		##### Create MySQL     ##############################################
+		$object["mysql"] = new x_class_mysql(_SQL_HOST_, _SQL_USER_, _SQL_PASS_, _SQL_DB_);
+		if ($object["mysql"]->lasterror != false) { $object["mysql"]->displayError(true); } else { $object["mysql"]->loggingSetup(true, _TABLE_LOG_MYSQL_); }
 		
+		#####################################################################
+		##### Create Vars      ##############################################	
+		$object["var"] = new x_class_var($object["mysql"], _TABLE_VAR_, "descriptor", "value");
+		$object["var"]->sections("section", $section);
+		$object["var"]->initAsConstant();		
 		
-		// Prepare the Query for Search Results
-		while (is_numeric($counter)) {
-			if(@$search_array[$counter] != null) {
-				if(trim(@$search_array[$counter] != "")) {
-					
-					if($counter == 0) {
-						if($bindcounter == 0) {
-							$c_q = "SELECT * FROM `".$table ."` WHERE (title LIKE CONCAT( '%', ?, '%') OR text LIKE CONCAT( '%', ?, '%') OR category = CONCAT( '%', ?, '%') OR sec_category LIKE CONCAT( '%', ?, '%')) ";
-							$bindcounter++;
-						} else {
-							
-						}
-							
-					} else {
-						foreach($search_fields AS $tmpkey => $tmpvalue) {
-							$c_q .= " OR ".$tmpvalue[0]." LIKE CONCAT( '%', ?, '%') ";	
-						}
-					}
-					
-					
-					
-					$new_ar["type"]	 =	"s";
-					$new_ar["value"] =	$search_array[$counter];
-					
-					foreach($search_fields AS $tmpkey => $tmpvalue) {
-						array_push($new_bind_array, $new_ar);				
-					}
-				}  $counter	= $counter + 1;
-			} else {$counter	= "notset";}
-		}
+		#####################################################################
+		##### Create CSRF      ##############################################						
+		$object["csrf"] = new x_class_csrf(_SITE_COOKIE_PREFIX_, 1200);
 		
-		// Query and Sorting Variables
-		$cur_ar		=	$mysql->select( $c_q." ORDER BY ".$uniqueref." DESC", true, $new_bind_array);
-		$ra		=	null;
-		$rad	=	null;
+		#####################################################################
+		##### Create IPBL      ##############################################						
+		$object["ipbl"] = new x_class_ipbl($object["mysql"], _TABLE_LOG_IPBL_, 10000);
+
+		#####################################################################
+		##### Create Curl      ##############################################						
+		$object["curl"] = new x_class_curl();
+
+		#####################################################################
+		##### Create Log      ###############################################
+		$object["log"] = new x_class_log($object["mysql"], _TABLE_LOG_);
+
+		#####################################################################
+		##### Create User     ###############################################
+		$object["user"] = new x_class_user($object["mysql"], _TABLE_USER_, _TABLE_USER_SESSION_, _SITE_COOKIE_PREFIX_);
+		$object["user"]->multi_login(false);
+		$object["user"]->login_recover_drop(true);
+		$object["user"]->login_field_mail();
+		$object["user"]->user_unique(false);
+		$object["user"]->log_ip(true);
+		$object["user"]->log_activation(true);
+		$object["user"]->log_session(true);
+		$object["user"]->log_recover(true);
+		$object["user"]->log_mail_edit(true);
+		$object["user"]->wait_activation_min(24);
+		$object["user"]->wait_recover_min(24);
+		$object["user"]->wait_mail_edit_min(24);
+		$object["user"]->min_activation(24);
+		$object["user"]->min_recover(24);
+		$object["user"]->min_mail_edit(24);
+		$object["user"]->sessions_days(7);
+		$object["user"]->cookies_use(true);
+		$object["user"]->cookies_days(7);
+		$object["user"]->init();
+
+		#####################################################################
+		##### Create Perm      ##############################################			
+		$object["perm"] = new x_class_perm($object["mysql"], _TABLE_USER_PERM_);
 		
-		// Scoring for Items
-		foreach($cur_ar as $key => $score_r){
-			// Set Fields available for Score
-			$counter = 0;
-			foreach($get_fields AS $tmpkey => $tmpvalue) {
-				$ra[$score_r[$uniqueref]][$tmpvalue]  	  = $score_r[$tmpvalue];
-			}
-			
-			$rad[0][$score_r[$uniqueref]]["score"]  = 0;
-				
-			while (is_numeric($counter)) {
-				if(@$search_array[$counter] != null) {
-					if(trim(@$search_array[$counter] != "")) {
-						foreach($search_fields AS $tmpkey => $tmpvalue) {
-							$rad[0][$score_r[$uniqueref]]["score"] = @$rad[0][$score_r[$uniqueref]][$tmpvalue[0]] + (substr_count(strtolower($score_r[$tmpvalue[0]]), strtolower($search_array[$counter])) * $tmpvalue[1]);
-						}	
-					} $counter	= $counter + 1;
-				} else { $counter	= "notset"; }
-			}
-			
-			// Add Related IF for later Recognizing
-			$rad[0][$score_r[$uniqueref]][$uniqueref] = $score_r[$uniqueref];
-		}	
+		#####################################################################
+		##### Save Current User Perms   #####################################	
+		$object["user"]->perm = $object["perm"]->getPerm($object["user"]->user_id);
 		
-		if(@$rad[0]) {
-			array_multisort($rad[0], SORT_DESC);
-			$output = array();
-			foreach (@$rad[0] as &$value) {array_push($output, $ra[$value[$uniqueref]]);}	
-			return $output;
-		} else { return array(); }
-	}	
+		// Return Class Object
+		return $object;
+	}
 ?>
