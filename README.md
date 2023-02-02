@@ -33,6 +33,8 @@
 |auth_request($urlextension, $type, $header = false, $body = false, $ext = false, $ovr_domain = false, $ovr_username = false, $ovr_password = false, $proxy = false, $cert = false)| Request with Basic Auth |
 |request($urlextension, $type,$body = false, $header = false, $ext = false, $ovr_domain = false, $proxy = false, $cert = false)|Request without Basic Auth |
 |download($url, $localfile, $header = false, $ext = false, $proxy = false, $cert = false)| Download File from URL to Localfile |
+|auth_upload($filepath, $header = false, $ext = false, $ovr_domain = false, $ovr_username = false, $ovr_password = false, $proxy = false, $cert = false)| Upload File with Authentication|
+|upload($filepath, $type = "GET", $header = false, $ext = false, $ovr_domain = false, $proxy = false, $cert = false)| Upload File without Authentication|
 
 ## x_class_chatbot
 	Class to control a chatbot area.
@@ -55,7 +57,7 @@
 |init($mode = 1)|Init after Config with Settings Mode 1 = sessions Mode 2 = SQL|
 |spawn_admin_area()| Spawns a complete Administration Area to Setup the bot!|
 |send($message)| Send a User Message |
-|get()|Get array with all current Informations|
+|get($asc = false)|Get array with all current Informations [x][name/time/message]|
 
 ## x_class_comment
 	Class to control a commenting area.
@@ -89,8 +91,8 @@
 |mail_ref_token |Outdated Ref User Token to Send in Mails |
 |mail_ref_receiver |Outdated Ref User Mail to Send Mails To |
 |info/user| Array with Current User Informations from Table|
-|fields| Array with Current User Extrafields|
-|perm|Variable to use for external scripts not by this class. Feel free to use.|
+|perm|Variable for Perm Class when set up in config! perm_config($table, $section) |
+|misc|Variable to use for external scripts not by this class. Feel free to use.|
 |user_rank/rank| Users Rank |
 |user_id/id| User ID |
 |user_name/name| User Name |
@@ -106,7 +108,6 @@
 ------------
 |Ajustment Function|Description|
 | --|-- |
-|activate_extrafields($tablename)| Activate Extrafield System with Table Name (will be auto created)|
 |multi_login($bool = false)| Allow Multi Login|
 |login_recover_drop($bool = false)|Deactivate Password Reset Token on Successfull Login|
 |login_field_manual($string)|Choose Custom Login Field which should be unique!|
@@ -125,6 +126,7 @@
 |min_activation($int = 6)|Activate Token Expire Minutes |
 |min_recover($int = 6)|Recover Token Expire Minutes |
 |min_mail_edit($int = 6)| Mail Edit Token Expire Minutes |
+|perm_config($table, $section)| Set up Permissions Inits by Class itself (x_class_perm)|
 |autoblock($int = false)| Activate Auto Block of User after X failed Logins, false for deactivate|
 |sessions_days($int = 7)| Session Valid for X Days|
 |cookies_use($bool = true)| Allow Use of Cookies|
@@ -175,11 +177,8 @@
 ------------
 |User Extrafield Functions|Description|
 | --|-- |
-|add_extrafield($fieldstring)| Add Column to Extrafield Table, NEVER ADD EXTRAFIELD WITH "NOT-NULL" STATEMENT |
-|del_extrafield($fieldname)| Del Column from Extrafield Table |
-|get_extrafields($id)| Get all User ID Extrafields in Array|
-|get_extrafield($id, $fieldname)| Get Single Extrafield Value in Variable|
-|set_extrafield($id, $fieldname, $value)| Set Extrafield of User|
+|user_add_field| Add a Field to Users Database |
+|user_del_field| Del a Field from Users Table (CAUTION) |
 ------------
 |Check Token Functions|Description|
 | --|-- |
@@ -250,6 +249,9 @@
 |set_footer_substitute($substitute)| substitute current footer with array[0]["key"] / array[0]["replace"]|
 |set_header_substitute($substitute)| substitute current header with array[0]["key"] / array[0]["replace"]|
 |get($name, $substitute = false, $noheaders = false)| Get Template as String Variable |
+|header| Current Header Saved Variable|
+|footer| Current Footer Saved Variable|
+|set_free_substitute($substitute, $text)| Subsitute a Free Variable|
 
 ## x_class_mail
 	Class to handle mail Sending.
@@ -288,31 +290,48 @@
 |enableTestMode($val) | Override all Send Mails to another|
 |allow_insecure_ssl_connections($bool) | Allow Insecure TLS Connections|
 |keep_alive($bool = false) | Keep SMTP Connection Alive between Mails|
-|send($to, $toname, $title, $mailContent, $attachments = false, $ishtml = false, $FOOTER = false, $HEADER = false)	|"to" / "attachments" can be array with $a["mail"], $a["name"] / attachments can be array with filepath for upload |
+|send($to, $toname, $title, $mailContent, $attachments = false, $ishtml = false, $FOOTER = false, $HEADER = false)	|"to" / "attachments" can be array with $a["mail"], $a["name"] / attachments can be array with filepath for upload OUTDATED|
+|execute($receiver, $subject, $content, $bcc = false, $cc = false, $addAttachment = false, $settings = false)| New updated Function to send Mail (See Row Below)|
+|execute_templated($x_class_mysql, $template_table, $template_name, $receiver, $subject, $substitute = false, $template_section = "", $content = "", $bcc = false, $cc = false, $addAttachment = false, $settings = false)| Settings Values may be in array as key: <br />replyto  / replyto_name / sender  / sender_name  / header  / footer  / AllowInsecureConnection / isHTML  /  Encoding  / CharSet  /  SMTPDebug / SMTPKeepAlive / Port  /  SMTPSecure / Password / Username / SMTPAuth / Host <br /> <br />$receiver/bcc/css/attachments are handled as follow: <br /> - Can be String with Mail / Filepath <br /> - Can be Array [0] - Mail [1] - Name <br />- Can be Multi Array  [0][0] Mail [0][1] Name<br />This does not send multiple mails, only one mail per function. See Mass Mail Function for Mass Mail Template Send below.<br /><br />In this Function for "templated" you can provide an x_mysql object, template name and template table as optional template section to send a mail directly with an x_class_mail_template object without initizalizing it!<br /><br /> Substitutions will be done on all data but name and Mail of users.<br />array[0]["key"] / array[0]["replace"] <br />|
+|execute_templated_mass($x_class_mysql, $template_table, $template_name, $receiver, $subject, $substitute = false, $template_section = "", $content = "", $bcc = false, $cc = false, $addAttachment = false, $settings = false)| Same function as one row above, but here ONLY the receiver variable has one more level, so multi mail sending with a template is possible to preserve loading time. KEEP IN MIND. Only Receivers are Multi Mail here. BCC / CSS / Attachments will stay the same on all mails! Just Receivers cant see each other, its they are not in the same Level 0 Array
 
 ## x_class_var
 	Class to control constants / setup variables and handling.
-	Mysql / Tables (auto-installed) / No Sessions / No Cookies
+	Mysql / Tables (auto-installed) 
+	/ Sessions for Setup Admin Pages CSRF / No Cookies
+	
+	If Section is false default section of class will be used, for 
+	multi site change that, cos it may interfere...
 |Function|Description|
 | --|-- |
-| __construct($mysql, $tablename, $descriptor = "descriptor", $value = "value") | Constructor with x_class_mysql object / tablename|
+| __construct($mysql, $tablename, $descriptor = "descriptor", $value = "value", $description = "description") | Constructor with x_class_mysql object / tablename|
 | const | If init function executed than the constants are in this array |
 | sections($field, $section_name) | Set Sections for Constants|
-|initAsConstant($strict = true)| Init Vars as Constant|
-|initAsArray($strict = true)| Init Vars as Return Array|
-|init($strict = true)| Init Local Const Variable |
-|addVar($name, $value, $null_section = false)| Add a Variable|
-|setVar($name, $value, $strict = true)| Set or Add Variable|
-|getVar($name, $strict = true)| Get a Variable|
-|delVar($name, $strict = true)| Del a Variable|
-|increaseVar($name, $strict = true)| Increase a Variable|
-|decreaseVar($name, $strict = true)| Decrease a Variable|
-|existVar($name, $strict = true)| True if Var Exists|
+|initAsConstant($section = false)| Init Vars as Constant|
+|initAsArray($section = false)| Init Vars as Return Array|
+|init($section = false)| Init Local Const Variable |
+|addVar($name, $value, $section = false, $description = "")| Add a Variable|
+|setVar($name, $value, $section = false, $addifnotexist = true)| Set or Add Variable|
+|getVarFull($name, $section = false)|  Get a Full Array from Row of Table with This name Found 1st Hit|
+|getVar($name, $section = false)| Get a Variable|
+|delVar($name, $section = false)| Del a Variable|
+|increaseVar($name, $section = false)| Increase a Variable|
+|decreaseVar($name, $section = false)| Decrease a Variable|
+|existVar($name, $section = false)| True if Var Exists|
 |setupVar($name, $value, $descr, $section = false)| Setup Var if not Exists with description |
-
+---------------------
+|Admin Display|Description|
+| --|-- |
+|setup_int($varname, $section = false, $description = true, $addifnotexists = true, $precookie = "")| Display INT Change Field|
+|setup_string($varname, $section = false, $description = true, $addifnotexists = true, $precookie = "")| Display String Change Field|
+|setup_text($varname, $section = false, $description = true, $addifnotexists = true, $precookie = "")| Display Text Change Field|
+|setup_bool($varname, $section = false, $description = true, $addifnotexists = true, $precookie = "")|Display Bool Change Field|
+|setup_radio($varname, $array, $section = false, $description = true, $addifnotexists = true, $precookie = "")| Radio Field to Change a Var to new Value, Set Array [x][0] = name and [x][1] = value|
+|setup_select($varname, $array, $section = false, $description = true, $addifnotexists = true, $precookie = "")| Select (single option) Field to Change a Var to new Value, Set Array [x][0] = name and [x][1] = value|
+|setup_show($varname, $section = false, $description = true)| Only show a variable on the admin page quick|
 ## x_class_mysql
 	The one and only x_class_mysql by bugfish! For MySQL Handling.
-	Mysql / Tables (auto-installed optional) / No Sessions / No Cookies
+	Mysql / Tables (auto-installed optional) / Sessions for qt() / No Cookies
 
 |Function|Description|
 | --|-- |
@@ -321,8 +340,12 @@
 | lasterror	| Last Error |
 | insert_id	 | Last Insert ID |
 | loggingSetup($bool, $table, $section = "")	| Disable (false) or Enable (true) Logging Function with a Table Name to Log and Creates Tables for Logging if not Exists |
+|qt($bool = false, $tablename = "querytimer", $section = "", $preecookie = "", $nodestruct = false)|Activate Query Timer will be saved in table with url. If you copy MySQL Connections with functions here, they will copy the config and also have a count on them, which does not interfere if the mysql class has been created out of another mysql-x class. Never start 2 different connections, if you need another connection, get one from a function (mysql connection to another database, server whatever)|
+|qtc_get_cur()| Get Current Session Value|
+|qtc_get($url = false)| Get UTC Counter for an URL (REQUEST-URI)|
 | stoponexception($bool = false) | Exit Script on Exception Error|
 |stoponerror($bool = false)| Stop on Error in Logerror? |
+ |printerror($bool = false)| Print MySQL Errors to Page if present|
 | status()| Check if Current MySQL Object is true |
 | ping()| Ping the MySQL Server |
 | escape($val)| MySQLI Real Escape String a Value |
@@ -333,9 +356,17 @@
 | exist_row($table, $id, $row = "id")	| Check if a Row with Ref Exits |
 | get_rows($table, $id, $row = "id")	| Get Rows |
 | del_row($table, $id, $row = "id")	| Delete a Row |
+|table_exists($tablename)| Check if Table Exists|
+|table_delete($tablename)| Delete a Table|
+|table_create($tablename)| Create a Table|
+|database_delete($database)| Delete a database|
+|database_create($database)| Create a database|
+|database_object($database)| Get a New Object with another Database connected to|
+|database_use($database)| Use Database with another Name |
+|database_exists($database)| Check if database with name exists |
 |auto_increment($table, $value)| Set Auto Increment Counter of a Table |
 |query($query, $bindarray = false)| Do a query with bind array if needed , Output able to be fetched - If you await multiple values and are using |
-|select($query, $multiple = false, $bindarray = false)| Do a select with bind array if needed|
+|select($query, $multiple = false, $bindarray = false, $fetch_type = MYSQLI_ASSOC| Do a select with bind array if needed|
 |insert($table, $array, $bindarray = false)| Only Accepts One Insert Per Execution|
 |transaction()	|Start a transaction|
 |rollback()	|Rollback a transaction|
@@ -380,7 +411,7 @@
 	Mysql / Tables (auto-installed) / No Sessions / No Cookies
 |Function|Description|
 | --|-- |
-|__construct($mysql, $tablename, $section = "")| Constructor with x_class_mysql object and Tablename, Section for Multisite use if optional!|
+|__construct($mysql, $tablename, $section = "", $ref = false)| Constructor with x_class_mysql object and Tablename, Section for Multisite use if optional! If User Ref is set, perm array of class will be auto intialized on construction!|
 |perm| Array with Current Perms (If Set by function initPerm)|
 |flush($ref) | Flush a Ref from the Perms Table|
 |removePerm($ref, $permname) | Remove Permission Name from Ref|
@@ -388,6 +419,7 @@
 |addPerm($ref, $permname) | Add new Perm to Ref|
 |getPerm($ref)| Get Perms array for Ref|
 |initPerm($ref)| Update Perm Var with Perms from Ref|
+|checkPerm($ref, $array, $or = false)| Check for Multiple Perms OR/AND|
 
 ## x_class_log  
 	Class for Logging in Code
@@ -399,8 +431,7 @@
 |notify($message)| Write Type 3 Notify | 
 |warning($message)| Write Type 2 Warning | 
 |error($message)| Write Type 1 Error  |
-|clear_entry($id) | Del Entrie with ID  |
-|clear_table()| Clear Log Table Completely  |
+|reset($onlysection = false, $section_ovr = false)| Mass Delete Entries from Log Table  |
 
 ## x_class_ipbl
 	Class to control IP Blacklistings
@@ -429,10 +460,118 @@
 |check($code, $ovr_valid_time = false)	|Provide form code to check with current CSRF|
 |check_lkey($code, $ovr_valid_time = false)	|Provide form code to check with last CSRF	|
 
+
+# Function Framework
+	This is a set of functions to use when building a webpage.
+## xfp_library
+|Runtime Variable|Description|
+|--|--|
+|\_XFP_MAIN_SEOVAR\_| Htaccess URL Get Variable |
+| \_XFP_ADMIN_NAME\_ | Administrator Name for Meta |
+| \_XFP_ADMIN_MAIL\_| Administrator Mail for Meta |
+| \_XFP_LANG\_ | Language for Website (en, de) for Meta |
+| \_XFP_META_TITLE_PRE\_ | Before Meta Title |
+| \_XFP_META_TITLE_POST\_ | After Meta Title|
+| \_XFP_META_DESC_PRE\_ | Before Meta Title |
+| \_XFP_META_DESC_POST\_ | After Meta Title|
+| \_XFP_THEME\_ | Current Theme Name|
+| \_XFP_COOKIES\_ | Cookies Prefix |
+| \_XFP_PATH\_ | Path to File Document Root Folder |
+| \_XFP_THEMESPIN\_ | Random Themespin (yes/no) |
+-------------------------
+|Meta Function Name|Description|
+|--|--|
+|xfp_meta_error($object = false, $code = 404, $image = false, $cssarray = false, $setcode = true, $ext = "", $docstart = true)| Print Meta Error|
+|xfp_meta_prep($val, $maxlength = 350)| Prepare Text for Meta |
+| xfp_meta($object, $title, $description, $keywords = false, $robots = false, $cssarray = false, $img = false, $formexpire =  false, $fallbackimage = false, $nocache = true, $canonical = false, $docstart = true, $ext = "", $favicon = false)| Write Meta Content |
+-------------------------
+|Message Function Name|Description|
+|--|--|
+|xfp_etb_ok($text)| Event Box |
+|xfp_etb_warning($text) (warn possitble)|Event Box Function|
+|xfp_etb_error($text)|Event Box Function |
+|xfp_etb_info($text)|Event Box Function |
+-------------------------
+|Build Function Name|Description|
+|--|--|
+|xfp_footer($text) | Build Footer |
+|xfp_entry($var, $x, $level = 0) | Check Location for Case in Index |
+|xfp_headline($title, $titlesec) | Build Headline |
+| xfp_top_button($cssclasses = "") | Build Top Button below Headline |
+|xfp_return_button($cssclasses = "") | Build Top Back Button below Headline|
+| xfp_top_button_print($url, $cssclasses = "") | Print Button on Top|
+|xfp_theme()| Get Current Theme Name|
+-------------------------
+|Navigation Function Name|Description|
+|--|--|
+|xfp_navi_end() |End of Navigation |
+|xfp_navi_start($searchpage = false", $searchparam_sc = "", $navi_image = false)|Start of Navigation |
+|xfp_navi_item($navname, $url, $titlealt, $level = 0, $isonempty = false) | Spawn Navigation Item |
+|xfp_navi_location_seo($param = \_XFP_MAIN_SEOVAR\_) | Get Location |
+-------------------------
+|Website Function Name|Description|
+|--|--|
+|xfp_website_create_table($mysql, $tablename, $query)| Create Table if not Exists|
+|xfp_website_init($title, $meta_ext, $section)| Get Object for use in settings.php of xfp-template|
+
+## x_library
+	This is a set of usefull functions for different purposes.
+|Function Name|Description|
+|--|--|
+| x_firstimagetext($text, $all = false) | Get first Image URL from Text |
+| x_thumbnail($url, $filename, $width = 600, $height = true) | Create Thumbnail from URL to Local JPG |
+| x_connection_check($host, $port, $timeout = 1) | Check a Connection with fsockopeny|
+|x_inCLI()| True if current script runs in CLI|
+| x_rmdir($dir) | Recursive Delete Directory|
+|x_html_redirect($url, $seconds = 0)| HTML Redirect|
+|x_isset($val)|  	equal to !empty|
+|x_imgValid($url)	|Is a valid image URL = True|
+|x_contains_cyrillic($val)	|(True if Cyrillic in String)|
+|x_contains_bad_word($val)	|(Simple Bad word Filter)|
+|x_contains_url($val)	|(Check if String Contains URL)|
+|x_getint($val)	|Get Parameter Get if Int|
+|x_postint($val)	|Same for Post|
+|x_get($val)	|Get GET Param|
+|x_post($val)	|Get Post Param	|
+|x_hsc($string)| htmlspecialchars alias |
+| x_structdata_article($publisher_name, $publisher_logo, $publisher_website, $image, $url, $title, $published_date, $modified_date) |Struct Data for Article |
+|x_structdata_websoftware($publisher_name, $publisher_logo, $publisher_website, $image, $url, $title, $published_date, $modified_date)| Struct Data for Websoftware|
+|x_table_simple($array, $titlelist, $tableid = "x_table_simple", $alignarray = false)	|Print a Simple Table|
+|x_table_complex($array, $titlelist, $formid = "", $alignarray = false)	|Print a Complex Table with Search Function and Ordering|
+|x_table_div($array, $titlelist, $alignarray = false, $percentarray = false, $title = false)	|Build a Table with Divs for Responsive	|
+|x_executionButton($db, $name, $url, $query, $get, $msgerr = "Fehler!", $msgok = "Erfolgreich!", $break = false, $style = "")| Button with Execution |
+|x_button($name, $url, $break = false, $style = "", $reacttourl = true) | Button Without Execution
+|x_eventBoxPrep($text, $type = "x", $precookie = "", $morecss = "", $buttontext = "X", $imgok = false, $imgfail = false, $imgwarn = false, $imgelse = false)	| Prepare EventBox / Only one is Possible with this Function - text = the message   - type = error/warning/ok/[undefined] for different styles   - precookie = prestring for cookie   - morecss = tags direct inside style element of html element  -$buttontext = Text of the button to Close|
+|x_eventBoxShow($precookie = "")	| Include at End or Start of the Page to display Eventbox Content|
+|x_eventBoxSet() |True if Event Box is Prepared, False if not (Set)|
+|x_cookieBanner($precookie = "", $method = 'post', $text = false)	| Cookie Banner Post Load Banner or Get depend on Post option!|
+|x_cookieBanner_Pre($precookie = "", $redirect = true)|Redirect should be in Header, you can post this in Header for Redirect if someone clicks Ok Button, is optional only for post!|
+|x_captcha($preecookie = "", $width = 550, $height = 250, $square_count = 5, $eclipse_count = 5, $color_ar = false, $font = "", $code = "")| Generate Captcha Image |
+|x_captcha_key($preecookie = "")	|Get the last Captured Captcha Key|
+|x_rss_list($urltemp, $defaultcover, $limit = 25)	|Get RSS As List printed with following CSS Classes - x_rss_item x_rss_title x_rss_date x_rss_image|
+|x_rss_array($urltemp)	|GenerateArray from RSS with items - title - link - date - img|
+|x_search($mysql (x_mysql), $table (to search), $search_fields = array(), $get_fields = array(), $search_string, $uniqueref = "id")| Do a Database Search with Metascore!<br />Search Fields Array Key 0 = Fieldname Array Key 1 = Hit score <br /> Get Fields will be available in Output Array <br />|
+
+# Javascript Framework
+	This files can be included in javascript files
+	to make theire function set available! This is meant for 
+	easier and faster javascript development with help of this 
+	functions.
+## xjs_library
+|Function Name|Description|
+|--|--|
+| xjs_get(parameterName) [x_get]	|	Function to get GET Parameters Value in current URL in Adress Bar | 
+|xjs_in_url(parameterName) [x_inUrl] |	Search for A String in Current URL / True if Found / False if Not |
+|xjs_hide_id(id) | Hide Object with ID |
+|xjs_show_id(id) | Show Object with ID |
+|xjs_is_email(email)| Check if a String is a Valid Mail Adr |
+|xjs_genkey(length = 12, charset = "abcdefghijk lmnopqrstuvwxyzABCDEFGHIJ KLMNOPQRSTUVWXYZ0123456789") |Generates and Returns a Key |
+|xjs_popup(var_text, var_entrie = "Close") | Generate a Quick Popup which needs CSS Desiging with id = xjs_popup / xjs_popup_inner / xjs_popup_close |
+
 # CSS Elements
 	CSS Files for different purposes to include in your
 	site if needed!
-## x_library
+## xfpe_library
 	This is a set of different css classes to make working on design
 	fast and efficient.
 	Add _f to end of a class to make it important!
@@ -482,134 +621,27 @@
 ## xfp_library
 	Default CSS Classes for XFP-Template and   
 	Cookiebanner / Eventboxes
-	Not documented here...
-	
-# Fast Deployment Template
-	Template to deploy fast backend or frontend webpages with   
-	SEO URLs. Not much documented.
-## xfp-template
-In this folder is a websites template to build up a website with different functions included in the framework. Its more for internal purpose, more focus in this framework is on the provided classes and functions. This template should have the framework itself included to work properly. But you can kee this section it out of sight, im using it for fast deployment.
+	Mostly the IDs and Classes are used in the xfp-template file, if 
+	you do not use the template, this file is a good place
+	to get some style inspirations for eventboxes or cookiebanners
+	(for example) For details study the file itself. You should not
+	work with this css file if you are not using the xfp_library
+	Functions.
 
-# Function Framework
-	This is a set of functions to use when building a webpage.
-## xfp_library
-### Constants
-|Runtime Variable|Description|
-|--|--|
-|\_XFP_MAIN_SEOVAR\_| Htaccess URL Get Variable |
-| \_XFP_ADMIN_NAME\_ | Administrator Name for Meta |
-| \_XFP_ADMIN_MAIL\_| Administrator Mail for Meta |
-| \_XFP_LANG\_ | Language for Website (en, de) for Meta |
-| \_XFP_META_ERROR_IMAGE\_ | Error Image for Meta Error|
-| \_XFP_META_TITLE_PRE\_ | Before Meta Title |
-| \_XFP_META_TITLE_POST\_ | After Meta Title|
-| \_XFP_META_DESC_PRE\_ | Before Meta Title |
-| \_XFP_META_DESC_POST\_ | After Meta Title|
-| \_XFP_THEME\_ | Current Theme Name|
-| \_XFP_COOKIES\_ | Cookies Prefix |
-| \_XFP_THEMESPIN\_ | Random Themespin (yes/no) |
-|\_XFP_META_FB_IMAGE\_ | Meta Fallback Image |
 
-### Meta Handling
-|Meta Function Name|Description|
-|--|--|
-|xfp_meta_error($code = 404)| Print Meta Error|
-|xfp_meta_prep($val)| Prepare Text for Meta |
-| xfp_meta($mysql, $title, $description, $keywords = false, $robots = false, $cssarray = false, $img = false, $formexpire =  false, $fallbackimage = false, $nocache = true)| Write Meta Content |
-
-### Message Handling
-|Message Function Name|Description|
-|--|--|
-|xfp_msg_box_error($title, $text) | Box with Title |
-|xfp_msg_box_warning($title, $text)| Box with Title |
-|xfp_msg_box_notify($title, $text)| Box with Title |
-|xfp_msg_box($title, $text)| Box with Title |
-|xfp_msg_boxnt_error($text)| Box without Title |
-|xfp_msg_boxnt_warning($text)| Box without Title |
-|xfp_msg_boxnt_notify($text)| Box without Title |
-|xfp_msg_boxnt($text)| Box without Title |
-|xfp_msg_notify_ok($cookie, $text)| Event Box |
-|xfp_msg_notify_warning($cookie, $text)|Event Box |
-|xfp_msg_notify_error($cookie, $text)|Event Box |
-
-### Site Buildup
-|Build Function Name|Description|
-|--|--|
-|xfp_footer($text) | Build Footer |
-|xfp_entry($var, $x, $level = 1) | Check Location for Case in Index |
-|xfp_headline($title, $titlesec) | Build Headline |
-| xfp_top_button() | Build Top Button below Headline |
-|xfp_top_button_sec() | Build Top Button no Margin Top |
-|xfp_return_button() | Build Top Back Button below Headline|
-|xfp_return_button_sec() |Build Top Back Button no Margin Top|
-| xfp_top_button_print($url) | Print Button on Top|
-| xfp_top_button_print_sec($url) | Print Button on Top No Margin Top|
-|xfp_theme()| Get Current Theme Name|
-|Navigation Function Name|Description|
-|--|--|
-|xfp_navi_end() |End of Navigation |
-|xfp_navi_start($searchpage = "/search", $searchparam_sc = "", $navi_image = "", $search = true)|Start of Navigation |
-|xfp_navi_item($navname, $url, $titlealt, $level = 0, $isonempty = false) | Spawn Navigation Item |
-|xfp_navi_location_seo($param = \_XFP_MAIN_SEOVAR\_) | Get Location |
-
-### Website Functions
-|Misc Function Name|Description|
-|--|--|
-|xfp_website_create_table($mysql, $tablename, $query)| Create Table if not Exists|
-|xfp_website_init($title, $meta_ext, $section)| Get Object for use in settings.php of xfp-template|
-
-## x_library
-	This is a set of usefull functions for different purposes.
-|Function Name|Description|
-|--|--|
-| x_thumbnail($url, $filename, $width = 600, $height = true) | Create Thumbnail from URL to Local JPG |
-| x_connection_check($host, $port, $timeout = 1) | Check a Connection with fsockopeny|
-|x_inCLI()| True if current script runs in CLI|
-| x_rmdir($dir) | Recursive Delete Directory|
-|x_html_redirect($url, $seconds = 0)| HTML Redirect|
-|x_isset($val)|  	equal to !empty|
-|x_imgValid($url)	|Is a valid image URL = True|
-|x_contains_cyrillic($val)	|(True if Cyrillic in String)|
-|x_contains_bad_word($val)	|(Simple Bad word Filter)|
-|x_contains_url($val)	|(Check if String Contains URL)|
-|x_getint($val)	|Get Parameter Get if Int|
-|x_postint($val)	|Same for Post|
-|x_get($val)	|Get GET Param|
-|x_post($val)	|Get Post Param	|
-|x_hsc($string)| htmlspecialchars alias |
-| x_structdata_article($publisher_name, $publisher_logo, $publisher_website, $image, $url, $title, $published_date, $modified_date) |Struct Data for Article |
-|x_structdata_websoftware($publisher_name, $publisher_logo, $publisher_website, $image, $url, $title, $published_date, $modified_date)| Struct Data for Websoftware|
-|x_table_simple($array, $titlelist, $tableid = "x_table_simple", $alignarray = false)	|Print a Simple Table|
-|x_table_complex($array, $titlelist, $formid = "", $alignarray = false)	|Print a Complex Table with Search Function and Ordering|
-|x_table_div($array, $titlelist, $alignarray = false, $percentarray = false, $title = false)	|Build a Table with Divs for Responsive	|
-|x_executionButton($db, $name, $url, $query, $get, $msgerr = "Fehler!", $msgok = "Erfolgreich!", $break = false, $style = "")| Button with Execution |
-|x_button($name, $url, $break = false, $style = "", $reacttourl = true) | Button Without Execution
-|x_eventBoxPrep($text, $type = "x", $precookie = "", $morecss = "", $buttontext = "X")	| Prepare EventBox / Only one is Possible with this Function - text = the message   - type = error/warning/ok/[undefined] for different styles   - precookie = prestring for cookie   - morecss = tags direct inside style element of html element  -$buttontext = Text of the button to Close|
-|x_eventBoxShow($precookie = "")	| Include at End or Start of the Page to display Eventbox Content|
-|x_eventBoxSet() |True if Event Box is Prepared, False if not (Set)|
-|x_cookieBanner($precookie = "", $method = 'post', $text = false)	| Cookie Banner Post Load Banner or Get depend on Post option!|
-|x_cookieBanner_Pre($precookie = "", $redirect = true)|Redirect should be in Header, you can post this in Header for Redirect if someone clicks Ok Button, is optional only for post!|
-|x_captcha($preecookie = "", $width = 550, $height = 250, $square_count = 5, $eclipse_count = 5, $color_ar = false, $font = "", $code = "")| Generate Captcha Image |
-|x_captcha_key($preecookie = "")	|Get the last Captured Captcha Key|
-|x_rss_list($urltemp, $defaultcover, $limit = 25)	|Get RSS As List printed with following CSS Classes - x_rss_item x_rss_title x_rss_date x_rss_image|
-|x_rss_array($urltemp)	|GenerateArray from RSS with items - title - link - date - img|
-|x_search($mysql (x_mysql), $table (to search), $search_fields = array(), $get_fields = array(), $search_string, $uniqueref = "id")| Do a Database Search with Metascore!<br />Search Fields Array Key 0 = Fieldname Array Key 1 = Hit score <br /> Get Fields will be available in Output Array <br />|
-
-# Javascript Framework
-	This files can be included in javascript files
-	to make theire function set available! This is meant for 
-	easier and faster javascript development with help of this 
-	functions.
-## xjs_library
-|Function Name|Description|
-|--|--|
-| xjs_get(parameterName) [x_get]	|	Function to get GET Parameters Value in current URL in Adress Bar | 
-|xjs_in_url(parameterName) [x_inUrl] |	Search for A String in Current URL / True if Found / False if Not |
-|xjs_hide_id(id) | Hide Object with ID |
-|xjs_show_id(id) | Show Object with ID |
-|xjs_is_email(email)| Check if a String is a Valid Mail Adr |
-|xjs_genkey(length = 12, charset = "abcdefghijk lmnopqrstuvwxyzABCDEFGHIJ KLMNOPQRSTUVWXYZ0123456789") |Generates and Returns a Key |
-|xjs_popup(var_text, var_entrie = "Close") | Generate a Quick Popup which needs CSS Desiging with id = xjs_popup / xjs_popup_inner / xjs_popup_close |
+# Fast Deployment Site
+## xfp-template 
+	Template to deploy fast 
+	backend or frontend webpages with   
+	SEO URLs. Not much documented. See the Files and use my classes
+	and functions. In this folder is a websites template to build
+	up a website with different functions 
+	included in the framework. Its more for 
+	internal purpose, more focus in this framework 
+	is on the provided classes and functions. This 
+	template should have the framework itself included 
+	to work properly. But you can kee this section it 
+	out of sight, im using it for fast deployment.
 
 # Dolibarr Module
 	A Module wich can be installed on dolibarr to make this framework
