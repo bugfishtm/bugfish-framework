@@ -85,6 +85,22 @@ class x_class_user {
 	private $sessions = "x_users";
 	private $sessions_days = 7; public function sessions_days($int = 7){$this->sessions_days = $int;} // Set Max Session Use Days	
 	
+	## Sessions Setup
+	private $password_filter_min_signs = 6;
+	private $password_filter_min_capital = true;
+	private $password_filter_min_small = true;
+	private $password_filter_min_special = true;
+	private $password_filter_min_number = true; public function pass_filter_setup($signs = 6, $capitals = true, $small = true, $special = true, $number = true) {$this->password_filter_min_signs = $signs;$this->password_filter_min_capital = $capitals;$this->password_filter_min_small = $small;$this->password_filter_min_special = $special;$this->password_filter_min_number = $number;};
+	public function pass_filter_check($passclear) {  
+		$isvalid = true;
+		if(strlen($passclear) < $this->password_filter_min_signs) { $isvalid = false; }
+		if($this->password_filter_min_small) { if(preg_match('/[a-z]/', $string)){ } else { $isvalid = false; } }
+		if($this->password_filter_min_capital) { if(preg_match('/[A-Z]/', $string)){ } else { $isvalid = false; } }
+		if($this->password_filter_min_number) { if(preg_match('/[0-9]/', $string)){ } else { $isvalid = false; } }
+		if($this->password_filter_min_special) { if (preg_match('/[\'^£$%&*()}{@#~?><>,|=_+-]/', $string)){ } else { $isvalid = false; } }
+		return $isvalid;
+	}
+	
 	## Cookie Setup		
 	private $cookies = true;private $cookies_use = false;public function cookies_use($bool = true){$this->cookies_use = $bool;$this->cookies = $this->sessions;} // Allow Cookies Use in General
 	private $cookies_days = 7;public function cookies_days($int = 7){$this->cookies_days = $int;} // Max Cookie Lifetime in Days
@@ -103,7 +119,7 @@ class x_class_user {
 	## Cookies Functions
 	private function cookie_set($id, $key){if($this->cookies_use){setcookie($this->cookies."session_userid", $id, time() + $this->cookies_days * 24 * 60 * 60);setcookie($this->cookies."session_key", $key, time() + $this->cookies_days * 24 * 60 * 60);} return true;}
 	private function cookie_unset(){if($this->cookies_use){unset($_COOKIE[$this->cookies.'session_key']);@setcookie($this->cookies.'session_key', '', time() - 3600, '/');unset($_COOKIE[$this->cookies.'session_userid']);@setcookie($this->cookies.'session_userid', '', time() - 3600, '/');} return true;}	
-	private function cookie_restore(){if($this->cookies_use){if(@is_numeric($_COOKIE[$this->cookies."session_userid"]) OR isset($_COOKIE[$this->cookies."session_key"])){if($this->session_token_valid(@$_COOKIE[$this->sessions."session_userid"], @$_COOKIE[$this->sessions."session_key"])){$_SESSION[$this->sessions."x_users_stay"] = true;$_SESSION[$this->sessions."x_users_key"] = @$_COOKIE[$this->sessions."session_key"];@$_SESSION[$this->sessions."x_users_id"] = @$_COOKIE[$this->sessions."session_userid"];@$_SESSION[$this->sessions."x_users_ip"] = @$_SERVER["REMOTE_ADDR"];$this->session_restore();return true;}else{$this->cookie_unset();return false;}}return false;}return true;}
+	private function cookie_restore(){if($this->cookies_use){if(@is_numeric($_COOKIE[$this->cookies."session_userid"]) OR @isset($_COOKIE[$this->cookies."session_key"])){if(@$this->session_token_valid(@$_COOKIE[$this->sessions."session_userid"], @$_COOKIE[$this->sessions."session_key"])){@$_SESSION[$this->sessions."x_users_stay"] = true;@$_SESSION[$this->sessions."x_users_key"] = @$_COOKIE[$this->sessions."session_key"];@$_SESSION[$this->sessions."x_users_id"] = @$_COOKIE[$this->sessions."session_userid"];@$_SESSION[$this->sessions."x_users_ip"] = @$_SERVER["REMOTE_ADDR"];$this->session_restore();return true;}else{$this->cookie_unset();return false;}}return false;}return true;}
 
 	## Filter Functions
 	private function f_tel($ref) { return $this->mysql->escape(strtolower(trim($ref))); }

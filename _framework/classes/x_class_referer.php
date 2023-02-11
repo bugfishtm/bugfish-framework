@@ -64,7 +64,7 @@
 				$thecurrentreferer = $this->prepareUrl(@$parts[ "host" ]);
 				$bindar[0]["type"]	=	"s";
 				$bindar[0]["value"]	=	$thecurrentreferer;
-				if(@trim($parts[ "host" ]) != $this->refurl AND @trim($parts[ "host" ]) != "www.".$this->refurl AND trim($parts[ "host" ]) != "") {
+				if(@trim(@$parts[ "host" ]) != $this->refurl AND @trim(@$parts[ "host" ]) != "www.".$this->refurl AND @trim(@$parts[ "host" ]) != "") {
 					$query = "SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;";
 					$sresult = @mysqli_fetch_array(@$this->mysql->query($query, $bindar), MYSQLI_BOTH);
 					if (!is_array($sresult)) { 
