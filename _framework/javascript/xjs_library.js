@@ -28,8 +28,7 @@
 /** Create A Dynamic PopUp with X Button to Close **/
 	function xjs_popup(var_text, var_entrie = "Close") { 
 		var_output = "<div id='xjs_popup'><div id='xjs_popup_inner'>"+var_text+"<div id='xjs_popup_close' onclick='document.getElementById(\"xjs_popup\").remove();'>"+var_entrie+"</div></div></div>";
-		document.body.insertAdjacentHTML('beforeend', var_output);
-	}
+		document.body.insertAdjacentHTML('beforeend', var_output);}
 
 /** Generate Passwords **/
 	function xjs_genkey(length = 12, charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") { retVal = ""; for (var i = 0, n = charset.length; i < length; ++i) {retVal += charset.charAt(Math.floor(Math.random() * n));} return retVal;}

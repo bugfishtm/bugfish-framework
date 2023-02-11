@@ -136,6 +136,14 @@
 			$this->setPerm($ref, $newperm);
 			return true;
 		}
+		
+		######################################################
+		// Remove Ref Permissions
+		######################################################	
+		public function removePerms($ref) {
+			$this->setPerm($ref, array());
+			return true;
+		}
 
 		######################################################
 		// Flush a REF From the Perms Table

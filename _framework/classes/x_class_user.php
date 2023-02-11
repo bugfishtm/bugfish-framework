@@ -419,7 +419,7 @@ class x_class_user {
 			$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE user_confirmed = '1' AND user_blocked <> 1 AND id = '".$_SESSION[$this->sessions."x_users_id"]."'");
 			if($cr = $this->mysqli_object_fetch($r)){
 				$this->object_user_set($cr["id"]);
-				$this->mysql->query("UPDATE ".$this->dt_keys." SET refresh_date = CURRENT_TIMESTAMP() WHERE fk_user = '".$cr["id"]."' AND session_key = \"".$this->f_te($cr["x_users_key"])."\" AND is_active = 1 AND key_type = '".$this->key_session."'"); 
+				$this->mysql->query("UPDATE ".$this->dt_keys." SET refresh_date = CURRENT_TIMESTAMP() WHERE fk_user = '".$cr["id"]."' AND session_key = \"".$this->f_te(@$_SESSION[$this->sessions."x_users_key"])."\" AND is_active = 1 AND key_type = '".$this->key_session."'"); 
 				return true;
 			} else {
 				$this->object_user_unset();
@@ -545,7 +545,12 @@ class x_class_user {
 		} if($val === FALSE) { $this->create_table();} }*/
 	}
 	
-	### Table Restore
+	/*	___________     ___.   .__                 
+		\__    ___/____ \_ |__ |  |   ____   ______
+		  |    |  \__  \ | __ \|  | _/ __ \ /  ___/
+		  |    |   / __ \| \_\ \  |_\  ___/ \___ \ 
+		  |____|  (____  /___  /____/\___  >____  >
+					   \/    \/          \/     \/ */
 	private function create_table() {
 			$this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->dt_users."` (
 											  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
@@ -593,7 +598,13 @@ class x_class_user {
 											PRIMARY KEY (`id`)
 											) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");}		*/								
 	}
-
+	
+	/* . ____                 .__        
+		|    |    ____   ____ |__| ____  
+		|    |   /  _ \ / ___\|  |/    \ 
+		|    |__(  <_> ) /_/  >  |   |  \
+		|_______ \____/\___  /|__|___|  /
+				\/    /_____/         \/ */
 	public function login_request($ref, $password, $stayLoggedIn = false) {
 		$this->ref = array();
 		$this->login_request_code = false;
@@ -641,6 +652,12 @@ class x_class_user {
 		} $this->login_request_code = 2; return 2; 
 	}
 
+	/*      _____          __  .__               __  .__               
+		  /  _  \   _____/  |_|__|__  _______ _/  |_|__| ____   ____  
+		 /  /_\  \_/ ___\   __\  \  \/ /\__  \\   __\  |/  _ \ /    \ 
+		/    |    \  \___|  | |  |\   /  / __ \|  | |  (  <_> )   |  \
+		\____|__  /\___  >__| |__| \_/  (____  /__| |__|\____/|___|  /
+				\/     \/                    \/                    \/    */
 	public function activation_request_id($id) {
 		$this->ref = false;
 		$this->mail_ref_user = false;
@@ -715,6 +732,12 @@ class x_class_user {
 		} else { $this->act_request_code = 2; return 2; }
 	}
 
+	/* 	__________                                       
+		\______   \ ____   ____  _______  __ ___________ 
+		 |       _// __ \_/ ___\/  _ \  \/ // __ \_  __ \
+		 |    |   \  ___/\  \__(  <_> )   /\  ___/|  | \/
+		 |____|_  /\___  >\___  >____/ \_/  \___  >__|   
+				\/     \/     \/                \/  	*/
 	public function recover_request_id($id) {
 		$this->ref = false;
 		$this->mail_ref_user = false;
@@ -788,7 +811,13 @@ class x_class_user {
 			$this->rec_request_code = 1; return 1;
 		} else {$this->rec_request_code = 2; return 2;}
 	}	
-
+	
+	/*      _____         .__.__    ___________    .___.__  __   
+		  /     \ _____  |__|  |   \_   _____/  __| _/|__|/  |_ 
+		 /  \ /  \\__  \ |  |  |    |    __)_  / __ | |  \   __\
+		/    Y    \/ __ \|  |  |__  |        \/ /_/ | |  ||  |  
+		\____|__  (____  /__|____/ /_______  /\____ | |__||__|  
+				\/     \/                  \/      \/         */
 	public function mail_edit($id, $newmail, $nointervall = false) {
 		$this->ref = false;
 		$this->mail_ref_user = false;
@@ -863,6 +892,12 @@ class x_class_user {
 		}
 	}
 
+	/*	________  .__               .__                
+		\______ \ |__| ____________ |  | _____  ___.__.
+		 |    |  \|  |/  ___/\____ \|  | \__  \<   |  |
+		 |    `   \  |\___ \ |  |_> >  |__/ __ \\___  |
+		/_______  /__/____  >|   __/|____(____  / ____|
+				\/        \/ |__|             \/\/    	*/
 		// Display Messages
 		public $display_return_code	=	false;
 		public $display_return_type	=	false;

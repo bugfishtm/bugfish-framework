@@ -1,5 +1,5 @@
 ##########################################
-## Bugfish MRoD HTACCESS File
+## Bugfish XFP HTACCESS File
 
 ###########################################
 ## Enable Rewriting
@@ -37,16 +37,6 @@
 	RewriteRule ^(_instance|_temp|_file|_cronjob) - [F,L]
 
 	<Files "settings.php">  
-	  Order Allow,Deny
-	  Deny from all
-	</Files>
-	
-	<Files "functions.php">  
-	  Order Allow,Deny
-	  Deny from all
-	</Files>
-	
-	<Files "init.php">  
 	  Order Allow,Deny
 	  Deny from all
 	</Files>
