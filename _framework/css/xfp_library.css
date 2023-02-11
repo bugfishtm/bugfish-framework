@@ -9,9 +9,9 @@
 /* Main Areas XFP Related
 /* ################################################################################################################################## */
 	body { background: #1b1b1b; color: #ffffff; font-family: xfpfont; font-size: 14px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
-	h1 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 20px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
-	h2 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 18px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
-	h2 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 16px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
+	h1 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 22px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
+	h2 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 20px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; color: #FF0000; }
+	h3 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 18px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
 	
 	div#xfp_footer { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; width: 100%; 
 		position: fixed; bottom: 0px; left: 0px; color: lightgrey; text-align: center; background: #161616; padding-top: 10px; padding-bottom: 10px; 

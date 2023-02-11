@@ -223,7 +223,7 @@
 		function xfp_footer($text) { echo '</div><div id="xfp_footer">'.$text.'</body></html>'; }	
 	
 		// Display Headline
-		function xfp_headline($a, $b) { echo '<div id="xfp_headline"><h1>'.htmlspecialchars($a).'</h1><font id="xfp_headline_extender"><h2 id="xfp_headline_h2">'.htmlspecialchars($b).'</h2></font></div>';}
+		function xfp_headline($a, $b) { echo '<div id="xfp_headline"><h1>'.htmlspecialchars($a).'</h1><font id="xfp_headline_extender"><span id="xfp_headline_h2">'.htmlspecialchars($b).'</span></font></div>';}
 	
 		# Print 1. Button Back to Top
 		function xfp_top_button($cssclasses = "") { echo '<div id="xfp_top_but_1" class="'.$cssclasses.'"><a title="Back" alt="Back"  href="#xfp_content"> ^Top </a></div>'; }

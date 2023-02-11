@@ -90,7 +90,7 @@ class x_class_user {
 	private $password_filter_min_capital = true;
 	private $password_filter_min_small = true;
 	private $password_filter_min_special = true;
-	private $password_filter_min_number = true; public function pass_filter_setup($signs = 6, $capitals = true, $small = true, $special = true, $number = true) {$this->password_filter_min_signs = $signs;$this->password_filter_min_capital = $capitals;$this->password_filter_min_small = $small;$this->password_filter_min_special = $special;$this->password_filter_min_number = $number;};
+	private $password_filter_min_number = true; public function pass_filter_setup($signs = 6, $capitals = true, $small = true, $special = true, $number = true) {$this->password_filter_min_signs = $signs;$this->password_filter_min_capital = $capitals;$this->password_filter_min_small = $small;$this->password_filter_min_special = $special;$this->password_filter_min_number = $number;}
 	public function pass_filter_check($passclear) {  
 		$isvalid = true;
 		if(strlen($passclear) < $this->password_filter_min_signs) { $isvalid = false; }
