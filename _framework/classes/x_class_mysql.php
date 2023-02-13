@@ -349,7 +349,7 @@
 			} catch (Exception $e){ return $this->requestHandler("exception", $table." ".$value." [auto_increment#exception] ", $e); }}
 
 		# Table Operations
-		public function table_exists($tablename){try { $x = $this->mysqlcon->query('SELECT 1 FROM `'.$tablename.'`'); $ret = false; if($x) { $ret = true; $this->free_result($x); }  return $ret;} catch (Exception $e){return false;} } 
+		public function table_exists($tablename){ $x = $this->query("SELECT * FROM '".$tablename."' LIMIT 1;"); if($x) {$x = true;} else {$x = false;}return $x; } 
 		public function table_delete($tablename){return $this->query('DROP TABLE `'.$tablename.'`');}
 		public function table_create($tablename){return $this->query('CREATE TABLE `'.$tablename.'`');}
 

@@ -61,12 +61,6 @@ class modxframework extends DolibarrModules {
 		$this->rights[$r++][5] = '';	
 
 		$this->rights[$r][0] = $this->numero + $r;					// Permission id (must not be already used)
-		$this->rights[$r][1] = 'xFramework Mails';			    // Permission label
-		$this->rights[$r][3] = 0;									// Permission by default for new user (0/1)
-		$this->rights[$r][4] = 'readmail';	
-		$this->rights[$r++][5] = '';		
-
-		$this->rights[$r][0] = $this->numero + $r;					// Permission id (must not be already used)
 		$this->rights[$r][1] = 'xFramework MySQL';			    // Permission label
 		$this->rights[$r][3] = 0;									// Permission by default for new user (0/1)
 		$this->rights[$r][4] = 'readmysql';	
@@ -76,13 +70,7 @@ class modxframework extends DolibarrModules {
 		$this->rights[$r][1] = 'xFramework Messages';			    // Permission label
 		$this->rights[$r][3] = 0;									// Permission by default for new user (0/1)
 		$this->rights[$r][4] = 'readmsg';	
-		$this->rights[$r++][5] = '';		
-
-		$this->rights[$r][0] = $this->numero + $r;					// Permission id (must not be already used)
-		$this->rights[$r][1] = 'xFramework PHP Errors';			    // Permission label
-		$this->rights[$r][3] = 0;									// Permission by default for new user (0/1)
-		$this->rights[$r][4] = 'readphp';	
-		$this->rights[$r++][5] = '';		
+		$this->rights[$r++][5] = '';				
 
 		
 		$this->menu = array();
@@ -130,18 +118,7 @@ class modxframework extends DolibarrModules {
 								 'enabled'=>'$conf->xframework->enabled', 
 								 'perms'=>'$user->rights->xframework->readjs', 
 								 'target'=>'',
-								 'user'=>0); 	 
-        $this->menu[$r++]=array('fk_menu'=>'fk_mainmenu=tools,fk_leftmenu=xframeworkmenu', 
-								 'type'=>'left',
-								 'titre'=>'x-Framework Mail',
-								 'mainmenu'=>'tools',
-								 'leftmenu'=>'xframeworkmenu4',
-								 'url'=>'/custom/xframework/views/mail.php?mainmenu=tools&leftmenu=xframeworkmenu',
-								 'position'=>55+$r,
-								 'enabled'=>'$conf->xframework->enabled', 
-								 'perms'=>'$user->rights->xframework->readmail', 
-								 'target'=>'',
-								 'user'=>0); 	 
+								 'user'=>0); 	  
         $this->menu[$r++]=array('fk_menu'=>'fk_mainmenu=tools,fk_leftmenu=xframeworkmenu', 
 								 'type'=>'left',
 								 'titre'=>'x-Framework MySQL',

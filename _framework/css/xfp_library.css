@@ -197,6 +197,8 @@
 	.xfp_content_box_text_notify { background; blue; }
 	.xfp_content_box_text_notify .content_box_text_title { background: blue; }
 	
+	.xfp_accent { color: #FF0000; }
+	
 	/* ################################################################## */
 	/* Style for x_library cookiebanner function
 	/* ################################################################## */

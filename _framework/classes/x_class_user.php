@@ -101,6 +101,13 @@ class x_class_user {
 		return $isvalid;
 	}
 	
+	## Initial User Creation Function
+	public function createInitial($username, $email, $password, $rank) {
+		if(!$this->usernameExists($username) AND !$this->mailExists($email)) {
+			$this->addUser($username, $email, $password, $rank, true);
+		}
+	}
+	
 	## Cookie Setup		
 	private $cookies = true;private $cookies_use = false;public function cookies_use($bool = true){$this->cookies_use = $bool;$this->cookies = $this->sessions;} // Allow Cookies Use in General
 	private $cookies_days = 7;public function cookies_days($int = 7){$this->cookies_days = $int;} // Max Cookie Lifetime in Days
@@ -127,6 +134,7 @@ class x_class_user {
 	private function f_te($ref) { return $this->mysql->escape(trim($ref)); }
 
 	## User Functions
+	public function getInfo($id){if(is_numeric($id)){$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE id = '".$id."'");if($x=$this->mysqli_object_fetch($r)){return $x;}}return false;}
 	public function get($id){if(is_numeric($id)){$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE id = '".$id."'");if($x=$this->mysqli_object_fetch($r)){return $x;}}return false;}
 	public function exists($id){if(!is_numeric($id)){return false;}$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE id = '".$id."'");if($rrx = $this->mysqli_object_fetch($r)){return true;}return false;}
 	public function usernameExists($ref){$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE LOWER(user_name) = \"".$this->f_tel($ref)."\"");if($rrx=$this->mysqli_object_fetch($r)){return true;}return false;}
@@ -147,6 +155,7 @@ class x_class_user {
 	public function confirm_user($id){if(is_numeric($id)){return $this->mysql->query("UPDATE ".$this->dt_users." SET user_confirmed = 1, last_activation = CURRENT_TIMESTAMP() WHERE id = '".$id."'"); }return false;}
 	public function change_rank($id, $new){if(is_numeric($id) AND is_numeric($new)){return $this->mysql->query("UPDATE ".$this->dt_users." SET user_rank = '".$new."' WHERE id = '".$id."'");}return false;}
 	public function change_pass($id, $new){if(is_numeric($id) AND is_string($new)){return $this->mysql->query("UPDATE ".$this->dt_users." SET user_pass = \"".$this->mysql->escape($this->password_crypt($new))."\" WHERE id = '".$id."'");}return false;}
+	public function changeUserPass($id, $new){if(is_numeric($id) AND is_string($new)){return $this->mysql->query("UPDATE ".$this->dt_users." SET user_pass = \"".$this->mysql->escape($this->password_crypt($new))."\" WHERE id = '".$id."'");}return false;}
 	public function changeUserName($id, $new){if(is_numeric($id)){if(!$this->user_unique){ return $this->mysql->query("UPDATE ".$this->dt_users." SET user_name = '".$this->f_te($new)."' WHERE id = '".$id."'");}else{$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE id = '".$id."'");if($rrx = $this->mysqli_object_fetch($r)){ if($this->f_tl($rrx["user_name"]) == $this->f_tl($new)){return true;}}if($this->usernameExistsActive($new)){return false;}else{return $this->mysql->query("UPDATE ".$this->dt_users." SET user_name = '".$this->f_te($new)."' WHERE id = '".$id."'");}}}return false;}					
 	public function changeUserRef($id, $new){if(is_numeric($id)){$r = $this->mysql->query("SELECT * FROM ".$this->dt_users." WHERE id = '".$id."'");if($rrx = $this->mysqli_object_fetch($r)){ if($this->f_tl($rrx[$this->login_field]) == f_tl($new)){return true;}}if($this->refExistsActive($new)){return false;}else{return $this->mysql->query("UPDATE ".$this->dt_users." SET ".$this->login_field." = '".$this->f_te($new)."' WHERE id = '".$id."'");}}return false;}	
 	public function changeUserShadowMail($id, $new){if(is_numeric($id) AND isset($new)){if (!$this->mail_unique) { return $this->mysql->query("UPDATE ".$this->dt_users." SET user_shadow = '".$this->f_te($new)."' WHERE id = '".$id."'");}else{ if($this->mailExistsActive($new)){return false;}else{return $this->mysql->query("UPDATE ".$this->dt_users." SET user_shadow = '".$this->f_te($new)."' WHERE id = '".$id."'");}}}return false;}

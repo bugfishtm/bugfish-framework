@@ -89,6 +89,7 @@
 ------------
 |Ajustment Function|Description|
 | --|-- |
+|createInitial($username, $mail, $pass, $rank)| Create Initial User if Not Exists|
 |multi_login($bool = false)| Allow Multi Login|
 |login_recover_drop($bool = false)|Deactivate Password Reset Token on Successfull Login|
 |login_field_manual($string)|Choose Custom Login Field which should be unique!|
@@ -158,8 +159,8 @@
 ------------
 |User Extrafield Functions|Description|
 | --|-- |
-|user_add_field| Add a Field to Users Database |
-|user_del_field| Del a Field from Users Table (CAUTION) |
+|user_add_field($addstring)| Add a Field to Users Database |
+|user_del_field($fieldname)| Del a Field from Users Table (CAUTION) |
 ------------
 |Check Token Functions|Description|
 | --|-- |
@@ -690,10 +691,6 @@ Javascript errors caused by users can be viewed in the log under Utilities -> xF
 #### MySQL Error Logging (only for querys used with x_class_mysql)
 
 MySQL error messages that arose when using the x_class_mysql can be viewed in the section under Utilities in the menu item xFramework.
-
-#### Mail Class Logging
-
-If the logging function of the mail class has been switched on, information about incorrect or sent mails can be viewed here.
 
 #### Changelog for different Areas
 The following areas are intercepted: facture bank_account facture_fourn commande propal user societe product orderpicking expedition supplier_proposal commande_fournisseur fichinter [These are the $ref] - Changes to the respective areas can be viewed under Utilities - xFramework - Process logs if you have the respective rights.
