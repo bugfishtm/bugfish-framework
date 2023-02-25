@@ -21,16 +21,6 @@
 								  `section` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Related Section',
 								  PRIMARY KEY (`id`)
 								) ENGINE=InnoDB AUTO_INCREMENT=3905 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");}
-		private function create_table_qtt() {
-			return $this->query("CREATE TABLE IF NOT EXISTS `".$this->qtt."` (
-								  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-								  `url` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Related URL',
-								  `counting` INT(10) NULL DEFAULT '0' COMMENT 'Error Text',
-								  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
-								  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
-								  `section` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Related Section',
-								  PRIMARY KEY (`id`)
-								) ENGINE=InnoDB AUTO_INCREMENT=3905 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");}
 		/*	__   ____ _ _ __ ___ 
 			\ \ / / _` | '__/ __|
 			 \ V / (_| | |  \__ \
@@ -52,34 +42,17 @@
 			  |____|   |__|__|_|  /\___  >__|   
 								\/     \/      */
 			private $qt	  	  = false; 
-			private $qtt	  = false; 
-			private $qts	  = false; 
-			private $qtroot	  = false; 
 			private $qtcookie  = false; 
 			private $qtnodestruct  = false; 
 			private function qtc_raise($raise = 1) { if(isset($_SESSION["x_class_mysql_qt".$this->qtcookie])) { $_SESSION["x_class_mysql_qt".$this->qtcookie] = $_SESSION["x_class_mysql_qt".$this->qtcookie] + 1; } } 
 			public function qtc_get_cur() { return $_SESSION["x_class_mysql_qt".$this->qtcookie];}
 			public function qtc_get($url = false) { if(!$url) { $url =  $this->qtroot; } else { $url = trim($this->escape($url)); } $ar = $this->select("SELECT * FROM ".$this->qtt." WHERE section = '".$this->qts."' AND url = \"".$url."\"", false); if(is_array($ar)) { return $ar["counting"];} else {return 0;}}
 			public function qtc_update() {if($this->qt AND is_object($this->mysqlcon)) {$this->query("UPDATE ".$this->qtt." SET counting = '".$this->escape($_SESSION["x_class_mysql_qt".$this->qtcookie])."' WHERE section = '".$this->qts."' AND url = \"".trim($this->escape(@$_SERVER["REQUEST_URI"]))."\"");}}			
-			public function qt($bool = false, $tablename = "querytimer", $section = "", $preecookie = "") {
+			public function qt($bool = false, $preecookie = "") {
 				 // Set Vars
-				 $this->qtt  = $tablename; 
-				 $this->qts  = $section; 
 				 $this->qtcoookie = $preecookie;
-				 $this->qt  = $bool;
-				 $this->qtroot  = @trim($this->escape(@$_SERVER["REQUEST_URI"])); 
-				 
-				if($bool) {
-					// Reset Counter
-					$_SESSION["x_class_mysql_qt".$this->qtcookie] = 0;
-					// Create Table
-					try {$val = mysqli_query($this->mysqlcon, 'SELECT 1 FROM `'.$this->qtt.'`');
-						 if($val == FALSE) { $this->create_table_qtt();}	
-					} catch (Exception $e){$this->create_table_qtt();} 
-					// Insert Into Table if Not Exists
-					$ar = $this->select("SELECT * FROM ".$this->qtt." WHERE section = '".$this->qts."' AND url = \"".$this->qtroot."\"", false);
-					if(!is_array($ar)) {$this->query("INSERT INTO ".$this->qtt."(url, section) VALUES(\"".$this->qtroot."\", '".$this->qts."')");}
-				}
+				 $this->qt  	= $bool;
+				if($bool) {$_SESSION["x_class_mysql_qt".$this->qtcookie] = 0;}
 			}			
 		/*	.____                        .__                
 			|    |    ____   ____   ____ |__| ____    ____  
@@ -133,17 +106,17 @@
 		/**************** Internal Function to get Class Copy */
 		private function getIntCopy() { return new x_class_mysql($this->auth_host, $this->auth_user, $this->auth_pass, $this->auth_db); }
 		/**************** Next Result */
-		public function next_result() { return mysqli_next_result($this->mysqlcon); }
+		public function next_result() { try { return mysqli_next_result($this->mysqlcon); } catch(Exception $e) { return false; } }
 		/**************** Store Result */
 		public function store_result() { return mysqli_store_result($this->mysqlcon); }
 		/**************** More Results? */
-		public function more_results() { return mysqli_more_results($this->mysqlcon); }
+		public function more_results() { try { return mysqli_more_results($this->mysqlcon); } catch(Exception $e) { return false; } }
 		/**************** Store Result Array */
-		public function fetch_array($result) { return mysqli_fetch_array($result); }
+		public function fetch_array($result) { try {  return mysqli_fetch_array($result); } catch(Exception $e) { return false; } }
 		/**************** Store Result Object */
-		public function fetch_object($result) { return mysqli_fetch_object($result); }
+		public function fetch_object($result) { try { return mysqli_fetch_object($result); } catch(Exception $e) { return false; } }
 		/**************** Free Result */
-		public function free_result($result) { return mysqli_free_result($result); }
+		public function free_result($result) { try {  return mysqli_free_result($result); } catch(Exception $e) { return false; } }
 		/**************** Free All */
 		public function free_all($save = false) { 
 			$results = array();	
@@ -158,14 +131,14 @@
 				
 			} catch (Exception $e){ }	
 			
-				while (mysqli_more_results($this->mysqlcon)) {
-					if (mysqli_next_result($this->mysqlcon)) {
+				while ($this->more_results()) {
+					if ($this->next_result()) {
 						$x = mysqli_store_result($this->mysqlcon);
 						if($save == "object") { $y	= mysqli_fetch_object($x); }
 						if($save == "array") { $y = mysqli_fetch_array($x); }
 						else { $y = false; }				
 						array_push($results, $y); 
-						if(is_object($x)) { mysqli_free_result($x); }
+						if(is_object($x)) { $this->free_result($x); }
 					}
 				}	
 				
@@ -285,9 +258,9 @@
 					$build_first	=	"";$build_second	=	"";$firstrun = true;
 					foreach( $array as $key => $value ){if(!$firstrun) {$build_first .= ", ";}
 					if(!$firstrun) {$build_second .= ", ";}$build_first .= $key;
-					$build_second .= "'".$value."'";
+					$build_second .= "'".$this->escape($value)."'";
 					$firstrun = false;}
-					$nnnnquery	=	'INSERT INTO '.$table.'('.$build_first.') VALUES('.$this->escape($build_second).');';
+					$nnnnquery	=	'INSERT INTO '.$table.'('.$build_first.') VALUES('.$build_second.');';
 					return $this->requestHandler(@mysqli_query($this->mysqlcon, $nnnnquery), $table." [insert]");					
 				}
 			} catch (Exception $e){ return $this->requestHandler("exception", $table." [insert#exception] ", $e); }}
@@ -349,7 +322,7 @@
 			} catch (Exception $e){ return $this->requestHandler("exception", $table." ".$value." [auto_increment#exception] ", $e); }}
 
 		# Table Operations
-		public function table_exists($tablename){ $x = $this->query("SELECT * FROM '".$tablename."' LIMIT 1;"); if($x) {$x = true;} else {$x = false;}return $x; } 
+		public function table_exists($tablename){ try { $x = $this->query("SELECT 1 FROM '".$tablename."' LIMIT 1;"); } catch(Exception $e) { return false; } if($x) {$x = true;} else {$x = false;}return $x; } 
 		public function table_delete($tablename){return $this->query('DROP TABLE `'.$tablename.'`');}
 		public function table_create($tablename){return $this->query('CREATE TABLE `'.$tablename.'`');}
 

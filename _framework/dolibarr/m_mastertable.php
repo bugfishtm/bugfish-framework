@@ -68,7 +68,6 @@ Currenturl is for url forward on sort arrows or search fields
 
 
 */
-*/
 
 	class m_class_mastertable {
 	/////////////////////////////////////////////////

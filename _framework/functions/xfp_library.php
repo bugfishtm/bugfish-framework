@@ -21,8 +21,14 @@
 			if($favicon) { echo '<link rel="icon" href="'.$favicon.'"/>'; }		
 			
 			# Title and Description
-			$description =  _XFP_META_DESC_PRE_.xfp_meta_prep($description)._XFP_META_DESC_POST_;
-			$title       = 	_XFP_META_TITLE_PRE_.xfp_meta_prep($title)._XFP_META_TITLE_POST_;	
+			if(defined("_XFP_META_DESC_PRE_")) {	$description =  _XFP_META_DESC_PRE_.xfp_meta_prep($description); }
+			if(defined("_XFP_META_DESC_POST_")) {	$description =  xfp_meta_prep($description)._XFP_META_DESC_POST_; }
+			if(defined("_XFP_META_DESC_POST_") AND defined("_XFP_META_DESC_PRE_")) {	$description =  _XFP_META_DESC_PRE_.xfp_meta_prep($description)._XFP_META_DESC_POST_; }
+
+			if(defined("_XFP_META_TITLE_PRE_")) {	$title =  _XFP_META_TITLE_PRE_.xfp_meta_prep($title); }
+			if(defined("_XFP_META_TITLE_POST_")) {	$title =  xfp_meta_prep($title)._XFP_META_TITLE_POST_; }
+			if(defined("_XFP_META_TITLE_POST_") AND defined("_XFP_META_TITLE_PRE_")) {	$title =  _XFP_META_TITLE_PRE_.xfp_meta_prep($title)._XFP_META_TITLE_POST_; }
+			
 			echo "<title>".$title."</title>";	
 			echo '<meta property="og:title" content="'.$title.'\" />';
 			echo '<meta name="description" content="'.$description.'" />';
@@ -101,13 +107,24 @@
 			if(is_array($cssarray)) { foreach($cssarray as $key => $val) { echo '<link rel="stylesheet" type="text/css" href="'.$val.'" />';  }
 			} elseif($cssarray != false) { echo '<link rel="stylesheet" type="text/css" href="'.trim($cssarray).'" />';	 }			
 			
+			$title = xfp_meta_prep($code, 1000);
+			$description = xfp_meta_prep($code, 1000);
+			# Title and Description
+			if(defined("_XFP_META_DESC_PRE_")) {	$description =  _XFP_META_DESC_PRE_.xfp_meta_prep($code, 1000); }
+			if(defined("_XFP_META_DESC_POST_")) {	$description =  xfp_meta_prep($code, 1000)._XFP_META_DESC_POST_; }
+			if(defined("_XFP_META_DESC_POST_") AND defined("_XFP_META_DESC_PRE_")) {	$description =  _XFP_META_DESC_PRE_.xfp_meta_prep($code, 1000)._XFP_META_DESC_POST_; }
+
+			if(defined("_XFP_META_TITLE_PRE_")) {	$title =  _XFP_META_TITLE_PRE_.xfp_meta_prep($code, 1000); }
+			if(defined("_XFP_META_TITLE_POST_")) {	$title =  xfp_meta_prep($code, 1000)._XFP_META_TITLE_POST_; }
+			if(defined("_XFP_META_TITLE_POST_") AND defined("_XFP_META_TITLE_PRE_")) {	$title =  _XFP_META_TITLE_PRE_.xfp_meta_prep($code, 1000)._XFP_META_TITLE_POST_; }
+			
 			# Title
-			echo "<title>"._XFP_META_TITLE_PRE_.xfp_meta_prep($code, 1000)._XFP_META_TITLE_POST_."</title>";		
-			echo '<meta property="og:title" content="'._XFP_META_TITLE_PRE_.xfp_meta_prep($code, 1000)._XFP_META_TITLE_POST_.'" />';
+			echo "<title>".$title."</title>";		
+			echo '<meta property="og:title" content="'.$title.'" />';
 			
 			# Description
-			echo '<meta name="description" content="'._XFP_META_DESC_PRE_.xfp_meta_prep($text, 1000)._XFP_META_DESC_POST_.'" />';	
-			echo '<meta property="og:description" content="'._XFP_META_DESC_PRE_.xfp_meta_prep($text, 1000)._XFP_META_DESC_POST_.'" />';	
+			echo '<meta name="description" content="'.$description.'" />';	
+			echo '<meta property="og:description" content="'.$description.'" />';	
 			
 			# Set Image
 			if($image) { echo '<meta property="og:image" content="'.$image.'" />'; }	

@@ -1,3 +1,9 @@
+# License Informations
+	There are different licenses for folders in this repository!  
+	Remind that when using our content!
+
+
+## Dolibarr Module License
                   GNU LESSER GENERAL PUBLIC LICENSE
                        Version 2.1, February 1999
 

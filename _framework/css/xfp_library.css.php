@@ -1,4 +1,9 @@
-/*	__________ ____ ___  ___________________.___  _________ ___ ___  
+<?php
+	if(file_exists("../../settings.php")) { require_once("../../settings.php"); }
+	@header("Content-type: text/css", true);
+	if(!isset($color)) { $color = "red"; }
+?>
+	/*	__________ ____ ___  ___________________.___  _________ ___ ___  
 	\______   \    |   \/  _____/\_   _____/|   |/   _____//   |   \ 
 	 |    |  _/    |   /   \  ___ |    __)  |   |\_____  \/    ~    \
 	 |    |   \    |  /\    \_\  \|     \   |   |/        \    Y    /
@@ -10,7 +15,7 @@
 /* ################################################################################################################################## */
 	body { background: #1b1b1b; color: #ffffff; font-family: xfpfont; font-size: 14px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
 	h1 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 22px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
-	h2 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 20px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; color: #FF0000; }
+	h2 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 20px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; color: <?php echo $color; ?>; }
 	h3 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-size: 18px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; }
 	
 	div#xfp_footer { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px; width: 100%; 
@@ -18,7 +23,7 @@
 		font-size: 12px; vertical-align: middle; 
 		z-index: 90 !important; }
 	
-	a { color: #FF0000; text-decoration: none; font-weight: 700; }
+	a { color: <?php echo $color; ?>; text-decoration: none; font-weight: 700; }
 	a:hover { color: #ffffff; }
 	a:focus, a:active { color: yellow; outline: none; }
 
@@ -39,7 +44,7 @@
 		z-index: 100 !important; }
 
 	div#xfp_headline h1 { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; 
-		word-break: keep-all; font-size: 24px; white-space: pre; color: #FF0000; margin-top: -3px; }
+		word-break: keep-all; font-size: 24px; white-space: pre; color: <?php echo $color; ?>; margin-top: -3px; }
 
 	#xfp_headline_extender { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; 
 		color: #ffffff;font-weight: bold;font-size: 14px;position: fixed; width: 100%; text-align: center; top: 35px; left: 0px;margin-top: -3px; }
@@ -56,13 +61,13 @@
 	#xfp_navwrapper { position: fixed; top: 0; left: 0; width: 250px; background: #161616; height: 100vh; margin: 0; padding: 0; z-index: 0 !important; }
 	.xfp_navlinksec { padding-left: 40px; }
 	.xfp_navlinksecsec { padding-left: 60px; }
-	#xfp_menutopbar { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); position: fixed; top: 0; left: 0; margin: 0; padding: 0; height: 60px; background: #FF0000; width: 60px; z-index: 50; }
-	#xfp_menutopbar img { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: #FF0000; position: fixed !important; width: 55px; display: none; z-index: 150 !important; padding: 5px; }
+	#xfp_menutopbar { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); position: fixed; top: 0; left: 0; margin: 0; padding: 0; height: 60px; background: <?php echo $color; ?>; width: 60px; z-index: 50; }
+	#xfp_menutopbar img { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); background: <?php echo $color; ?>; position: fixed !important; width: 55px; display: none; z-index: 150 !important; padding: 5px; }
 	div#xfp_navigation { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); position: absolute; font-size: 16px; width: 250px; height: auto; background: #161616; z-index: 150 !important; margin: 0; margin-top: 60px; }
 	div#xfp_navigation div.xfp_navlink { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); font-weight: 700; font-size: 22px; color: #fff; min-width: 100% !important; width: 20%; padding-left: 20px; z-index: 50; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
 	div#xfp_navigation .xfp_navlinksec, div#xfp_navigation .xfp_navlinksecsec { color: #fff;  }
-	div#xfp_navigation .xfp_navlinksec:hover, div#xfp_navigation .xfp_navlinksecsec:hover,div#xfp_navigation div.xfp_navlink:hover { color: #000; background: #FF0000; }
-	#xfp_navactive div.xfp_navlink { color: #FF0000 ; background: #040404 !important; }
+	div#xfp_navigation .xfp_navlinksec:hover, div#xfp_navigation .xfp_navlinksecsec:hover,div#xfp_navigation div.xfp_navlink:hover { color: #000; background: <?php echo $color; ?>; }
+	#xfp_navactive div.xfp_navlink { color: <?php echo $color; ?> ; background: #040404 !important; }
 	@media (max-width: 900px), (max-height: 500px) {
 		.xfp_navlinksecsec { display: block !important; }
 		.xfp_navlinksec { display: block !important; }
@@ -72,7 +77,7 @@
 		#xfp_menutopbar img:hover { background: #161616; }
 		#xfp_menutopbar img:hover + div#xfp_navigation, #xfp_menutopbar:hover div#xfp_navigation { display: block !important; }
 	}
-	a#xfp_navactive, a#xfp_navactive div { color: #FF0000 !important;  background: #040404 !important; }
+	a#xfp_navactive, a#xfp_navactive div { color: <?php echo $color; ?> !important;  background: #040404 !important; }
 	a#xfp_navactive1 { color: grey !important; }
 	#xfp_cenetermenueimg:hover { background: white !important; }
 	#xfp_cenetermenueimgexit { margin-left: 150px; position: absolute; top: 0; left: 0; display: none; }
@@ -99,11 +104,11 @@
 		-webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); -webkit-box-sizing: border-box; -moz-box-sizing: border-box; 
 		box-sizing: border-box; border: none; outline: none !important;
 		color: #000000; height: 50px; border-radius: 8px; margin: 0px 0px 0px 0px; font-size: 16px; 
-		background: #FF0000; border: 3px solid #161616; }	
+		background: <?php echo $color; ?>; border: 3px solid #161616; }	
 	
-	input[type="submit"]:hover, button:hover , input[type="button"]:hover { background: #161616; color: #FF0000; border: 3px solid #FF0000; }	
-	input[type="text"]:hover, input[type="password"]:hover, textarea:hover {  background: #161616; border: 3px solid #FF0000; }
-	input[type="text"]:active, input[type="password"]:active, textarea:active, input[type="text"]:focus, input[type="password"]:focus, textarea:focus {  background: #1b1b1b; border: 3px solid #FF0000; }
+	input[type="submit"]:hover, button:hover , input[type="button"]:hover { background: #161616; color: <?php echo $color; ?>; border: 3px solid <?php echo $color; ?>; }	
+	input[type="text"]:hover, input[type="password"]:hover, textarea:hover {  background: #161616; border: 3px solid <?php echo $color; ?>; }
+	input[type="text"]:active, input[type="password"]:active, textarea:active, input[type="text"]:focus, input[type="password"]:focus, textarea:focus {  background: #1b1b1b; border: 3px solid <?php echo $color; ?>; }
 	
 	.xfp_secondary_button { background: #1b1b1b; }
 	
@@ -119,7 +124,7 @@
 /* Restricted Pages
 /* ################################################################################################################################## */
 	.xfp_sec_site_return { -webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); position: fixed;
-		top: 0px; color: #FF0000;left: 0px; background: #242424;
+		top: 0px; color: <?php echo $color; ?>;left: 0px; background: #242424;
 		padding: 10px;padding-bottom: 2px;padding-top: 2px;border-bottom-right-radius: 15px;
 		z-index: 1000;font-size: 18px;
 		border-bottom: 2px solid #1b1b1b ;border-right: 2px solid #1b1b1b ; }
@@ -136,7 +141,7 @@
 	.xfp_link_box_hover div  { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; font-size: 16px; color: white; 
 		background: #161616; border: 3px solid #121212;padding: 15px; margin-bottom: 15px; border-radius: 15px; float: left; 
 		margin-right: 15px;-webkit-transform: translate3d(0, 0, 0); transform: translate3d(0, 0, 0); z-index: 150; }
-	.xfp_link_box_hover div:hover  { border: 3px solid #FF0000; background: #121212; color: #FF0000; }
+	.xfp_link_box_hover div:hover  { border: 3px solid <?php echo $color; ?>; background: #121212; color: <?php echo $color; ?>; }
 	.xfp_link_box_hover h3  { padding: 0 0 0 0; margin: 0 0 0 0; font-size: 16px; }			
 	
 	.xfp_content_box_text, .x_comment_comments_post, .x_comment_vote, .x_comment_form {
@@ -164,8 +169,8 @@
 	}
 	
 	.xfp_content_box_hover:hover {
-		color: #FF0000;
-		border: 2px solid #FF0000;
+		color: <?php echo $color; ?>;
+		border: 2px solid <?php echo $color; ?>;
 	}
 	
 	.xfp_content_box_text_title, .x_comment_comments_title {
@@ -197,7 +202,7 @@
 	.xfp_content_box_text_notify { background; blue; }
 	.xfp_content_box_text_notify .content_box_text_title { background: blue; }
 	
-	.xfp_accent { color: #FF0000; }
+	.xfp_accent { color: <?php echo $color; ?>; }
 	
 	/* ################################################################## */
 	/* Style for x_library cookiebanner function
