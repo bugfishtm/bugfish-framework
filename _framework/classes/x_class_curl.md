@@ -20,11 +20,13 @@
 |json_to_xml($json)|json_to_xml conversion|
 |array_to_xml($array)|array_to_xml conversion|
 |array_to_json($array)|array_to_json conversion|
-|auth_request($urlextension, $type, $header = false, $body = false, $ext = false, $ovr_domain = false, $ovr_username = false, $ovr_password = false, $proxy = false, $cert = false)| Request with Basic Auth |
-|request($urlextension, $type,$body = false, $header = false, $ext = false, $ovr_domain = false, $proxy = false, $cert = false)|Request without Basic Auth |
-|download($url, $localfile, $header = false, $ext = false, $proxy = false, $cert = false)| Download File from URL to Localfile |
-|auth_upload($filepath, $header = false, $ext = false, $ovr_domain = false, $ovr_username = false, $ovr_password = false, $proxy = false, $cert = false)| Upload File with Authentication|
-|upload($filepath, $type = "GET", $header = false, $ext = false, $ovr_domain = false, $proxy = false, $cert = false)| Upload File without Authentication|
+|auth_request($urlextension, $type, $header = false, $body = false, $ext = false)| Request with Basic Auth |
+|request($urlextension, $type,$body = false, $header = false, $ext = false)|Request without Basic Auth |
+|download($url, $localfile, $type = "GET", $header = false, $ext = false)| Download File from URL to Localfile |
+|auth_download($url, $localfile, $type = "GET", $header = false, $ext = false)| Download File from URL to Localfile with Authentication |
+|upload($url, $filepath, $type = "POST", $header = false, $ext = false)| Upload File without Authentication|
+|auth_upload($url, $filepath, $type = "POST", $header = false, $ext = false)| Upload File with Authentication|
+
 
 
 

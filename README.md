@@ -4,6 +4,7 @@
 - website: free website template to be used with framework
 - framework: our framework
 - dolibarr: a dolibarr module to include our framework and additional functions
+- templates: just some templates i used by myself
 
 
 For more informations see inside repository folders!

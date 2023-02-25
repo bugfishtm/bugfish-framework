@@ -580,7 +580,7 @@ class x_class_user {
 			$this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->dt_users."` (
 											  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
 											  `user_name` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'undefined' COMMENT 'Users Name for Login if Ref',
-											  `user_pass` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Users Pass for Login',
+											  `user_pass` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Users Pass for Login',
 											  `user_mail` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Users Mail for Login if Ref',
 											  `user_shadow` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Users Store for Mail if Renew',
 											  `user_rank` tinyint NOT NULL DEFAULT '0' COMMENT 'Users Rank',
