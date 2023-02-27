@@ -18,13 +18,12 @@
 		######################################################
 		private function create_table() {
 			return $this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->table."` (
-												  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-												  `type` tinyint(1) DEFAULT '0' COMMENT '0 - Unspecified 1 - Error 2 - Warning - 3 Notification',
+												  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Identificator',
+												  `type` int(10) DEFAULT '0' COMMENT '0 - Unspecified 1 - Error 2 - Warning - 3 Notification',
 												  `message` text COMMENT 'The Logs Content',
 												  `section` VARCHAR(128) NULL COMMENT 'Related Section',
-												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
-												  PRIMARY KEY (`id`)
-												) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation',
+												  PRIMARY KEY (`id`) );");
 		}
 		
 		######################################################
@@ -32,13 +31,9 @@
 		######################################################
 		function __construct($mysql, $tablename, $section = "") { 
 			$this->mysql  	= $mysql; 
-			$this->table     = $tablename; 
-			$this->section 	 = $section; 
-			
-			try {
-				$val = $this->mysql->query('SELECT 1 FROM `'.$this->table.'`');
-				if($val == FALSE) { $this->create_table();}		
-			} catch (Exception $e){ $this->create_table(); } 
+			$this->table    = $tablename; 
+			$this->section 	= $section; 
+			if(!$this->mysql->table_exists($tablename)) { $this->create_table(); $this->mysql->free_all();  }
 		}
 		
 		######################################################
@@ -46,59 +41,61 @@
 		######################################################
 		public function post($message, $type = 3) { return $this->message($message, $type); } 
 		public function send($message, $type = 3) { return $this->message($message, $type); }
-		public function write($message, $type = 3) { return $this->message($message, $type); }
+		public function write($message, $type = 3) { return $this->message($message, $type); }		
 		public function message($message, $type = 3) {
 			if(is_numeric($type)) { 
-				$bindar[0]["type"]	=	"s";
-				$bindar[0]["value"]	=	$message;
-				return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (\"".$type."\", ?, '".$this->section."')", $bindar);}
+				$b[0]["type"]	=	"s";
+				$b[0]["value"]	=	$message;
+				return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (\"".$type."\", ?, '".$this->section."')", $b);}
 			else { return false; }			
-		}		
-
+		}	
+		
 		######################################################
 		// Send Notification
 		######################################################		
 		public function info($message) { return $this->notify($message); }
 		public function notify($message) {
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$message;
-			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (3, ?, '".$this->section."')", $bindar);
-		}
-
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$message;
+			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (3, ?, '".$this->section."')", $b);
+		}		
+		
 		######################################################
 		// Send Warning
 		######################################################		
 		public function warn($message) { return $this->warning($message); }
 		public function warning($message) {
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$message;
-			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (2, ?, '".$this->section."')", $bindar);
-		}
-
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$message;
+			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (2, ?, '".$this->section."')", $b);
+		}		
+		
 		######################################################
 		// Send Error
 		######################################################
 		public function err($message) { return $this->error($message); }
 		public function failure($message) { return $this->error($message); }
+		public function fail($message) { return $this->error($message); }
 		public function error($message) {
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$message;
-			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (1, ?,'".$this->section."')", $bindar);
-		}
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$message;
+			return $this->mysql->query("INSERT INTO `".$this->table."` (type, message, section) VALUES (1, ?,'".$this->section."')", $b);
+		}		
 
 		######################################################
-		// Send Error
+		// Get Log Table Entries as Array
 		######################################################	
-		public function reset($onlysection = false, $section_ovr = false) { 
-			if(!$onlysection) { 
-				return @$this->mysql->query("DELETE FROM ".$this->table.";"); 
-			} else {
-				if(!$section_ovr) {
-					return @$this->mysql->query("DELETE FROM ".$this->table." WHERE section = '".$this->section."';"); 
-				} else {
-					return @$this->mysql->query("DELETE FROM ".$this->table." WHERE section = '".$section_ovr."';"); 
-				}
-			}
+		public function list_get($limit = 50) { 
+			return @$this->mysql->select("SELECT * FROM ".$this->table." WHERE section = '".$this->section."' ORDER BY id DESC LIMIT ".$this->mysql->escape($limit).";", true); 
+		}	
+
+		######################################################
+		// Delete Entries in Logtable List and reset Auto Increment
+		######################################################	
+		public function list_clear() { 
+			@$this->mysql->query("DELETE FROM ".$this->table." WHERE section = '".$this->section."';"); 
+			@$this->mysql->auto_increment($this->table, 1); 
+			return true;
 		}	
 	}
 ?>

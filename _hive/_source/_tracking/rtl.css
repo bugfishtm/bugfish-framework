@@ -1,0 +1,57 @@
+/* css definitions for rtl languages */
+
+html {
+  direction: rtl;
+}
+
+.large-screen-label {
+  text-align: left;
+}
+
+.small-screen-label {
+  text-align: right;
+}
+
+.td-with-input {
+  text-align: right;
+}
+
+.checkbox-label {
+  float: right;
+}
+
+.day-totals-col1 {
+  text-align: right;
+}
+
+.day-totals-col2 {
+  text-align: left;
+}
+
+.text-cell {
+  text-align: right;
+}
+
+.number-cell {
+  text-align: left;
+}
+
+.time-cell {
+  text-align: left;
+}
+
+.money-value-cell {
+  text-align: left;
+}
+
+.note-header-cell {
+  text-align: left;
+}
+
+.label-cell {
+  text-align: left;
+}
+
+th.invoice-label {
+  text-align: left;
+}

@@ -1,4 +1,11 @@
 <?php
+	/*
+		__________              _____.__       .__     
+		\______   \__ __  _____/ ____\__| _____|  |__  
+		 |    |  _/  |  \/ ___\   __\|  |/  ___/  |  \ 
+		 |    |   \  |  / /_/  >  |  |  |\___ \|   Y  \
+		 |______  /____/\___  /|__|  |__/____  >___|  /
+				\/     /_____/               \/     \/  xFramework Loader File to be included in settings.php! */
 	/*******************************/
 	/* Set Informations to Const   */
 	/*******************************/
@@ -23,7 +30,7 @@
 	/*******************************/	
 	function x_c_mysql()  {
 		$tmp = new x_class_mysql(constant("_MXINTCLASSX2546754_DB_HOST_"._MXINTCLASSX2546754_RANDRAND_), constant("_MXINTCLASSX2546754_DB_USER_"._MXINTCLASSX2546754_RANDRAND_), constant("_MXINTCLASSX2546754_DB_PASS_"._MXINTCLASSX2546754_RANDRAND_), constant("_MXINTCLASSX2546754_DB_NAME_"._MXINTCLASSX2546754_RANDRAND_));
-		if(is_object($tmp->mysqlcon)) { $tmp->loggingSetup(true, "llx_xframework_sqlerrors" , true); return $tmp; } return false;  }	
+		if(is_object($tmp->mysqlcon)) { $tmp->loggingSetup(true, "dolibarr_xframework_sqlerrors" , true); return $tmp; } return false;  }	
 	
 	/*******************************/
 	/* Quick Mail Object		   */
@@ -85,18 +92,18 @@
 	/* Check if Element is Catchable */
 	function d_trigger_react($val) { if(@$val != "facture" AND @$val != "bank_account" AND  @$val != "facture_fourn" AND @$val != "commande" AND  @$val != "propal" AND  @$val != "user" AND  @$val != "product" AND  @$val != "orderpicking" AND  @$val != "expedition" AND  @$val != "societe" AND @$val != "supplier_proposal" AND  @$val != "commande_fournisseur" AND  @$val != "fichinter") { return false;} return true;}
 	/* Insert Something to the logging Table */
-	function d_insertToLogTable($db, $string, $ref, $refid) { $array = array(); $array["ref"] = $db->escape($ref); $array["refid"] = $db->escape($refid); $array["changesstring"] = $db->escape(d_logstring_prepare($string)); $array["username"] = m_login_id($db); return m_db_row_insert($db, "llx_xframework_logging", $array, false);}
+	function d_insertToLogTable($db, $string, $ref, $refid) { $array = array(); $array["ref"] = $db->escape($ref); $array["refid"] = $db->escape($refid); $array["changesstring"] = $db->escape(d_logstring_prepare($string)); $array["username"] = m_login_id($db); return m_db_row_insert($db, "dolibarr_xframework_logging", $array, false);}
 	/* Insert Something to the logging Table */
-	function d_c_addItem($db, $string, $ref, $refid) { $array = array(); $array["ref"]	= $db->escape($ref); $array["refid"] = $db->escape($refid); $array["string"] = $string; return m_db_row_insert($db, "llx_xframework_bigdata", $array, false); }	
+	function d_c_addItem($db, $string, $ref, $refid) { $array = array(); $array["ref"]	= $db->escape($ref); $array["refid"] = $db->escape($refid); $array["string"] = $string; return m_db_row_insert($db, "dolibarr_xframework_bigdata", $array, false); }	
 	/* Get the Checkstring from Bigdata Table */
-	function d_c_getStringFromDebug($db, $tableelement, $id) { $tmpar =	m_db_row($db, "SELECT * FROM " . MAIN_DB_PREFIX . "xframework_bigdata WHERE refid = '" . $id . "' AND ref = '".$tableelement."'"); if ($tmpar) {return trim($tmpar["string"]);} else { return false; }}
+	function d_c_getStringFromDebug($db, $tableelement, $id) { $tmpar =	m_db_row($db, "SELECT * FROM dolibarr_xframework_bigdata WHERE refid = '" . $id . "' AND ref = '".$tableelement."'"); if ($tmpar) {return trim($tmpar["string"]);} else { return false; }}
 	/* Catch Triggers if Activated */
 	function d_trigger_triggers($db, $triggername, $object){
 		$secstring	=	""; $secarray =	@get_object_vars($object); $array = array();
 		foreach( @$secarray as $key => $value ){ if(!is_object($value)) {$secstring .= "".$key.":".$value."; ";} }		
 		$array["triggername"]		=	"Trigger-Name\r\n ".@$db->escape($triggername)." ;\r\n Objekt-Daten: ".@$db->escape($secstring);
 		$array["username"]			=	m_login_id($db);
-		m_db_row_insert($db, "llx_xframework_triggers", $array);}
+		m_db_row_insert($db, "dolibarr_xframework_triggers", $array);}
 	/* Catch A Change if Constant is Activated */
 	function d_trigger_changelog($db, $triggername, $object){
 		if(!d_trigger_react($object->table_element)) {return false;} 	
@@ -111,7 +118,7 @@
 		d_insertToLogTable($db, "New Item Added has been added!", $object->table_element, $id);
 		} else { $stringdiff = d_getStringDiffString($dolistring, $savestring);
 		if(is_string($stringdiff)) { d_insertToLogTable($db, $stringdiff, $object->table_element, $id); 
-		$db->query("DELETE FROM " . MAIN_DB_PREFIX . "xframework_bigdata WHERE ref = '" . $object->table_element ."' AND refid = " . $id);
+		$db->query("DELETE FROM dolibarr_xframework_bigdata WHERE ref = '" . $object->table_element ."' AND refid = " . $id);
 		d_c_addItem($db, $dolistring, $object->table_element, $id);
 		}}}	
 	/**INSTALLATION***********/
@@ -120,7 +127,7 @@
 		$sql_res = $db->query("SELECT * FROM ".MAIN_DB_PREFIX.$type);
 		if ($sql_res) { if ($db->num_rows($sql_res) > 0) {
 			$count = $db->num_rows($sql_res);
-				$db->query("DELETE FROM ".MAIN_DB_PREFIX."xframework_bigdata WHERE ref = '".$type."'");
+				$db->query("DELETE FROM dolibarr_xframework_bigdata WHERE ref = '".$type."'");
 				for ($i=0; $i<$count; $i++) { 
 					$tmpnow = $db->fetch_object($sql_res);
 					$dolistring		=  d_c_getStringFromDolibarr($db, $type, $tmpnow->rowid);
@@ -135,7 +142,7 @@
 			$array = array(); $array["module"] = $db->escape($modulename);
 			$array["username"]		=	m_login_id($db);
 			$array["notification"]	=	$db->escape($message);
-			m_db_row_insert($db, "llx_xframework_messages", $array);} 
+			m_db_row_insert($db, "dolibarr_xframework_messages", $array);} 
 	/*******************************/
 	/* Changes Now				   */
 	/*******************************/

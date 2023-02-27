@@ -1,0 +1,3 @@
+Sitemap: https://bugfish-fs.000webhostapp.com/_sitemap/bugfish-fs.000webhostapp.com.xml
+User-agent: *
+Allow: /

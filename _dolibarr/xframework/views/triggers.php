@@ -1,25 +1,31 @@
 <?php
-	$res=0;
-	if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
-	$tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-	while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-	if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
-	if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
-	if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
-	if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
-	if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
-	if (! $res) die("Include of main fails");
+	/*
+		__________              _____.__       .__     
+		\______   \__ __  _____/ ____\__| _____|  |__  
+		 |    |  _/  |  \/ ___\   __\|  |/  ___/  |  \ 
+		 |    |   \  |  / /_/  >  |  |  |\___ \|   Y  \
+		 |______  /____/\___  /|__|  |__/____  >___|  /
+				\/     /_____/               \/     \/  Doliabrr View File Example */
+	// Include the Configuration File out of Dolibarrs Folder Structure
+	// Maybe check if JS File is not in Default Folder!
+	require_once("../../../main.inc.php");				
 	
+	// Include to get Constants (for above dolibarr_get_const() )
 	require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';	
+	
+	// Check for Permissions
 	if (!$user->admin AND !$user->rights->xframework->readtriggers) { accessforbidden(); }
 	
-	$hookmanager->initHooks(array('debuglist'));
+	// Show the Dolibarr Header
 	llxHeader("","Triggers - xFramework");
 	
-	m_button_sql($db, "Tabelle Leeren", DOL_URL_ROOT."/custom/xframework/views/triggers.php?mainmenu=tools", "DELETE FROM llx_xframework_triggers", "delop");	
+	// Show Button to Clear Table
+	m_button_sql($db, "Tabelle Leeren", DOL_URL_ROOT."/custom/xframework/views/triggers.php?mainmenu=tools", "DELETE FROM dolibarr_xframework_triggers", "delop");
+
+	// Prepare and show Complex Table
 	$titlelist	=	array("User", "Datum", "Inhalt");
 	$alignlist	=	array("left", "center", "left");
-	$array = m_db_rows($db, "SELECT username, createdate, triggername FROM " . MAIN_DB_PREFIX . "xframework_triggers ORDER BY rowid DESC LIMIT 20");
+	$array = m_db_rows($db, "SELECT username, createdate, triggername FROM dolibarr_xframework_triggers ORDER BY rowid DESC LIMIT 20");
 	echo "<h2>Demo of m_table_complex!</h2>";
 	if(!empty($array)) {
 		for($i = 0; $i < count($array); $i++) {
@@ -28,9 +34,12 @@
 				if($key == "triggername") {$array[$i]["triggername"] = htmlspecialchars($array[$i]["triggername"]);}
 			}
 		}
-	}	
-	
+	} echo "<h2>Demo of m_table_complex!</h2>";
 	m_table_complex("Letzte verzeichnete Trigger Aktionen", $array, $titlelist, "table", $alignlist);
+	
+	// Close the Dolibarr Footer
 	llxFooter();
+	
+	// Close the Database Connection
 	$db->close();
 ?>

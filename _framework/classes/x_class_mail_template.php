@@ -4,88 +4,74 @@
 		 |    |  _/    |   /   \  ___ |    __)  |   |\_____  \/    ~    \
 		 |    |   \    |  /\    \_\  \|     \   |   |/        \    Y    /
 		 |______  /______/  \______  /\___  /   |___/_______  /\___|_  / 
-				\/                 \/     \/                \/       \/  Mail Templates Class */	
+				\/                 \/     \/                \/       \/  Mail Templates Class */		
+	// Class for Handling Mail Templates and Substitutions to them, eventually directly send with x_class_mail
 	class x_class_mail_template {
-		######################################################
 		// Class Variables
-		######################################################
 		private $mysql = false; // MySQL for Templates
 		private $table = false; // Table for Templates
-		private $section = false; // Section for Templates
-
-		######################################################
+		private $section = false; // Section for Templates		
+		private $substitute = array(); // Section for Templates	
 		// Table Init
-		######################################################
 		private function create_table() {
 			$this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->table."` (
-								  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
+								  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Identificator',
 								  `name` varchar(256) NOT NULL COMMENT 'Template Identifier',
 								  `content` text DEFAULT NULL COMMENT 'Template Content',
 								  `section` VARCHAR(128) DEFAULT NULL COMMENT 'Related Section',
 								  PRIMARY KEY (`id`),
-								  UNIQUE KEY `Unique` (`name`)
-								) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
-		}
-		
-		######################################################
-		// Construct
-		######################################################
+								  UNIQUE KEY `Unique` (`name`));");}
+		// Construct		
 		function __construct($mysql, $table, $section = "") {
 			$this->mysql = $mysql;
 			$this->table = $table;
-			$this->section = $section;
-			try {
-				$val = $this->mysql->query('SELECT 1 FROM `'.$this->table.'`');
-				if($val == FALSE) { $this->create_table();}		
-			} catch (Exception $e){ $this->create_table();} 
-		} 
-		
-		function get($name, $substitute = false, $noheaders = false) {
+			$this->section = $section;		
+			if(!$this->mysql->table_exists($table)) { $this->create_table(); $this->mysql->free_all(); }} 
+		######################################################################################################################################
+		// Send a Template		
+		public function send($x_class_mail, $mail_subject, $receiver, $template, $cc = false, $bcc = false, $attach = false, $substitute = true, $header = false, $footer = false, $settings = array()) {
+			$content = $this->get($template, $substitute, $header , $footer);
+			return $this->x_class_mail->mail($mail_subject, $content, $receiver, $cc, $bcc, $attach, $settings); }
+		// Get a Template
+		public function get($name, $substitute = true, $header = false, $footer = false) {
 			$output = "";
-			if(!$noheaders) { $output .= $this->header; }
-			if(is_array($substitute)) {
-				$ar = $this->mysql->select("SELECT * FROM ".$this->table." WHERE name = '".$this->mysql->escape($name)."' AND section = '".$this->section."'", false);
-				if(is_array($ar)) {  
-					foreach($substitute as $key => $value) {
-						$ar["content"] = str_replace($value["key"], $value["replace"], $ar["content"]);
-					}				
+			if($header !== false) { $output .= $header; }
+			else {  $output .= $this->header;  }
+			if($footer !== false) { $output .= $footer; }
+			else {  $output .= $this->footer;  }
+			$ar = $this->mysql->select("SELECT * FROM ".$this->table." WHERE name = '".$this->mysql->escape($name)."' AND section = '".$this->section."'", false);
+			if(is_array($ar)) {
 					$output .= $ar["content"];
-				} else { $output .= "Error - Template Not Found (x_class_mail_template)"; }				
-			} else { 
-				$ar = $this->mysql->select("SELECT * FROM ".$this->table." WHERE name = '".$this->mysql->escape($name)."' AND section = '".$this->section."'", false);
-				if(is_array($ar)) { $output .= $ar["content"]; } else { $output .= "Error - Template Not Found (x_class_mail_template)"; }
-			}
-			if(!$noheaders) { $output .= $this->footer; }
-			return $output;
-		}
-
-		function set_free_substitute($substitute, $text) {
-			if(is_array($substitute)) {
-				foreach($substitute as $key => $value) {
-					$text = str_replace($value["key"], $value["replace"], $text);
-				}
+					foreach($substitute as $key => $value) {
+						$output = str_replace($value[0], $value[1], $output);
+					}
+			} else { $output .= "Error generating Mail Contant<br />Please contact technical support!"; }	
+			return $output; }
+		// Reset Substitutions
+		public function reset_substitution() { $this->substitute = array(); }
+		// Add Substitutions
+		public function add_substitution($name, $replace) { 
+			$substitute = $this->substitute; 
+			array_push($substitute, array(array($name, $replace)));
+			$this->substitute = $substitute;}
+		// Do Substitutions on Text
+		public function do_substitute($text) {
+			if(is_array($this->substitute)) {
+				foreach($this->substitute as $key => $value) { $text = str_replace($value[0], $value[1], $text); }
 				return $text;
 			}			
-		}		
-		
-		public $header	=	false;
-		function set_header($header) { $this->header = $header; }
-		function set_header_substitute($substitute) {
-			if(is_array($substitute)) {
-				foreach($substitute as $key => $value) {
-					$this->header = str_replace($value["key"], $value["replace"], $this->header);
-				}
-			}			
-		}
-		public $footer	=	false;
-		function set_footer($footer) { $this->footer = $footer; }
-		function set_footer_substitute($substitute) {
-			if(is_array($substitute)) {
-				foreach($substitute as $key => $value) {
-					$this->footer = str_replace($value["key"], $value["replace"], $this->footer);
-				}
-			}
-		}
+		}	
+		// Set Template / Overwrites set_content
+		public $content	=	"";
+		public function set_template($name, $substitute = true, $header = false, $footer = false) { $this->content = $this->get($name, $substitute, $header, $footer); }
+		// Set Content / Overwrites set_template
+		public $content	=	"";
+		public function set_content($content) { $this->content = $content; }
+		// Set Header
+		public $header	=	"";
+		public function set_header($header) { $this->header = $header; }
+		// Set Footer
+		public $footer	=	"";
+		public function set_footer($footer) { $this->footer = $footer; }
 	} 
-	
 ?>

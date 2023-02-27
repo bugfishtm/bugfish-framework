@@ -1,0 +1,891 @@
+/* Copyright (c) Anuko International Ltd. https://www.anuko.com
+License: See license.txt */
+
+body {
+  margin: 0px;
+  font-size: 10pt;
+  font-family: Verdana, sans-serif;
+  background-color: white;
+}
+
+/* logo on top of pages */
+div.logo {
+  padding: .5rem;
+  text-align: center;
+  background-color: #a6ccf7;
+}
+
+/* top menu bar for large screens */
+div.top-menu-large-screen {
+  background-color: black;
+  display: block;
+}
+
+/* submenu for large screens */
+div.top-submenu-large-screen {
+  background-color: #d9d9d9;
+  display: block;
+}
+
+/* top menu for small screens */
+div.top-menu-small-screen {
+  background-color: black;
+  display: none;
+}
+
+/* top menu items */
+div.top-menu-large-screen a, div.top-menu-small-screen a {
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  margin: .1rem .2rem .1rem .2rem;
+}
+
+/* top menu tables */
+.top-menu-table, .top-submenu-table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* top submenu items */
+.top-submenu-large-screen a {
+  font-size: 1rem;
+  color: #444444;
+  margin: .1rem .2rem .1rem .2rem;
+}
+
+/* page title div */
+div.page-title {
+  font-size: 12pt;
+  font-weight: bold;
+  color: silver;
+  text-align: center;
+  padding: .25rem;
+  border-bottom: 1px solid lightgray;
+  margin-bottom: .2rem;
+}
+
+/* user details div */
+div.user-details {
+  text-align: center;
+  padding: .2rem;
+}
+
+/* page errors div */
+.page-errors {
+  margin-top: .5rem;
+  text-align: center;
+  color: red;
+}
+
+/* page messages div */
+.page-messages {
+  margin-top: .5rem;
+  text-align: center;
+  color: blue;
+}
+
+/* page content div */
+.page-content {
+  text-align: center;
+}
+
+/* vertical separator for controls on forms for both large and small screens */
+.form-control-separator {
+  height: .5rem;
+}
+
+/* vertical separator for controls on small screens */
+.small-screen-form-control-separator {
+  height: .25rem;
+  display: none;
+}
+
+/* "about" text div on login page */
+div#LoginAboutText {
+  padding: 1rem;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* default domain text div for ldap login */
+#ldapDefaultDomain {
+  color: #777777;
+}
+
+/* page hint div to display on top of some pages to clarify things */
+div.page-hint {
+  margin: .5rem;
+}
+
+/* project rate table for user add and user edit pages */
+.project-rate-table {
+  width: 300px;
+  border-collapse: collapse;
+}
+
+.project-rate-table td {
+  padding: .2rem;
+}
+
+/* a table to display controls centered horizontally */
+.centered-table {
+  display: inline-block;
+  margin-top: .5rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* a table to hold things that may not fit into available screen width */
+.x-scrollable-table {
+  display: inline-block;
+  margin-top: .5rem;
+  margin-left: auto;
+  margin-right: auto;
+  border-collapse: collapse;
+}
+
+/* For printing large tables that do not fit into one page, we have to change the display
+property to "block" and also use "break-before: avoid;". This eliminates a page break between
+header and large table on print previews. I could not accomplish this with inline-block
+because break-before is apparently ignored for inline-block elements.
+inline-block above in itself is needed for nice horizontal centering on screen.
+A side effect of this is that printed tables are not horizontally centered. */
+@media print
+{
+  .x-scrollable-table { display: block; break-before: avoid; break-after: auto; }
+  /* Not sure if we need this, keep commented out for now.
+  .x-scrollable-table tr    { page-break-inside:avoid; page-break-after:auto; }
+  .x-scrollable-table td   { page-break-inside:avoid; page-break-after:auto; } */
+}
+
+/* th in x-scrollable-table */
+.x-scrollable-table th {
+  white-space: nowrap;
+  padding: .25rem;
+}
+
+/* td in x-scrollable-table */
+.x-scrollable-table td {
+  padding: .25rem;
+}
+
+/* alternating row background in x-scrollable-table */
+.x-scrollable-table tr:nth-child(even) {background: #ffffff}
+.x-scrollable-table tr:nth-child(odd) {background: #f5f5f5}
+
+/* a text cell in tables */
+.text-cell {
+  text-align: left;
+}
+
+/* time cell in tables */
+.time-cell {
+  text-align: right;
+}
+
+/* number cell in tables */
+.number-cell {
+  text-align: right;
+}
+
+/* date cell in tables */
+.date-cell {
+  white-space: nowrap;
+}
+
+/* money value cell in tables */
+.money-value-cell {
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* yes-no cell in tables */
+.yes-no-cell {
+  text-align: middle;
+}
+
+/* text cell for note header when we display notes on separate rows */
+.note-header-cell {
+  text-align: right;
+}
+
+/* cell containing text labels */
+.label-cell {
+  text-align: right;
+}
+
+/* cell containign a subtotal */
+.subtotal-cell {
+  font-weight: bold;
+}
+
+/* control labels for large screens */
+.large-screen-label {
+  text-align: right;
+  vertical-align: middle;
+  display: table-cell;
+}
+
+/* control labels for small screens */
+.small-screen-label {
+  text-align: left;
+  display: none;
+}
+
+/* list of items displayed in a chart on large screens */
+.large-screen-chart-items-list {
+  display: table-cell;
+}
+
+/* list of items displayed in a chart on small screens */
+.small-screen-chart-items-list {
+  display: none;
+}
+
+/* a div to display a chart in */
+div.chart {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* a table to annotate items from chart picture */
+.chart-items-list-table {
+  border-spacing: .2rem;
+}
+
+/* a div to display a list of records in */
+div.record-list {
+  margin: 1rem;
+}
+
+/* input controls */
+.page-content input {
+  border-radius: 4px;
+  border: 1px solid #c9c9c9;
+  padding: .4rem;
+}
+
+/* input controls with focus on them */
+.page-content input:focus {
+  background-color: yellow;
+  border: 1px solid black;
+  outline: none;
+}
+
+/* a table cell containing input control */
+.td-with-input {
+  text-align: left;
+}
+
+/* a table cell containing input control */
+.td-with-horizontally-centered-input {
+  text-align: middle;
+}
+
+/* a table cell containing a set ov vertically stacked checkboxes */
+.td-with-checkboxes {
+  text-align: left;
+  width: 300px;
+}
+
+/* div containing how to contribute message */
+div.contribute-msg {
+  text-align: center;
+  margin-top: 2rem;
+  padding: .2rem;
+  background-color: #eeeeee;
+}
+
+/* div containing app version and copyright info */
+div.version-and-copyright {
+  text-align: center;
+  padding: .5rem;
+}
+
+/* img in td in centered-table, ex: now icons */
+.centered-table td img {
+  vertical-align: middle;
+}
+
+/* span for what is it icon image */
+span.what-is-it-img {
+  display: none;
+}
+
+/* span for what is it text */
+span.what-is-it-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* span for what format example */
+span.format-example {
+  color: #777777;
+}
+
+/* buttons */
+input[type="submit"], input[type="button"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* input controls */
+input[type="text"], input[type="password"], input[type="file"] {
+  width: 220px;
+}
+
+/* text field input with an associated hint */
+input.text-field-with-hint[type="text"]  {
+  width: 136px;
+}
+
+/* project rate input control */
+input[type="text"].project-rate-field {
+  width: 50px;
+}
+
+/* project rate input control */
+input[type="text"].quota-field {
+  width: 70px;
+}
+
+/* project rate input control */
+input[type="text"].short-text-field {
+  width: 40px;
+}
+
+/* dropdown control */
+.dropdown-field {
+  width: 236px;
+}
+
+/* dropdown control with an associated format example */
+.dropdown-field-with-format-example {
+  width: 136px;
+}
+
+/* dropdown control with an associated button */
+.dropdown-field-with-button {
+  width: 136px;
+}
+
+/* a short dropdown control for small strings */
+.dropdown-field-short {
+  width: 85px;
+}
+
+/* textareas for fields */
+#description, #address, #item_name, #comment, #custom_css, #custom_translation, #content {
+  width: 220px;
+  border-radius: 4px;
+  border: 1px solid #c9c9c9;
+  padding: .4rem;
+}
+
+/* textareas with focus */
+#description:focus, #address:focus, #item_name:focus, #comment:focus, #custom_css:focus, #custom_translation:focus, #content:focus {
+  background-color: yellow;
+  border: 1px solid black;
+  outline: none;
+}
+
+/* textarea for note field */
+#note {
+  width: 100%;
+  margin: 0;
+  height: 4rem;
+  resize: none;
+  border-radius: 4px;
+  border: 1px solid #c9c9c9;
+  padding: .4rem;
+}
+
+/* note field with focus */
+#note:focus {
+  background-color: yellow;
+  border: 1px solid black;
+  outline: none;
+}
+
+/* chart image */
+.chart-image {
+  width: 300px;
+  height: 300px;
+}
+
+/* chart color cell for annotations */
+.chart-color-cell {
+  width: .4rem;
+  height: 1rem;
+}
+
+/* chart description cell for annotations */
+.chart-description-cell {
+  text-align: left;
+  padding-left: .25rem;
+}
+
+/* calendar for small screens */
+.small-screen-calendar {
+  display: none;
+  width: 210px;
+  margin-top: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* calendars with focus */
+.small-screen-calendar a:focus, .large-screen-calendar a:focus {
+  outline: none;
+}
+
+/* calendar for large screens */
+.large-screen-calendar {
+  display: block;
+  width: 210px;
+  padding-left: 1rem;
+  margin-top: 1rem;
+}
+
+/* label for checkboxes */
+.checkbox-label {
+  float: left;
+}
+
+/* div for day totals */
+div.day-totals {
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+/* column 1 for day totals */
+.day-totals-col1 {
+  text-align: left;
+  padding-left: .5rem;
+  padding-right: .5rem;
+}
+
+/* column 2 for day totals */
+.day-totals-col2 {
+  padding-left: .5rem;
+  padding-right: .5rem;
+  text-align: right;
+}
+
+/* not billable items */
+.not-billable {
+  color: red;
+}
+
+/* remaining quota span */
+span.remaining-quota {
+  color: red;
+}
+
+/* remaining quota balance span */
+span.remaining-quota-balance {
+  color: red;
+}
+
+/* over quota span */
+span.over-quota {
+  color: green;
+}
+
+/* over quota balance span */
+span.over-quota-balance {
+  color: green;
+}
+
+/* div for optional navigation, ex: week view */
+div.optional-nav {
+  margin-top: .5rem;
+}
+
+/* div for a set of buttons, ex: save, copy, delete */
+.button-set {
+  margin-top: .5rem;
+  margin-bottom: 1rem;
+}
+
+/* section header div */
+div.section-header {
+  font-weight: bold;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: .5rem;
+  margin-bottom: .5rem;
+}
+
+/* invoice-header div */
+div.invoice-header {
+  font-size: 2rem;
+}
+
+th.invoice-label {
+  text-align: right;
+}
+
+/* div for a group of items in site map */
+div.sitemap-item-group {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* div for a single item in site map */
+div.sitemap-item {
+  margin: .4rem;
+}
+
+div.punch-timer {
+  font-size: 2rem;
+  color: blue;
+}
+
+/* media rules for small screens */
+@media screen and (max-width: 600px) {
+
+  /* hide large screen labels */
+  .large-screen-label {
+    display: none;
+  }
+
+  /* hide large screen chart annotations */
+  .large-screen-chart-items-list {
+    display: none;
+  }
+
+  /* show small screen chart annotations */
+  .small-screen-chart-items-list {
+    display: table-cell;
+  }
+
+  /* show small screen labels */
+  .small-screen-label {
+    display: block;
+  }
+
+  /* show small screen calendar */
+  .small-screen-calendar {
+    display: block;
+  }
+
+  /* hide large screen calendar */
+  .large-screen-calendar {
+    display: none;
+  }
+
+  /* show small screen form control separators */
+  .small-screen-form-control-separator {
+    display: block;
+  }
+
+  /* show what is it icons */
+  span.what-is-it-img {
+    display: inline-block;
+  }
+
+  /* hide what is it text */
+  span.what-is-it-text {
+    display: none;
+  }
+
+  /* hide how to contribute message */
+  div.contribute-msg {
+    display: none;
+  }
+
+  /* hide version and copyright */
+  div.version-and-copyright {
+    display: none;
+  }
+}
+
+/* media rules for menus on small screens */
+@media screen and (max-width: 1170px) {
+
+  /* show small screen menu */
+  div.top-menu-small-screen {
+    display: block;
+  }
+
+  /* hide large screen menu */
+  div.top-menu-large-screen {
+    display: none;
+  }
+
+  /* hide large screen submenu */
+  div.top-submenu-large-screen {
+    display: none;
+  }
+}
+
+/* TODO: below are legacy styles. Review as work on mobile-friendly pages continues. */
+a { color: blue; text-decoration: none; }
+
+a:visited { text-decoration: none; }
+
+a:hover { text-decoration: underline; }
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  font-size: 10pt;
+  font-family: Verdana, sans-serif;
+  background-color: white;
+}
+
+table { font-size: 10pt; font-family: Verdana, sans-serif; }
+
+input, button, select, textarea {
+  font-size: 10pt;
+  font-family: Verdana, sans-serif;
+  margin: 2px 2px 2px 2px;
+  padding: 2px 5px 2px 5px;
+}
+
+input[type=checkbox], label {
+  vertical-align: middle;
+}
+
+.pageTitle {
+  font-size: 12pt;
+  font-weight: bold;
+  color: silver;
+}
+
+.systemMenu {
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  background-color: black;
+  margin: .1rem .2rem .1rem .2rem;
+}
+
+.mainMenu {
+  font-size: 1rem;
+  color: #444444;
+  margin: .1rem .2rem .1rem .2rem;
+}
+
+.onBehalf {
+  font-weight: bold;
+}
+
+/* calendar styles */
+.calendarHeader {
+  padding: 5px;
+  font-size: 8pt;
+  color: #333333;
+  background-color: #d9d9d9;
+}
+
+.calendarDay {
+  padding: 5px;
+  border: 1px solid silver;
+  font-size: 8pt;
+  color: #333333;
+  background-color: #ffffff;
+}
+
+.calendarDaySelected {
+  padding: 5px;
+  border: 1px solid silver;
+  font-size: 8pt;
+  color: #666666;
+  background-color: #a6ccf7;
+}
+
+.calendarDayWeekend {
+  padding: 5px;
+  border: 1px solid silver;
+  font-size: 8pt;
+  color: #666666;
+  background-color: #f7f7f7;
+}
+
+.calendarDayHoliday {
+  padding: 5px;
+  border: 1px solid silver;
+  font-size: 8pt;
+  color: #666666;
+  background-color: #f7f7f7;
+}
+
+.calendarDayHeader {
+  padding: 5px;
+  border: 1px solid white;
+  font-size: 8pt;
+  color: #333333;
+}
+
+.calendarDayHeaderWeekend {
+  padding: 5px;
+  border: 1px solid white;
+  font-size: 8pt;
+  color: #999999;
+}
+
+.calendarLinkWeekend {
+  color: #999999;
+}
+
+.calendarLinkHoliday {
+  color: #999999;
+}
+
+.calendarLinkRecordsExist {
+  color: #ff0000;
+}
+
+.calendarLinkNonCompleteDay {
+  color: #800080;
+}
+/* end of calendar styles */
+
+.tableHeader {
+  font-weight: bold;
+  text-align: left;
+}
+
+.tableHeaderCentered {
+  font-weight: bold;
+  text-align: center;
+}
+
+.rowReportItem {
+  background-color: #f5f5f5;
+}
+
+.rowReportItemAlt {
+  background-color: #ffffff;
+}
+
+.rowReportSubtotal {
+  background-color: #e0e0e0;
+}
+
+.cellLeftAligned {
+  text-align: left;
+  vertical-align: top;
+}
+
+.cellRightAligned {
+  text-align: right;
+  vertical-align: top;
+}
+
+.cellLeftAlignedSubtotal {
+  font-weight: bold;
+  vertical-align: top;
+}
+
+.cellRightAlignedSubtotal {
+  font-weight: bold;
+  text-align: right;
+  vertical-align: top;
+}
+
+.midAligned {
+  text-align: center;
+}
+
+.sectionHeader {
+  font-weight: bold;
+  border-bottom: 1px solid lightgray;
+}
+
+.sectionHeaderNoBorder {
+  font-weight: bold;
+}
+
+.error {
+  color: red;
+}
+
+.info_message {
+  color: #0000c0;
+}
+
+.divider {
+  background-color: #efefef;
+}
+
+div.table-divider { height: 30px; }
+
+.uncompleted-entry {
+  display: inline-block;
+  height: 8px;
+  width: 8px;
+  border: 1px solid rgba(0, 0, 0, .1);
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, .1);
+  margin-right: .25em;
+}
+.uncompleted-entry.active-today { background-color: red; }
+.uncompleted-entry.active { background-color: purple; }
+
+.table_icon {
+  height: 16px;
+  width: 16px;
+}
+
+/* Mobile styles */
+.mobile-table {
+  border: 0;
+  width: 100%;
+  border-spacing: 0;
+}
+
+.mobile-textarea {
+  width: 100%;
+  resize: vertical;
+  height: 5em;
+}
+
+.mobile-input {
+  width: 100%;
+}
+
+.mobile-table-details {
+  width: 100%;
+  table-layout: fixed;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  border-spacing: 1px;
+  border: 0;
+}
+
+.mobile-table-details td {
+  padding: 3px;
+}
+
+
+html, body {
+background-color: #121212 !important;
+color: white !important;
+}
+
+input, select, textarea {
+background-color: #242424 !important;
+color: white !important;
+}
+
+.logo {display: none !important; }
+
+a { color: yellow !important; }
+
+.top-submenu-large-screen { background: #1b1b1b !important; }
+
+.contribute-msg {display: none !important; }
+
+tr, td {  background: #121212 !important;
+}
+
+.th {  background: #1b1b1b !important;
+}

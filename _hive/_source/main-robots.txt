@@ -1,0 +1,3 @@
+Sitemap: https://REPLACE/_sitemap/REPLACE.xml
+User-agent: *
+Allow: /

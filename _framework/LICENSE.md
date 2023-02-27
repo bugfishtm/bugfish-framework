@@ -16,6 +16,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 ## PHPMailer
+	In use at the x_class_mail class!
+	
+Keep that in mind!
+
 	https://github.com/PHPMailer/PHPMailer
 	
                   GNU LESSER GENERAL PUBLIC LICENSE

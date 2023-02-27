@@ -7,9 +7,3 @@
 	are Javascript / Jquery / PHP / Html / CSS
 	Classes should be all injection safe, as requests are
 	made with sql-param-binds. But i do never guarantee! Peace out!
-
-# Issues
-If you encounter issues or have questions using this software, do not hesitate write us at our Forum on www.bugfish.eu !
-
-# License
-	For License Informations see License.md

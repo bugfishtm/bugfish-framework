@@ -1,5 +1,5 @@
--- Exportiere Struktur von Tabelle mitec-2019.llx_xframework_bigdata
-CREATE TABLE IF NOT EXISTS `llx_xframework_bigdata` (
+-- Exportiere Struktur von Tabelle mitec-2019.dolibarr_xframework_bigdata
+CREATE TABLE IF NOT EXISTS `dolibarr_xframework_bigdata` (
   `rowid` int(11) NOT NULL AUTO_INCREMENT,
   `ref` varchar(128) NOT NULL DEFAULT '0',
   `refid` int(12) NOT NULL DEFAULT 0,
@@ -10,8 +10,8 @@ CREATE TABLE IF NOT EXISTS `llx_xframework_bigdata` (
 
 -- Daten Export vom Benutzer nicht ausgewählt
 
--- Exportiere Struktur von Tabelle mitec-2019.llx_xframework_jserrors
-CREATE TABLE IF NOT EXISTS `llx_xframework_jserrors` (
+-- Exportiere Struktur von Tabelle mitec-2019.dolibarr_xframework_jserrors
+CREATE TABLE IF NOT EXISTS `dolibarr_xframework_jserrors` (
   `rowid` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(11) NOT NULL DEFAULT 0,
   `createdate` datetime DEFAULT current_timestamp(),
@@ -22,8 +22,8 @@ CREATE TABLE IF NOT EXISTS `llx_xframework_jserrors` (
 
 -- Daten Export vom Benutzer nicht ausgewählt
 
--- Exportiere Struktur von Tabelle mitec-2019.llx_xframework_logging
-CREATE TABLE IF NOT EXISTS `llx_xframework_logging` (
+-- Exportiere Struktur von Tabelle mitec-2019.dolibarr_xframework_logging
+CREATE TABLE IF NOT EXISTS `dolibarr_xframework_logging` (
   `rowid` int(11) NOT NULL AUTO_INCREMENT,
   `ref` varchar(128) NOT NULL DEFAULT '0',
   `refid` int(12) NOT NULL DEFAULT 0,
@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS `llx_xframework_logging` (
 
 -- Daten Export vom Benutzer nicht ausgewählt
 
--- Exportiere Struktur von Tabelle mitec-2019.llx_xframework_messages
-CREATE TABLE IF NOT EXISTS `llx_xframework_messages` (
+-- Exportiere Struktur von Tabelle mitec-2019.dolibarr_xframework_messages
+CREATE TABLE IF NOT EXISTS `dolibarr_xframework_messages` (
   `rowid` int(11) NOT NULL AUTO_INCREMENT,
   `module` varchar(122) NOT NULL,
   `createdate` datetime DEFAULT current_timestamp(),
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS `llx_xframework_messages` (
 
 -- Daten Export vom Benutzer nicht ausgewählt
 
--- Exportiere Struktur von Tabelle mitec-2019.llx_xframework_triggers
-CREATE TABLE IF NOT EXISTS `llx_xframework_triggers` (
+-- Exportiere Struktur von Tabelle mitec-2019.dolibarr_xframework_triggers
+CREATE TABLE IF NOT EXISTS `dolibarr_xframework_triggers` (
   `rowid` int(11) NOT NULL AUTO_INCREMENT,
   `triggername` text NOT NULL DEFAULT '0',
   `username` varchar(512) NOT NULL DEFAULT '0',

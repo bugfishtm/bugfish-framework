@@ -5,361 +5,170 @@
 		 |    |   \    |  /\    \_\  \|     \   |   |/        \    Y    /
 		 |______  /______/  \______  /\___  /   |___/_______  /\___|_  / 
 				\/                 \/     \/                \/       \/  Variables Control Class */
-	
 	class x_class_var {
-		######################################################
 		// Class Variables
-		######################################################
 		private $variable_msqlcon   = false; 
 		private $variable_table     = false; 
 		private $db_r_c_title   	= "descriptor"; 
 		private $db_r_c_value   	= "value";
 		private $db_r_c_descr   	= "description";
+		private $db_r_c_id   		= "id";
 		private $db_r_c_section 	= "";
-		private $sections_name   		= ""; public function sections($field, $section_name) { $this->sections_name = $section_name; $this->db_r_c_section = $field; }
-		public $const 	=	 array();
-
-		######################################################
+		private $sections_name   	= ""; 
 		// Table Initialization
-		######################################################
 		private function create_table() {
 			return $this->variable_msqlcon->query("CREATE TABLE IF NOT EXISTS `".$this->variable_table."` (
 												  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-												  `descriptor` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Descriptor for Constant',
-												  `value` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Value for Constant',
-												  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci COMMENT 'Description for Constant',
-												  `section` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT '' COMMENT 'Section for Constant',
+												  `descriptor` varchar(256) NOT NULL COMMENT 'Descriptor for Constant',
+												  `value` text COMMENT 'Value for Constant',
+												  `description` text COMMENT 'Description for Constant',
+												  `section` varchar(256) DEFAULT '' COMMENT 'Section for Constant',
 												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
 												  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
 												  PRIMARY KEY (`id`),
-												  UNIQUE KEY `Unique` (`section`,`descriptor`) USING BTREE
-												) ENGINE=InnoDB AUTO_INCREMENT=453 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");	
-		}
-		
-		######################################################
+												  UNIQUE KEY `Unique` (`section`,`descriptor`) USING BTREE);");}
 		// Construct
-		######################################################
-		function __construct($mysql, $tablename, $descriptor = "descriptor", $value = "value", $description = "description") { 
-			if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
+		function __construct($mysql, $tablename, $section = "", $descriptor = "descriptor", $value = "value", $description = "description", $sectionfield = "section", $idfield = "id") { 
+			if (session_status() !== PHP_SESSION_ACTIVE) {@session_start();}
 			$this->variable_msqlcon = $mysql; 
 			$this->db_r_c_title     = $descriptor; 
 			$this->db_r_c_value     = $value; 
 			$this->db_r_c_descr     = $description; 
+			$this->db_r_c_section   = $sectionfield; 
+			$this->db_r_c_id    	= $sectionfield; 
+			$this->sections_name    = $section; 
 			$this->variable_table   = $tablename; 
-
-			try {
-				$val = $this->variable_msqlcon->query('SELECT 1 FROM `'.$this->variable_table.'`');
-				if($val == FALSE) { $this->create_table();}
-			} catch (Exception $e){ $this->create_table();} 
-		}
+			if(!$this->variable_msqlcon->table_exists($variable_table)) { $this->create_table(); $this->variable_msqlcon->free_all();  } }
 			
-		######################################################
+
 		// Init as Constant
-		######################################################
-		public function initAsConstant($section = false){ 
-			if(!$section) { $section = $this->sections_name; }
-			$rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$section."'); ");
-			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	
-				if(!defined($sresult[$this->db_r_c_title])) {
-					define($sresult[$this->db_r_c_title], $sresult["".$this->db_r_c_value.""]);
-				}	
+		public function init_constant(){ 
+			if(!$this->db_r_c_section) { $section = ""; } else { $section = " WHERE ".$this->db_r_c_section." = '".$this->sections_name."' ";}
+			$rres = @$this->variable_msqlcon->select("SELECT * FROM ".$this->variable_table." ".$section, true);
+			if(is_array($rres)) {
+				foreach($rres AS $key => $value) {	
+					if(!defined($value[$this->db_r_c_title])) {
+						define($value[$this->db_r_c_title], $value["".$this->db_r_c_value.""]);
+					}	
+				}
 			} return true;
 		}
-
-		######################################################
-		// Return as Array
-		######################################################
-		public function initAsArray($section = false){ 
-			if(!$section) { $section = $this->sections_name; }
-			$tmparray = array();
-			$rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$section."'); "); 
-			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	
-				if(!defined($sresult[$this->db_r_c_title])) {
-					$tmparray_two = array();
-					$tmparray_two[$this->db_r_c_title] = $this->db_r_c_value;
-					array_push($tmparray, $tmparray_two);
-				}	
-			}
-			return $tmparray;
-		}
 		
-		######################################################
 		// Init as Array
-		######################################################
-		public function init($section = false){ 
-			if(!$section) { $section = $this->sections_name; }
+		public function get_array(){ 
 			$tmparray = array();
-			$rres = @$this->variable_msqlcon->query("SELECT * FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$section."'); ");
-			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	
-				if(!defined($sresult[$this->db_r_c_title])) {
+			if(!$this->db_r_c_section) { $section = ""; } else { $section = " WHERE ".$this->db_r_c_section." = '".$this->sections_name."' ";}
+			$rres = @$this->variable_msqlcon->select("SELECT * FROM ".$this->variable_table." ".$section, true);
+			if(is_array($rres)) {
+				foreach($rres AS $key => $value) {	
 					$tmparray_two = array();
 					$tmparray_two[$this->db_r_c_title] = $this->db_r_c_value;
 					array_push($tmparray, $tmparray_two);
-				}	
-			}
-			$this->const = $tmparray;
-			return $tmparray;
+				}
+			} return $tmparray;
 		}
 		
-		######################################################
 		// Add Variable
-		######################################################
-		public function addVar($name, $value, $section = false, $description = "")  {
-			if(!$section) { $section = $this->sections_name; }
-			if($this->existVar($name, $section)) { return false; }
-			return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.", ".$this->db_r_c_descr.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', \"".$section."\", \"".$this->variable_msqlcon->escape(@$description)."\");");	
-		}
-		
-		######################################################
-		// Set or Add Variable
-		######################################################
-		public function setVar($name, $value, $section = false, $addifnotexist = true) {
-			if(!$section) { $section = $this->sections_name; }
-			if($this->existVar($name, $section)) {
-				return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_value." = '".$this->variable_msqlcon->escape(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\" AND (".$this->db_r_c_section." = '".$section."');"); 			
-			} elseif($addifnotexist) {
-				return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', \"".$section."\");");
-			}
-		}
-		
-		######################################################
+		public function add($name, $value, $description = false, $overwrite = false)  { return $this->set($name, $value, $description, true, $overwrite);}
 		// Setup Variable
-		######################################################
-		public function setupVar($name, $value, $descr, $section = false) {
-			if($this->existVar($name, $section)) { return false; }
-			if(!$section) { $section = $this->sections_name; }
-			return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.", ".$this->db_r_c_descr.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', \"".$section."\", '".$this->variable_msqlcon->escape($descr)."');");			
-			
-		}
-		
-		######################################################
-		// Get a Variable
-		######################################################
-		public function getVar($name, $section = false) { 
-			if(!$this->existVar($name, $section)) { return false; }
-			if(!$section) { $section = $this->sections_name; }
-			$query = "SELECT * FROM `".$this->variable_table."` WHERE (".$this->db_r_c_section." = '".$section."' ) AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"; $sresult = @mysqli_fetch_array(@$this->variable_msqlcon->query($query), MYSQLI_BOTH); return @$sresult["".$this->db_r_c_value.""];	
-		}
-		
-		######################################################
-		// Get a Full Array from Row of Table with This name Found 1st Hit
-		######################################################
-		public function getVarFull($name, $section = false) { 
-			if(!$this->existVar($name, $section)) { return false; }
-			if(!$section) { $section = $this->sections_name; }
-			$query = "SELECT * FROM `".$this->variable_table."` WHERE (".$this->db_r_c_section." = '".$section."' ) AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"; $sresult = @mysqli_fetch_array(@$this->variable_msqlcon->query($query), MYSQLI_BOTH); return @$sresult;	
-		}
-
-		######################################################
+		public function setup($name, $value, $description = false) { return $this->set($name, $value, $description, true, false);}		
 		// Check if Var Exists
-		######################################################
-		public function existVar($name, $section = false) { 
-			if(!$section) { $section = $this->sections_name; }
-			$query = "SELECT * FROM `".$this->variable_table."` WHERE (".$this->db_r_c_section." = '".$section."' ) AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"; if($sresult = @mysqli_fetch_array(@$this->variable_msqlcon->query($query), MYSQLI_BOTH)) { return true;  } else { return false;}
-		}
-		
-		######################################################
+		public function exists($name) { if($this->get($name)) { return true; } else { return false; }}		
+		// Get a Variable
+		public function get($name) { $var = $this->get_full($name); if(isset($var[$this->db_r_c_value])) { return $var[$this->db_r_c_value]; } else { return false; }	}	
 		// Delete a Constant
-		######################################################
-		public function delVar($name, $section = false) {
-			if(!$this->existVar($name, $section)) { return true; }			
-			if(!$section) { $section = $this->sections_name; }
-			return @$this->variable_msqlcon->query("DELETE FROM ".$this->variable_table." WHERE (".$this->db_r_c_section." = '".$section."') AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");					
-		}
+		public function del($name) {
+			if($var = $this->get_full($name)) {
+				return @$this->variable_msqlcon->query("DELETE FROM ".$this->variable_table." WHERE ".$this->db_r_c_id." = ".$var[$this->db_r_c_id]." ;");	
+			} else {return false;}}		
+
+		// Internal Function to Handle Variables
+		public function set($name, $value, $description = false, $add = true, $overwrite = true) {
+			if(!$description OR !$this->db_r_c_descr) { $descriptionedit = false;$descriptioneditv = false; } else { $descriptionedit = " , ".$this->db_r_c_descr." = ? ";$descriptioneditv = $description;}
 		
-		######################################################
-		// Increase a Constant
-		######################################################
-		public function increaseVar($name, $section = false){
-			if(!$this->existVar($name, $section)) { return false; }
-			if(!$section) { $section = $this->sections_name; }
-			return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table."SET ".$this->db_r_c_title." = ".$this->db_r_c_title." + 1 WHERE (".$this->db_r_c_section." = '".$section."') AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");					
-		}
-			
-		######################################################
-		// Decrease a Constant
-		######################################################
-		public function decreaseVar($name, $section = false){
-			if(!$this->existVar($name, $section)) { return false; }
-			if(!$section) { $section = $this->sections_name; }
-			return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table."SET ".$this->db_r_c_title." = ".$this->db_r_c_title." - 1 WHERE (".$this->db_r_c_section." = '".$section."') AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");				
-		}
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$descriptioneditv;		
 		
-		######################################################
-		// Setup Int
-		######################################################
-		public function setup_int($varname, $section = false, $description = true, $addifnotexists = true, $precookie = "") {
-			if(!$section) { $section = $this->sections_name; }
-			if(!isset($_SESSION["x_class_var".$precookie])) {$_SESSION["x_class_var".$precookie] = mt_rand(1000, 9999); }
-			if(isset($_POST["x_class_var_submit_".$varname.$section])) {
-				if($_POST["x_class_var_submit_csrf"] == $_SESSION["x_class_var".$precookie]) {
-					if($this->setVar($varname, $_POST["x_class_var_submit_val"], $section, $addifnotexists)) {
-						$text = "<b><font color='lime'>Changed successfully!</font></b>";
+			if($this->exist($name)) {
+				if($overwrite) {
+					if($description) {
+						if($this->db_r_c_section) {
+							return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_descr." = ?, ".$this->db_r_c_value." = '".$this->variable_msqlcon->escape(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\" AND (".$this->db_r_c_section." = '".$this->sections_name."');", $b); 								
+						} else {
+							return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_descr." = ?, ".$this->db_r_c_value." = '".$this->variable_msqlcon->escape(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";", $b); 		
+						}							
 					} else {
-						$text = "<b><font color='red'>Could not be changed!</font></b>";
+						if($this->db_r_c_section) {
+							return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_value." = '".$this->variable_msqlcon->escape(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\" AND (".$this->db_r_c_section." = '".$this->sections_name."');"); 								
+						} else {
+							return @$this->variable_msqlcon->query("UPDATE ".$this->variable_table." SET ".$this->db_r_c_value." = '".$this->variable_msqlcon->escape(@$value)."' WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";"); 		
+						}					
 					}
-				} else { $text = "<b><font color='red'>CSRF Error Try Again!</font></b>"; }
-			} $current = $this->getVarFull($name, $section); ?>
-			<div class="x_class_var">
-				<form method="post" action="#x_class_var_ancor_<?php echo $varname.$section; ?>">
-					<fieldset id="x_class_var_ancor_<?php echo $varname.$section; ?>">
-						<?php if($description AND is_array($current)) { echo $current[$this->db_r_c_descr]; echo "<br />"; } ?>
-						<?php if(isset($text)) { echo $text; echo "<br />"; } ?>
-						<input type="number" value="<?php if(is_array($current)) { echo $current[$this->db_r_c_value]; } ?>" name="x_class_var_submit_val">
-						<input type="hidden" value="<?php echo $_SESSION["x_class_var".$precookie]; ?>" name="x_class_var_submit_csrf">
-						<input type="submit" value="Change" name="x_class_var_submit_<?php echo $varname.$section; ?>">
-					</fieldset>
-				</form>
-			</div>
-			<?php
-		}
-		
-		######################################################
-		// Setup String
-		######################################################
-		public function setup_string($varname, $section = false, $description = true, $addifnotexists = true, $precookie = "") {
-			if(!$section) { $section = $this->sections_name; }
-			if(!isset($_SESSION["x_class_var".$precookie])) {$_SESSION["x_class_var".$precookie] = mt_rand(1000, 9999); }
-			if(isset($_POST["x_class_var_submit_".$varname.$section])) {
-				if($_POST["x_class_var_submit_csrf"] == $_SESSION["x_class_var".$precookie]) {
-					if($this->setVar($varname, $_POST["x_class_var_submit_val"], $section, $addifnotexists)) {
-						$text = "<b><font color='lime'>Changed successfully!</font></b>";
+				}				
+			} else {
+				if($add) {
+					if($description) {
+						if($this->db_r_c_section) {
+							return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_descr.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', ?);", $b);							
+						} else {
+							return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.", ".$this->db_r_c_descr.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', \"".$this->sections_name."\", ?);", $b);
+						}							
 					} else {
-						$text = "<b><font color='red'>Could not be changed!</font></b>";
+						if($this->db_r_c_section) {
+							return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."');");							
+						} else {
+							return @$this->variable_msqlcon->query("INSERT INTO ".$this->variable_table."(".$this->db_r_c_title.", ".$this->db_r_c_value.", ".$this->db_r_c_section.") VALUES('".$this->variable_msqlcon->escape(@$name)."', '".$this->variable_msqlcon->escape(@$value)."', \"".$this->sections_name."\");");
+						}					
 					}
-				} else { $text = "<b><font color='red'>CSRF Error Try Again!</font></b>"; }
-			} $current = $this->getVarFull($name, $section); ?>
-			<div class="x_class_var">
-				<form method="post" action="#x_class_var_ancor_<?php echo $varname.$section; ?>">
-					<fieldset id="x_class_var_ancor_<?php echo $varname.$section; ?>">
-						<?php if($description AND is_array($current)) { echo $current[$this->db_r_c_descr]; echo "<br />"; } ?>
-						<?php if(isset($text)) { echo $text; echo "<br />"; } ?>
-						<input type="text" value="<?php if(is_array($current)) { echo $current[$this->db_r_c_value]; } ?>" name="x_class_var_submit_val">
-						<input type="hidden" value="<?php echo $_SESSION["x_class_var".$precookie]; ?>" name="x_class_var_submit_csrf">
-						<input type="submit" value="Change" name="x_class_var_submit_<?php echo $varname.$section; ?>">
-					</fieldset>
-				</form>
-			</div>
-			<?php
-		}		
-		
-		######################################################
-		// Setup Text
-		######################################################
-		public function setup_text($varname, $section = false, $description = true, $addifnotexists = true, $precookie = "") {
-			if(!$section) { $section = $this->sections_name; }
-			if(!isset($_SESSION["x_class_var".$precookie])) {$_SESSION["x_class_var".$precookie] = mt_rand(1000, 9999); }
-			if(isset($_POST["x_class_var_submit_".$varname.$section])) {
-				if($_POST["x_class_var_submit_csrf"] == $_SESSION["x_class_var".$precookie]) {
-					if($this->setVar($varname, $_POST["x_class_var_submit_val"], $section, $addifnotexists)) {
-						$text = "<b><font color='lime'>Changed successfully!</font></b>";
-					} else {
-						$text = "<b><font color='red'>Could not be changed!</font></b>";
-					}
-				} else { $text = "<b><font color='red'>CSRF Error Try Again!</font></b>"; }
-			} $current = $this->getVarFull($name, $section); ?>
-			<div class="x_class_var">
-				<form method="post" action="#x_class_var_ancor_<?php echo $varname.$section; ?>">
-					<fieldset id="x_class_var_ancor_<?php echo $varname.$section; ?>">
-						<?php if($description AND is_array($current)) { echo $current[$this->db_r_c_descr]; echo "<br />"; } ?>
-						<?php if(isset($text)) { echo $text; echo "<br />"; } ?>
-						<textarea name="x_class_var_submit_val"><?php if(is_array($current)) { echo $current[$this->db_r_c_value]; } ?></textarea><br />
-						<input type="hidden" value="<?php echo $_SESSION["x_class_var".$precookie]; ?>" name="x_class_var_submit_csrf">
-						<input type="submit" value="Change" name="x_class_var_submit_<?php echo $varname.$section; ?>">
-					</fieldset>
-				</form>
-			</div>
-			<?php
-		}		
-		
-		######################################################
-		// Setup Bool
-		######################################################
-		public function setup_bool($varname, $section = false, $description = true, $addifnotexists = true, $precookie = "") {
-			if(!$section) { $section = $this->sections_name; }
-			if(!isset($_SESSION["x_class_var".$precookie])) {$_SESSION["x_class_var".$precookie] = mt_rand(1000, 9999); }
-			if(isset($_POST["x_class_var_submit_".$varname.$section])) {
-				if($_POST["x_class_var_submit_csrf"] == $_SESSION["x_class_var".$precookie]) {
-					if(isset($_POST["x_class_var_submit_val"])) { $new = 1; } else { $new = 0; }
-					if($this->setVar($varname, $new, $section, $addifnotexists)) {
-						$text = "<b><font color='lime'>Changed successfully!</font></b>";
-					} else {
-						$text = "<b><font color='red'>Could not be changed!</font></b>";
-					}
-				} else { $text = "<b><font color='red'>CSRF Error Try Again!</font></b>"; }
-			} $current = $this->getVarFull($name, $section); ?>
-			<div class="x_class_var">
-				<form method="post" action="#x_class_var_ancor_<?php echo $varname.$section; ?>">
-					<fieldset id="x_class_var_ancor_<?php echo $varname.$section; ?>">
-						<?php if($description AND is_array($current)) { echo $current[$this->db_r_c_descr]; echo "<br />"; } ?>
-						<?php if(isset($text)) { echo $text; echo "<br />"; } ?>
-						<?php if(is_array($current) AND $current[$this->db_r_c_value] == 1) { $xxx = "checked"; } else { $xxx = ""; } ?>
-						<input type="hidden" value="<?php echo $_SESSION["x_class_var".$precookie]; ?>" name="x_class_var_submit_csrf">
-						Activate: <input type="checkbox" name="x_class_var_submit_val" <?php echo $xxx; ?>>
-						<input type="submit" value="Change" name="x_class_var_submit_<?php echo $varname.$section; ?>">
-					</fieldset>
-				</form>
-			</div>
-			<?php			
+				}
+			} return false;
 		}		
 
-		######################################################
-		// Setup Radio Choose
-		######################################################
-		public function setup_radio($varname, $radioarray, $section = false, $description = true, $addifnotexists = true, $precookie = "") {
-			if(!$section) { $section = $this->sections_name; }
-			if(!isset($_SESSION["x_class_var".$precookie])) {$_SESSION["x_class_var".$precookie] = mt_rand(1000, 9999); }
-			if(isset($_POST["x_class_var_submit_".$varname.$section])) {
-				if($_POST["x_class_var_submit_csrf"] == $_SESSION["x_class_var".$precookie]) {
-					if($this->setVar($varname, $_POST["x_class_var_submit_val"], $section, $addifnotexists)) {
-						$text = "<b><font color='lime'>Changed successfully!</font></b>";
-					} else {
-						$text = "<b><font color='red'>Could not be changed!</font></b>";
-					}
-				} else { $text = "<b><font color='red'>CSRF Error Try Again!</font></b>"; }
-			} $current = $this->getVarFull($name, $section); ?>
-			<div class="x_class_var">
-				<form method="post" action="#x_class_var_ancor_<?php echo $varname.$section; ?>">
-					<fieldset id="x_class_var_ancor_<?php echo $varname.$section; ?>">
-						<?php if($description AND is_array($current)) { echo $current[$this->db_r_c_descr]; echo "<br />"; } ?>
-						<?php if(isset($text)) { echo $text; echo "<br />"; } ?>
-						<input type="text" value="<?php if(is_array($current)) { echo $current[$this->db_r_c_value]; } ?>" name="x_class_var_submit_val">
-						<input type="hidden" value="<?php echo $_SESSION["x_class_var".$precookie]; ?>" name="x_class_var_submit_csrf">
-						<?php
-							foreach($radioarray AS $key => $value) {
-								if($current[$this->db_r_c_value] == $value[1]) { $tasd = "checked"; } else { $tasd = ""; }
-								echo '<input type="radio" name="x_class_var_submit_val" value="'.$value[1].'" '.$tasd.'>'.$value[0]."<br />";
-							}
-						?>
-						<input type="submit" value="Change" name="x_class_var_submit_<?php echo $varname.$section; ?>">
-					</fieldset>
-				</form>
-			</div>
-			<?php
-		}
+		// Get a Full Array from Row of Table with This name Found 1st Hit
+		public function get_full($name) { 
+			if($this->exist($name)) {
+				if($this->db_r_c_section) {
+					return @$this->variable_msqlcon->select("SELECT * FROM `".$this->variable_table."` WHERE (".$this->db_r_c_section." = '".$this->sections_name."' ) AND ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");
+				} else {
+					return @$this->variable_msqlcon->select("SELECT * FROM `".$this->variable_table."` WHERE ".$this->db_r_c_title." = \"".$this->variable_msqlcon->escape(@$name)."\";");		
+				}					
+			} else {return false; } return false;		
+		}		
 		
-		######################################################
-		// Setup Radio Choose
-		######################################################
-		public function setup_select($varname, $selectarray, $section = false, $description = true, $addifnotexists = true, $precookie = "") {
-			if(!$section) { $section = $this->sections_name; }
-			if(!isset($_SESSION["x_class_var".$precookie])) {$_SESSION["x_class_var".$precookie] = mt_rand(1000, 9999); }
-			if(isset($_POST["x_class_var_submit_".$varname.$section])) {
-				 if($_POST["x_class_var_submit_csrf"] == $_SESSION["x_class_var".$precookie]) {
-					if($this->setVar($varname, $_POST["x_class_var_submit_val"], $section, $addifnotexists)) {
+		// Setup Int
+		public function form($varname, $type = "int", $selectarray = array()) {
+			if(!isset($_SESSION["x_class_var"])) {$_SESSION["x_class_var"] = mt_rand(1000, 999999); }
+			if(isset($_POST["x_class_var_submit_".$varname."_".$section])) {
+				if($_POST["x_class_var_csrf"] == $_SESSION["x_class_var"]) {
+						$finalvalue = false;
+						switch($type) {
+							case "int": $finalvalue = @$_POST["x_class_var_val"]; break;	
+							case "text": $finalvalue = @$_POST["x_class_var_val"]; break;	
+							case "string": $finalvalue = @$_POST["x_class_var_val"]; break;	
+							case "select": $finalvalue = @$_POST["x_class_var_val"]; break;		
+							case "bool": if(@$_POST["x_class_var_val"]) {$finalvalue =1;} else {$finalvalue =0;}  break;		
+							case "array": $finalvalue = @serialize($_POST["x_class_var_val"]); break;					
+						} 
+					if($this->set($varname, $finalvalue, false, true, true) {
 						$text = "<b><font color='lime'>Changed successfully!</font></b>";
-					} else {
-						$text = "<b><font color='red'>Could not be changed!</font></b>";
-					}
-				} else { $text = "<b><font color='red'>CSRF Error Try Again!</font></b>"; }
-			} $current = $this->getVarFull($name, $section); ?>
+					} else {$text = "<b><font color='red'>Could not be changed!</font></b>";}
+				} else { $text = "<b><font color='red'>CSRF Error Try Again!</font></b>"; }	
+			} $current = $this->get_full($name); ?>
 			<div class="x_class_var">
 				<form method="post" action="#x_class_var_ancor_<?php echo $varname.$section; ?>">
 					<fieldset id="x_class_var_ancor_<?php echo $varname.$section; ?>">
 						<?php if($description AND is_array($current)) { echo $current[$this->db_r_c_descr]; echo "<br />"; } ?>
 						<?php if(isset($text)) { echo $text; echo "<br />"; } ?>
-						<input type="text" value="<?php if(is_array($current)) { echo $current[$this->db_r_c_value]; } ?>" name="x_class_var_submit_val">
-						<input type="hidden" value="<?php echo $_SESSION["x_class_var".$precookie]; ?>" name="x_class_var_submit_csrf">
+						<!-- Int -->
+						<?php if($type == "int") { ?> <input type="number" value="<?php if(is_array($current)) { echo $current[$this->db_r_c_value]; } ?>" name="x_class_var_submit_val"><?php } ?>
+						<!-- String -->
+						<?php if($type == "string") { ?> <input type="text" value="<?php if(is_array($current)) { echo $current[$this->db_r_c_value]; } ?>" name="x_class_var_submit_val"><?php } ?>
+						<!-- Text -->
+						<?php if($type == "text") { ?> <textarea name="x_class_var_submit_val"><?php if(is_array($current)) { echo $current[$this->db_r_c_value]; } ?></textarea><br /><?php } ?>
+						<!-- Bool -->
+						<?php if($type == "bool" AND is_array($current) AND $current[$this->db_r_c_value] == 1) { $xxx = "checked"; } else { $xxx = ""; } ?>
+						Activate: <input type="checkbox" name="x_class_var_submit_val" <?php echo $xxx; ?>>						
+						<!-- Select -->
 						<select name="x_class_var_submit_val">
 						<?php $output = "";
 							foreach($selectarray AS $key => $value) {
@@ -369,29 +178,12 @@
 							echo $output;
 						?>
 						</select>
+						<!-- Misc Form -->
+						<input type="hidden" value="<?php echo $_SESSION["x_class_var"]; ?>" name="x_class_var_csrf">
 						<input type="submit" value="Change" name="x_class_var_submit_<?php echo $varname.$section; ?>">
 					</fieldset>
 				</form>
 			</div>
-			<?php
-		}
-		
-		######################################################
-		// Show Variable only!
-		######################################################
-		public function setup_show($varname, $section = false, $description = true) {
-			if(!$section) { $section = $this->sections_name; }
-			if(!$this->existVar($varname, $section)) { $text = "<b><font color='red'>Variable not Found in System Table!</font></b>"; }
-			else { $current = $this->getVarFull($name, $section); }  ?>
-			
-			<div class="x_class_var">
-				<fieldset id="x_class_var_ancor_<?php echo $varname.$section; ?>">
-					<?php if($description AND is_array($current)) { echo $current[$this->db_r_c_descr]; echo "<br />"; } ?>
-					<?php if(isset($text)) { echo $text; echo "<br />"; } ?>
-					Value is: <?php if(isset($current[$this->db_r_c_value])) { echo $current[$this->db_r_c_value]; echo "<br />"; } ?>
-				</fieldset>
-			</div>
-			<?php
-		}
+		<?php }	
 	}
 ?>

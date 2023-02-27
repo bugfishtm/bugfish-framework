@@ -5,30 +5,28 @@
 		 |    |   \    |  /\    \_\  \|     \   |   |/        \    Y    /
 		 |______  /______/  \______  /\___  /   |___/_______  /\___|_  / 
 				\/                 \/     \/                \/       \/  Referers Control Class */
-
 	class x_class_referer {
 		######################################################
 		// Class Variables
 		######################################################
 		private $mysql		=  false;
-		private $refurl			=  false;
-		private $mysqltable		=  false;
-		private $enabled 		=  true; public function enabled($bool = true) {$this->enabled = $bool;} 
-		private $urlpath 		=  false;
+		private $refurl		=  false;
+		private $mysqltable	=  false;
+		private $enabled 	=  true; public function enabled($bool = true) {$this->enabled = $bool;} 
+		private $urlpath 	=  false;
 
 		######################################################
 		// Table Initialization
 		######################################################
 		private function create_table() {
 			return $this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->mysqltable."` (
-											  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-											  `full_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Referer Domain',
-											  `hits` int NOT NULL DEFAULT '0' COMMENT 'Counter for Referer',
-											  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
-											  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
+											  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Identificator',
+											  `full_url` varchar(512) NOT NULL DEFAULT '0' COMMENT 'Related Referer',
+											  `hits` int NOT NULL DEFAULT '0' COMMENT 'Counted Hits',
+											  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation',
+											  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification',
 											  PRIMARY KEY (`id`),
-											  UNIQUE KEY `UNIQUE` (`full_url`) USING BTREE
-											) ENGINE=InnoDB AUTO_INCREMENT=353 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;");		
+											  UNIQUE KEY `UNIQUE` (`full_url`) USING BTREE );");		
 		}
 		
 		######################################################
@@ -38,10 +36,7 @@
 			$this->mysql 		= $mysql;
 			$this->refurl 		= $refurlnowww;
 			$this->mysqltable 	= $table;
-			
-			try {$val = $this->mysql->query('SELECT 1 FROM `'.$this->mysqltable.'`');
-				if($val == FALSE) { $this->create_table();}
-			} catch (Exception $e){ $this->create_table();} 
+			if(!$this->mysql->table_exists($table)) { $this->create_table(); $this->mysql->free_all();  }
 		}
 		
 		######################################################
@@ -57,23 +52,23 @@
 		}	
 		
 		######################################################
-		// Destructor and Save Values
+		// Execute Function
 		######################################################
-		function __destruct() {
+		public function execute(){
 			if ( $parts = parse_url( @$_SERVER["HTTP_REFERER"] ) AND $this->enabled) {
 				$thecurrentreferer = $this->prepareUrl(@$parts[ "host" ]);
-				$bindar[0]["type"]	=	"s";
-				$bindar[0]["value"]	=	$thecurrentreferer;
+				$b[0]["type"]	=	"s";
+				$b[0]["value"]	=	$thecurrentreferer;
 				if(@trim(@$parts[ "host" ]) != $this->refurl AND @trim(@$parts[ "host" ]) != "www.".$this->refurl AND @trim(@$parts[ "host" ]) != "") {
 					$query = "SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;";
-					$sresult = @mysqli_fetch_array(@$this->mysql->query($query, $bindar), MYSQLI_BOTH);
+					$sresult = @mysqli_fetch_array(@$this->mysql->query($query, $b), MYSQLI_BOTH);
 					if (!is_array($sresult)) { 
-						$query = @$this->mysql->query("INSERT INTO `".$this->mysqltable."` (full_url, hits) VALUES (?, 1)", $bindar);
+						$query = @$this->mysql->query("INSERT INTO `".$this->mysqltable."` (full_url, hits) VALUES (?, 1)", $b);
 					} else {
-						$query = @$this->mysql->query("UPDATE ".$this->mysqltable." SET hits = hits + 1 WHERE full_url = ?;", $bindar);
+						$query = @$this->mysql->query("UPDATE ".$this->mysqltable." SET hits = hits + 1 WHERE full_url = ?;", $b);
 					}				
 				}
 			}
-		}
+		} return true;
 	}
 ?>

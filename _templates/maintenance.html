@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+    "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html version="-//W3C//DTD XHTML 1.1//EN"
+      xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.w3.org/1999/xhtml
+                          http://www.w3.org/MarkUp/SCHEMA/xhtml11.xsd"
+	>
+	<style>
+	
+		body{
+			background: #121212;
+		  -webkit-background-size: cover;
+			 -moz-background-size: cover;
+			   -o-background-size: cover;
+				  background-size: cover;
+			color: black;
+			font-family: Arial;
+			font-size: 12px;
+			text-align: center;
+			width: 100%;
+			margin: 0px 0px 0px 0px;
+			padding: 0px 0px 0px 0px;
+			top: 0px;
+		}
+
+		a {
+			color: white;
+			text-decoration: none;
+		}
+
+		a:hover {
+			color: lightgrey;
+		}
+
+		div#footer {
+			width: 100%;
+			position: fixed;
+			bottom: 0px;
+			left: 0px;
+			text-align: center;
+			padding-bottom: 15px;
+			padding-top: 15px;
+			height: 40px;
+			font-size: 16px;
+			color: lightgrey;
+		}
+
+		section#errorsection {
+			width: 100%;
+			  margin: 0;
+			  position: absolute;
+			  top: 50%;
+			  -ms-transform: translateY(-50%);
+			  transform: translateY(-50%);
+		}
+		
+		#errorwrapper {
+			width: 100%;
+			position: absolute;
+			height: 100vh;			  
+			margin: 0px;
+			font-size: 14px;
+			font-weight: bold;
+			font-size: 36px;
+			background: rgba(0,0,0,0.0);
+			margin: auto;
+			  top: 0;
+			  right: 0;
+			  bottom: 0;
+			  left: 0;
+			color: white;
+		}	
+		
+		#backlink {
+			font-size: 24px;
+			color: white;
+			font-weight:bold;
+		}
+
+		#errorwrapper a:hover {
+			font-size: 24px;
+			color: lightgrey;
+			font-weight:bold;
+		}
+		
+		@keyframes blink {
+			0%  {opacity: 0}
+			49% {opacity: 0}
+			50% {opacity: 1}
+		}
+
+		blink{
+			animation: blink 1s infinite;
+			}
+		
+		@keyframes heli {
+			0%  {opacity: 1.0;}
+			50% {opacity: 0.0;}
+			99% {opacity: 1.0;}
+		}		
+		
+		#helicopter {
+			font-size: 16px;
+			animation: heli 5s infinite;
+			animation-timing-function: linear;
+			color: white !important;
+			font-weight:bold;
+		}
+	
+	
+	</style>
+  <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/style.css" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+	<title>Under Construction!</title>
+  </head>
+  <body>
+	<div id="errorwrapper">
+		<section id="errorsection">
+		<div id="helicopter" style="font-size: 126px;color: red !important;">
+</div>
+			<blinks>
+			Project is Under Construction!
+			</blinks> 
+		<br><a href="" id="backlink">We are on it!</a>
+		</section>
+	</div>
+	<div id="footer">
+		Copyright by <a href="" target="_blank">Bugfish</a> ©2022 All Rights Reserved<br />
+						<a href="">Impressum</a> | 
+						<a href="">Cookies</a> | 
+						<a href="">Privacy</a>
+	</div>
+  </body>
+</html>

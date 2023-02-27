@@ -9,77 +9,87 @@
 		######################################################
 		// Class Variables
 		######################################################
-		private $mysql  	 = false; 
+		private $mysql  	= false; 
 		private $table     	= false; 
-		public $ip     		= false; 
-		public $max     	= false; 
-		public $blocked     = false; 
+		private $ip     	= false; 
+		private $max     	= false; 
+		private $blocked    = false; 
+		private $counter    = false; 
 		
 		######################################################
 		// Table Initialization
 		######################################################
 		private function create_table() {
 			return $this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->table."` (
-												  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-												  `failures` int(10) DEFAULT '0' COMMENT 'Failures for this IP Address',
-												  `ip_adr` varchar(256) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Remote IP Address',
-												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
+												  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Identificator',
+												  `fail` int(9) DEFAULT '1' COMMENT 'Address Failures',
+												  `ip_adr` varchar(256) NOT NULL COMMENT 'Related IP Address',
+												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation',
 												  PRIMARY KEY (`id`),
 												  UNIQUE KEY `Index 2` (`ip_adr`)
-												) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");			
-		}
+												);");}
 		
 		######################################################
 		// Construct
 		######################################################
 		function __construct($mysql, $tablename, $maxvalue = 50000) { 
-			$this->mysql  	 = $mysql; 
-			$this->table     = $tablename; 
-			$this->ip  	  	 = @trim(@$_SERVER["REMOTE_ADDR"]); 
-			$this->max  	 = $maxvalue; 
-			$val = false; try {
-				$val = $this->mysql->query('SELECT 1 FROM `'.$this->table.'`');
-				if($val == FALSE) { $this->create_table(); }
-			} catch (Exception $e){ $this->create_table();   } 	
-			$this->blocked	=	$this->blocked();			
-		}
+			$this->mysql = $mysql; $this->table = $tablename; $this->max  = $maxvalue;
+			$this->ip = @trim(@strtolower(@$_SERVER["REMOTE_ADDR"])); 
+			if(!$this->mysql->table_exists($tablename)) { $this->create_table(); $this->mysql->free_all();  }
+			$this->int_block_renew();}
 
 		######################################################
 		// Check Current Block Status
 		######################################################	
-		public function blocked() { $this->isBlocked(); } 
-		public function banned() { $this->isBlocked(); } 
-		public function isbanned() { $this->isBlocked(); } 
-		public function isblocked() {
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$this->ip;
-			$rres = @$this->mysql->query("SELECT * FROM ".$this->table." WHERE ip_adr = ? AND failures > ".$this->max.";", $bindar); 
-			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	return true; }
-			return false;		
-		}
+		public function blocked($renew = false) { if(!$renew) { return $this->blocked; } else { return return $this->int_block_renew(); } }
+		public function banned($renew = false) { if(!$renew) { return $this->blocked; } else { return return $this->int_block_renew(); } }
+		public function isbanned($renew = false) { if(!$renew) { return $this->blocked; } else { return return $this->int_block_renew(); } }
+		public function isblocked($renew = false) { if(!$renew) { return $this->blocked; } else { return $this->int_block_renew(); } }
+		// Function to Renew Local Blocked Variable for Constructor and Renew
+		private function int_block_renew() {
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$this->ip;
+			$r = @$this->mysql->select("SELECT * FROM ".$this->table." WHERE ip_adr = ? AND fail > ".$this->max.";", false, $b);
+			if(is_array($r)) {	
+				$this->blocked = true;
+				return $this->blocked; 
+			}
+			$this->blocked = false;
+			return $this->blocked;}
 
 		######################################################
 		// Get Counter for IP
 		######################################################	
-		public function counter($ip = false) {
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$this->ip;
-			if(!$ip) { $rres = @$this->mysql->query("SELECT * FROM ".$this->table." WHERE ip_adr = ? AND failures > ".$this->max.";", $bindar); }
-			else { $rres = @$this->mysql->query("SELECT * FROM ".$this->table." WHERE ip_adr = ? AND failures > ".$this->max.";", $bindar); }
-			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	return $sresult["failures"]; }
-			return 0;		
-		}
+		public function get_counter($renew = false) { if(!$renew) { return $this->counter; } else { return return $this->int_counter_renew(); } }
+		public function counter($renew = false) { if(!$renew) { return $this->counter; } else { return return $this->int_counter_renew(); } }
+		// Function to Renew Local Counter Variable for Constructor and Renew
+		private function int_counter_renew() {
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$this->ip;
+			if(!$ip) { $r = @$this->mysql->select("SELECT * FROM ".$this->table." WHERE ip_adr = ? AND fail > ".$this->max.";", false, $b); }
+			else { $r = @$this->mysql->select("SELECT * FROM ".$this->table." WHERE ip_adr = ? AND fail > ".$this->max.";", false, $b); }
+			if(is_array($r)) {	
+				$this->counter = $r["fail"];
+				return $this->counter; 
+			}
+			$this->counter = 0;
+			return $this->counter;}
 
 		######################################################
 		// Raise Counter for Current IP
 		######################################################		
-		public function increase() { $this->raise(); } 
-		public function raise() {
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$this->ip;
-			$rres = @$this->mysql->query("SELECT * FROM ".$this->table." WHERE ip_adr = ?;", $bindar); 
-			while ($sresult = @mysqli_fetch_array($rres, MYSQLI_BOTH)){	return @$this->mysql->query("UPDATE ".$this->table." SET failures = failures + 1 WHERE id = '".$sresult["id"]."';"); }
-			@$this->mysql->query("INSERT INTO ".$this->table."(ip_adr, failures) VALUES(?, 1);", $bindar); 				
+		public function raise($value = 1) { return $this->raise($value); }
+		public function increase($value = 1) { return $this->raise($value); } 
+		// Function to Increase and Refresh Counter
+		private function int_counter_raise($value = 1) {
+			if(!is_int($value)) [ return false; }
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$this->ip;
+			$rres = @$this->mysql->select("SELECT * FROM ".$this->table." WHERE ip_adr = ?;", $b); 
+			if(is_array($r)) {	
+				@$this->mysql->query("UPDATE ".$this->table." SET fail = fail + ".$value." WHERE id = '".$sresult["id"]."';");
+			} else { @$this->mysql->query("INSERT INTO ".$this->table."(ip_adr, fail) VALUES(?, 1);", $b); }
+			return $this->int_counter_renew();			
 		}	
 	}
 ?>

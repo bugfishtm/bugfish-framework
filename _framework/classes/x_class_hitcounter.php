@@ -9,24 +9,21 @@
 		######################################################
 		// Class Variables
 		######################################################
-		private $mysql		=  false;
+		private $mysql			=  false;
 		private $mysqltable		=  false;
-		private $enabled 		=  true; 	public function enabled($bool = true) {$this->enabled = $bool;}	
-		private $onlyarrivals 	=  false; 	public function onlyarrivals($bool = false) {$this->enabled = $bool;}	
-		private $clearget 		=  true; 	public function clearget($bool = true) {$this->enabled = $bool;}	
-		private $no404 			=  true; 	public function no404($bool = true) {$this->no404 = $bool;}	
-		private $only200 		=  true; 	public function only200($bool = true) {$this->only200 = $bool;}	
-		private $mode 			=  1;
-		private $urlpath 		=  false;
-		private $urlmd5 		=  false;
 		private $precookie 		=  "";
+		private $urlpath 		=  false;
+		private $urlmd5 		=  false;		
+		
+		private $enabled 		=  true; 	public function enabled($bool = true) {$this->enabled = $bool;}	
+		private $clearget 		=  true; 	public function clearget($bool = true) {$this->enabled = $bool;}	
 
 		######################################################
 		// Public Class Variables
 		######################################################		
-		public $current_switch	=	0;
-		public $current_arrive	=	0;
-		public $current_hits	=	0;
+		public $switches	=	0;
+		public $arrivals	=	0;
+		public $summarized	=	0;
 
 		######################################################
 		// Table Initialization
@@ -34,45 +31,43 @@
 		private function create_table() {
 			return $this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->mysqltable."` (
 												  `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
-												  `full_url` varchar(512) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT '0' COMMENT 'Full Domain of Hit',
+												  `full_url` varchar(512) NOT NULL DEFAULT '0' COMMENT 'Related Domain',
 												  `switches` int(10) DEFAULT '0' COMMENT 'Changes to this Site',
 												  `arrivals` int(10) NOT NULL DEFAULT '0' COMMENT 'Arrivals at this Site',
 												  `summarized` int(10) NOT NULL DEFAULT '0' COMMENT 'All Hits for this URL',
-												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
-												  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
+												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation',
+												  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification',
 												  PRIMARY KEY (`id`),
-												  UNIQUE KEY `UNIQUE` (`full_url`) USING BTREE
-												) ENGINE=InnoDB AUTO_INCREMENT=9965 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;	");	
-		}
+												  UNIQUE KEY `UNIQUE` (`full_url`) USING BTREE ) ;	");	}
 		
 		######################################################
 		// Constructor
 		######################################################
 		function __construct($thecon, $table, $precookie = "") {
-			if (session_status() !== PHP_SESSION_ACTIVE) {session_start();}
-			$this->mysql = $thecon; $this->precookie = $precookie; 
-			$this->mysqltable = $table; 
+			if ( session_status() !== PHP_SESSION_ACTIVE ) { @session_start(); }
+			$this->mysql = $thecon; $this->mysqltable = $table;  $this->precookie = $precookie; 
 			$this->urlpath = $this->prepareUrl(@$_SERVER['HTTP_HOST'].@$_SERVER['REQUEST_URI']); 
-			$this->urlmd5 = md5(@$this->urlpath);
+			$this->urlmd5 = md5(@$this->urlpath);			
+			if(!$this->mysql->table_exists($table)) { $this->create_table(); $this->mysql->free_all();  } 
+			$this->refresh_counters();}
 
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$this->urlpath;
-			$res = $this->mysql->query("SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;", $bindar);
-			if($res) { $sresult = mysqli_fetch_array($res, MYSQLI_BOTH);
-				if (is_numeric(@$sresult["switches"])) { $this->current_switch = $sresult["switches"];}
-				if (is_numeric(@$sresult["arrivals"])) { $this->current_arrive = $sresult["arrivals"];}
-				if (is_numeric(@$sresult["arrivals"])) { $this->current_hits = $sresult["arrivals"];}
-				if (is_numeric(@$sresult["switches"])) { $this->current_hits = $sresult["switches"];}
-				if (is_numeric(@$sresult["switches"]) AND is_numeric(@$sresult["arrivals"])) { $this->current_hits = $sresult["arrivals"] + $sresult["switches"]; }
-			}
-				
-			try {
-				$val = $this->mysql->query('SELECT 1 FROM `'.$this->mysqltable.'`');
-				if($val == FALSE) { $this->create_table();}
-			} catch (Exception $e){ $this->create_table();} 
-				
-
-		}
+		######################################################
+		// Refresh the Counters Function
+		######################################################		
+		private function refresh_counters() {
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$this->urlpath;
+			$res = $this->mysql->select("SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;",false, $b);
+			if(is_array($res)) {
+				$this->switches		=	$res["switches"];
+				$this->arrivals		=	$res["arrivals"];
+				$this->summarized	=	$this->arrivals + $this->switches;				
+				return true;
+			}	
+			$this->switches		=	0;
+			$this->arrivals		=	0;
+			$this->summarized	=	0;
+			return true;}
 
 		######################################################
 		// Prepare URL for Database
@@ -86,66 +81,43 @@
 			return urldecode(trim(@$tmpcode));}	
 		
 		######################################################
-		// Show the Counters
-		###################################################### 
-		public function show() {
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$this->urlpath;
+		// Execute Function
+		######################################################
+		function execute() {
+			$b[0]["type"]	=	"s";
+			$b[0]["value"]	=	$this->urlpath;
 			if($this->enabled) {
-				$r = mysqli_fetch_array($this->mysql->query("SELECT * FROM `". $this->mysqltable ."` WHERE full_url = ?;", $bindar), MYSQLI_BOTH);
-				return "Switch: ".@$this->formatNumber($r["switches"])." | Arrive: ".@$this->formatNumber($r["arrivals"])."";	
-			} else {return "No Counters";}
-		}		
-		
-		######################################################
-		// Format Number for Display
-		######################################################
-		private function formatNumber($num) {
-			if(!is_numeric(@$num)) 		{return "NONE";}
-			if(@$num < 1000000) 		{return @$num;}
-			if(@$num >= 1000000) 		{@$num = substr(@$num, 0, -3);} else {return @$num;}
-			if(@$num >= 1000000) 		{@$num = substr(@$num, 0, -3);} else {return @$num." K";}
-			$ext = " B";
-			if(@$num >= 1000000) 		{@$num = substr(@$num, 0, -3);} else {return @$num." M";}
-			return @$num." B"; 
-		}
-		
-		######################################################
-		// Destruct and Raise Values
-		######################################################
-		function __destruct() {
-			$bindar[0]["type"]	=	"s";
-			$bindar[0]["value"]	=	$this->urlpath;
-			if($this->enabled) {
-				if(!$this->no404 OR ($this->no404 AND http_response_code() != 404)) {
-					if(!$this->only200 OR ($this->only200 AND http_response_code() == 200)) {
-						// Count Arrivals
-						$isarrival = false;
-						if(@$_SESSION["x_class_hitcounter".$this->precookie] != "ok") { 
-							$isarrival = true;
-							$sresult = mysqli_fetch_array($this->mysql->query("SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;", $bindar), MYSQLI_BOTH);
-								if (@$sresult["full_url"] == NULL) {
-									$this->mysql->query("INSERT INTO `".$this->mysqltable."` (full_url, switches, arrivals) VALUES (?, \"0\", \"1\")", $bindar);
-								} else { $this->mysql->query("UPDATE ".$this->mysqltable." SET arrivals = arrivals + 1, summarized = switches + arrivals WHERE full_url = ?;", $bindar);}
-							$_SESSION["x_class_hitcounter".$this->precookie] = "ok";}
-							
-						$ishittedarray = false;
-						if(!is_array($_SESSION["x_class_hitcounter_s".$this->precookie])) { $_SESSION["x_class_hitcounter_s".$this->precookie] = array(); }
-						if(is_array($_SESSION["x_class_hitcounter_s".$this->precookie])) {
-							foreach($_SESSION["x_class_hitcounter_s".$this->precookie] as $key => $value) {
-								if($value == $this->urlmd5) { $ishittedarray = true; }
-							}
-						}
-						// Count Switches
-						if(!$ishittedarray AND !$isarrival AND !$this->onlyarrivals) { 
-							$sresult = mysqli_fetch_array($this->mysql->query("SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;", $bindar), MYSQLI_BOTH);
-							if (@$sresult["full_url"] == NULL) {
-								$this->mysql->query("INSERT INTO `".$this->mysqltable."` (full_url, switches, arrivals) VALUES (?, \"1\", \"0\")", $bindar);}
-							else {$this->mysql->query("UPDATE ".$this->mysqltable." SET switches = switches + 1, summarized = switches + arrivals WHERE full_url = ?;", $bindar);}
-							array_push($_SESSION["x_class_hitcounter_s".$this->precookie], $this->urlmd5);
-						}				
+				// Count Arrivals
+				$isarrival = false;	
+				if(@$_SESSION["x_class_hitcounter".$this->precookie] != "ok") { 		
+					$isarrival = true;
+					$ar = $this->mysql->select("SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;",false, $b);
+					if(is_array($ar)) {
+						$this->mysql->query("UPDATE ".$this->mysqltable." SET arrivals = arrivals + 1, summarized = switches + arrivals WHERE full_url = ?;", $b);
+						$_SESSION["x_class_hitcounter".$this->precookie] = "ok";	
+					} else {
+						$this->mysql->query("INSERT INTO `".$this->mysqltable."` (full_url, switches, arrivals) VALUES (?, \"0\", \"1\")", $b);
 					}
+					
+				}		
+				// Count Switches	
+				$ishittedarray = false;
+				$current_switches_ar	=	@$_SESSION["x_class_hitcounter_s".$this->precookie];
+				$current_switches_ar = @unserialize($current_switches_ar);
+				if(!is_array($current_switches_ar)) { $current_switches_ar = array(); }
+				foreach($current_switches_ar as $key => $value) { if($value == $this->urlmd5) { $ishittedarray = true; } }
+				if(!$ishittedarray AND !$isarrival) {
+					$ar = $this->mysql->select("SELECT * FROM `".$this->mysqltable."` WHERE full_url = ?;",false, $b);
+					if(is_array($ar)) {
+						$this->mysql->query("UPDATE ".$this->mysqltable." SET switches = switches + 1, summarized = switches + arrivals WHERE full_url = ?;", $b);
+					} else {
+						$this->mysql->query("INSERT INTO `".$this->mysqltable."` (full_url, switches, arrivals) VALUES (?, \"1\", \"0\")", $b);
+					}
+					array_push($current_switches_ar, $this->urlmd5);
 				}
+				$current_switches_ar = @serialize($current_switches_ar);
+				$_SESSION["x_class_hitcounter_s".$this->precookie] = $current_switches_ar;
+				return true;
 			}
 		}
 	}

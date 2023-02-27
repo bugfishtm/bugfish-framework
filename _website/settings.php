@@ -40,5 +40,4 @@
 	
 		# Get Object Variable
 		$object = xfp_website_init(_SITE_NAME_, _SITE_DESC_, "xfp");
-				
 ?>

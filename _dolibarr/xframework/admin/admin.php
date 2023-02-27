@@ -1,32 +1,36 @@
 <?php
-	$res=0;
-	if (! $res && ! empty($_SERVER["CONTEXT_DOCUMENT_ROOT"])) $res=@include $_SERVER["CONTEXT_DOCUMENT_ROOT"]."/main.inc.php";
-	$tmp=empty($_SERVER['SCRIPT_FILENAME'])?'':$_SERVER['SCRIPT_FILENAME'];$tmp2=realpath(__FILE__); $i=strlen($tmp)-1; $j=strlen($tmp2)-1;
-	while($i > 0 && $j > 0 && isset($tmp[$i]) && isset($tmp2[$j]) && $tmp[$i]==$tmp2[$j]) { $i--; $j--; }
-	if (! $res && $i > 0 && file_exists(substr($tmp, 0, ($i+1))."/main.inc.php")) $res=@include substr($tmp, 0, ($i+1))."/main.inc.php";
-	if (! $res && $i > 0 && file_exists(dirname(substr($tmp, 0, ($i+1)))."/main.inc.php")) $res=@include dirname(substr($tmp, 0, ($i+1)))."/main.inc.php";
-	if (! $res && file_exists("../main.inc.php")) $res=@include "../main.inc.php";
-	if (! $res && file_exists("../../main.inc.php")) $res=@include "../../main.inc.php";
-	if (! $res && file_exists("../../../main.inc.php")) $res=@include "../../../main.inc.php";
-	if (! $res) die("Include of main fails");
-
+	/*
+		__________              _____.__       .__     
+		\______   \__ __  _____/ ____\__| _____|  |__  
+		 |    |  _/  |  \/ ___\   __\|  |/  ___/  |  \ 
+		 |    |   \  |  / /_/  >  |  |  |\___ \|   Y  \
+		 |______  /____/\___  /|__|  |__/____  >___|  /
+				\/     /_____/               \/     \/  Doliabrr Admin File Example */
+	// Include the Configuration File out of Dolibarrs Folder Structure
+	// Maybe check if Admin File is not in Default Folder!
+	require_once("../../../main.inc.php");
+	
+	// Include to get Constants (for above dolibarr_get_const() )
 	require_once DOL_DOCUMENT_ROOT.'/core/lib/admin.lib.php';
-	if ( $user->admin ) {} else { accessforbidden(); }
+	
+	// If user not Admin show Forbidden Page!
+	if ( !$user->admin ) { accessforbidden(); }
 
+	// Change a Dolibarr-Const on Requested
+	if($_POST["XMOD_XF_JSLOG_OFF"]) {dolibarr_set_const($db, "XMOD_XF_JSLOG", "off", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}
+	if($_POST["XMOD_XF_JSLOG_ON"])  {dolibarr_set_const($db, "XMOD_XF_JSLOG", "on", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}		
+	// Change a Dolibarr-Const on Requested
+	if($_POST["XMOD_XF_TRGLOG_OFF"]) {dolibarr_set_const($db, "XMOD_XF_TRGLOG", "off", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}
+	if($_POST["XMOD_XF_TRGLOG_ON"])  {dolibarr_set_const($db, "XMOD_XF_TRGLOG", "on", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}		
+	// Change a Dolibarr-Const on Requested
+	if($_POST["XMOD_XF_CNGLOG_OFF"]) {dolibarr_set_const($db, "XMOD_XF_CNGLOG", "off", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}
+	if($_POST["XMOD_XF_CNGLOG_ON"])  {dolibarr_set_const($db, "XMOD_XF_CNGLOG", "on", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}		
 
-		if($_POST["XMOD_XF_JSLOG_OFF"]) {dolibarr_set_const($db, "XMOD_XF_JSLOG", "off", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}
-		if($_POST["XMOD_XF_JSLOG_ON"])  {dolibarr_set_const($db, "XMOD_XF_JSLOG", "on", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}		
-		
-		if($_POST["XMOD_XF_TRGLOG_OFF"]) {dolibarr_set_const($db, "XMOD_XF_TRGLOG", "off", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}
-		if($_POST["XMOD_XF_TRGLOG_ON"])  {dolibarr_set_const($db, "XMOD_XF_TRGLOG", "on", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}		
-
-		if($_POST["XMOD_XF_CNGLOG_OFF"]) {dolibarr_set_const($db, "XMOD_XF_CNGLOG", "off", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}
-		if($_POST["XMOD_XF_CNGLOG_ON"])  {dolibarr_set_const($db, "XMOD_XF_CNGLOG", "on", 'chaine', 0, '', 1); Header("Location: ".DOL_URL_ROOT."/custom/xframework/admin/admin.php"); setEventMessage ("Änderung erfolgreich!", 'mesgs');exit();}		
-
+	// Display Dolibarr Header
 	llxHeader("", "Admin - xFramework");
 
-		echo "<div style='padding: 10px;'><form method='post'>";	
-		
+	// Form Elements to Change a Dolibarr Constant for this Module!
+	echo "<div style='padding: 10px;'><form method='post'>";	
 		if(!dolibarr_get_const($db, "XMOD_XF_JSLOG", 1)) { dolibarr_set_const($db, "XMOD_XF_JSLOG", "off", 'chaine', 0, '', 1); }
 		$currentfactures	=	dolibarr_get_const($db, "XMOD_XF_JSLOG", 1);
 		if($currentfactures == "on") {
@@ -56,11 +60,15 @@
 			echo "Changeslog-Logging<font color='red'><b>deaktiviert</b></font>!";
 			echo '<input type="submit" name="XMOD_XF_CNGLOG_ON" value="Ändern">';
 		}
+	echo "</form></div>";
 		
-		echo "</form></div>";
+	// Vertical Line
+	echo "<hr>";
 
-echo "<hr>";
-
+	// If Init has been Executed, then Do...
+	if(@$_GET["op"] != NULL AND @trim($_GET["op"]) != "") {d_c_addInitNow($db, @$_GET["op"]);}
+	
+	// Show Buttons with Function to Initialize Areas for Changelog
 	m_button_link("Neu einlesen: Rechnung[facture]", DOL_URL_ROOT."/custom/xframework/admin/admin.php?op=facture"); echo "<br /><br />";
 	m_button_link("Neu einlesen: Bank-Konten[bank_account]", DOL_URL_ROOT."/custom/xframework/admin/admin.php?op=bank_account"); echo "<br /><br />";
 	m_button_link("Neu einlesen: Lieferantenrechnung[facture_fourn]", DOL_URL_ROOT."/custom/xframework/admin/admin.php?op=facture_fourn"); echo "<br /><br />";
@@ -74,7 +82,10 @@ echo "<hr>";
 	m_button_link("Neu einlesen: Serviceaufträge[fichinter]", DOL_URL_ROOT."/custom/xframework/admin/admin.php?op=fichinter"); echo "<br /><br />";
 	m_button_link("Neu einlesen: Produkte[product]", DOL_URL_ROOT."/custom/xframework/admin/admin.php?op=product"); echo "<br /><br />";
 	m_button_link("Neu einlesen: Societe", DOL_URL_ROOT."/custom/xframework/admin/admin.php?op=societe"); echo "<br /><br />";
-	if(@$_GET["op"] != NULL AND @trim($_GET["op"]) != "") {d_c_addInitNow($db, @$_GET["op"]);}
+
+	// Dolibarr Footer
 	llxFooter();
+	
+	// Close DB Object
 	$db->close();
 ?>
