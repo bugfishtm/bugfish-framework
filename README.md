@@ -18,3 +18,6 @@ If you encounter issues or have questions using this software, do not hesitate w
 
 # License
 	For License Informations see License.md
+	
+# Misc.
+**Simon was here**
