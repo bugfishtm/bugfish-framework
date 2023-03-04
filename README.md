@@ -21,3 +21,4 @@ If you encounter issues or have questions using this software, do not hesitate w
 	
 # Misc.
 **Simon was here**
+All rights are transferred to Simon
