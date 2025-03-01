@@ -16,7 +16,6 @@
 - [ ] I have tested these changes locally
 - [ ] I have updated the documentation accordingly
 - [ ] My code follows the project's coding standards
-- [ ] I have added/updated tests for this change
 
 ## Screenshots (if applicable)
 [Add screenshots here to demonstrate visual changes]

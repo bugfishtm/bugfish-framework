@@ -1,12 +1,12 @@
-## Code of Conduct
+## Code of Conduct  
 
-### Our Pledge
+### 🤝 Our Pledge  
 
-We're building cool stuff for free to push technology forward. If you're here, you're part of that mission. Let's work together, share ideas, and make awesome things happen!
+We're building cool stuff for free to push technology forward. If you're here, you're part of that mission. Let's work together, share ideas, and make awesome things happen!  
 
-### Our Standards
+### 📏 Our Standards  
 
-*   **Positive:** Be kind, empathetic, and respectful. Give constructive feedback.
-*   **Unacceptable:** Harassment, offensive comments, personal attacks, sharing private info without consent.
+*   **✅ Positive:** Be kind, empathetic, and respectful. Give constructive feedback.  
+*   **🚫 Unacceptable:** Harassment, offensive comments, personal attacks, sharing private info without consent.  
 
-🐟 Bugfish <3
+🐟 Bugfish <3  

@@ -1,16 +1,16 @@
 # Bugfish Framework
 
-## Introduction
+## 📖 Introduction
 
 The Bugfish Framework, meticulously designed for web developers, prioritizes security, flexibility, and performance. Its architecture streamlines development processes, enhancing efficiency and scalability, while a dedicated community provides support and resources for developers to maximize their projects' potential. Comprehensive documentation accompanies the framework, offering detailed insights into every function and class, accessible [here](https://bugfishtm.github.io/bugfish-framework/), serving as an invaluable resource to deepen understanding and facilitate smoother development workflows.
 
-## Documentation
+## 📚 Documentation
 This framework is documented inside the files you can find in the "docs" folder. Just open the index.html with your web browser and you can navigate through the documentation of every class and function.
 
 You can also find the documentation at: 
 https://bugfishtm.github.io/bugfish-framework/
 
-## Repository Folders
+## 📂 Repository Folders
 
 | Folder     | Description                                          |
 |------------|------------------------------------------------------|
@@ -21,10 +21,10 @@ https://bugfishtm.github.io/bugfish-framework/
 | _images    | Images related to this framework, mostly for this readme or product images.            |
 | docs       | Framework documentation and also this project's GitHub page. You can find all functions and classes of this framework explained there!            |
 
-## PHP Functions
+## ⚙️ PHP Functions
 Discover a collection of indispensable PHP functions crafted for seamless integration across various projects. Witness how these functions expedite and refine coding processes within web development. Comprehensive documentation for each function is provided below. To incorporate these functions seamlessly, include the PHP files within the designated _functions subfolder in the overarching _framework folder. This strategic approach optimizes coding efficiency and enhances web project performance.
 
-## PHP Classes
+## 🧩 PHP Classes
 These classes, located in /_framework/classes/x_*, are crucial for their functionality, efficiency, and thorough testing across various websites. They enhance development and save time. Note: Some classes require a database connection. They will install necessary tables automatically if configured correctly. Not all classes require MySQL; refer to the documentation for specific requirements. If MySQL is needed, provide a valid x_class_mysql object to the class.
 
 
@@ -57,23 +57,23 @@ These classes, located in /_framework/classes/x_*, are crucial for their functio
 | ✅x_class_zip | Enables file compression and decompression, compatible with x_class_crypt for direct encryption and decryption. PHP Module ZIP is required to run this class. | GPLv3 |
 | ✅x_class_version | Fetch version information and information about the author at the currently deployed framework instance. | GPLv3 |
 
-## CSS Classes
+## 🎨 CSS Classes
 Introducing the "Bugfish CSS Framework" – a solution for efficient web design. Simplify your development process with a comprehensive collection of pre-built classes, designed to expedite the creation of responsive web layouts. The Bugfish CSS Framework streamlines your design experience, making it faster and more professional. To use it, include the CSS files located in the css folder.
 
-## Javascript Functions
+## 📜 Javascript Functions
 Access a comprehensive array of JavaScript functions designed for integration across diverse projects, enhancing coding speed and efficiency in web development. Detailed documentation for each function is provided below. To incorporate these functions, include the JavaScript file in the _javascript subfolder within the central _framework folder. This implementation optimizes your coding process and elevates your web project's performance. Simplify your coding with our library of pre-built functions and modules, crafted to expedite the creation of dynamic, interactive web applications. Find the JavaScript Function file in: /_framework/javascript/*.js!
 
-## Support us for our work!
+## 🙌 Support us for our work!
 
 If you want to support us, include this image somewhere in your project, that people can see this project has been created with help of this framework:
 
 ![a](./_images/banner.jpg)
 
-## Get Support
+## 🤝 Get Support
 
 Should you encounter any issues or have questions while using this software, please do not hesitate to reach out to us on our forum at [Bugfish Forum](www.bugfish.eu/forum). Additionally, you can request assistance via email at request@bugfish.eu, and we are dedicated to providing the support you require. We highly value your feedback and are committed to ensuring your success with our web project.
 
-## Licensing Information
+## 📜 Licensing Information
 
 The Bugfish Framework is released under the GPLv3 License, affording you the freedom to use, modify, and distribute the project as you see fit. It is imperative to note that the "_vendor" folder contains various libraries, each with its own unique licenses. To ensure full compliance and understanding of the licensing terms associated with these included libraries, we encourage you to consult our comprehensive documentation on our GitHub page. This documentation provides exhaustive information regarding the specific licenses and any additional requirements tied to individual libraries. Your responsible adherence to these licenses is pivotal when utilizing this project. Your interest and collaboration are greatly appreciated. See Documentation of this Project in the _docs folder to get more insights about licenses of libraries used in this framework. All of them are LGPL or GPL Licenses.
 

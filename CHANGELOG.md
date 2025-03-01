@@ -71,3 +71,5 @@
 ## [2.5] - 2024-01-10
 ### Changes
 - Class enhancements and fixes for Referers.
+
+🐟 Bugfish <3
