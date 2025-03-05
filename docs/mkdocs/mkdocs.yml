@@ -1,0 +1,88 @@
+site_name: Bugfish Framework
+repo_url: https://github.com/bugfishtm/bugfish-framework
+repo_name: bugfish-framework
+
+nav:
+    - Overview: index.md
+    - Download: download.md
+    - CSS Library: css/index.md
+    - JS Library: javascript/index.md
+    - PHP Library: functions/index.md
+    - PHP 2FA: classes/x_class_2fa.md
+    - PHP API: classes/x_class_api.md
+    - PHP Benchmark: classes/x_class_benchmark.md
+    - PHP Comment: classes/x_class_comment.md
+    - PHP Crypt: classes/x_class_crypt.md
+    - PHP CSRF: classes/x_class_csrf.md
+    - PHP Curl: classes/x_class_curl.md
+    - PHP Debug: classes/x_class_debug.md
+    - PHP Eventbox: classes/x_class_eventbox.md
+    - PHP Hitcounter: classes/x_class_hitcounter.md
+    - PHP IP Blacklist: classes/x_class_ipbl.md
+    - PHP Logging: classes/x_class_log.md
+    - PHP Mail: classes/x_class_mail.md
+    - PHP Mail Item: classes/x_class_mail_item.md
+    - PHP Mail Template: classes/x_class_mail_template.md
+    - PHP MySQL: classes/x_class_mysql.md
+    - PHP MySQL Item: classes/x_class_mysql_item.md
+    - PHP Permission: classes/x_class_perm.md
+    - PHP Permission Item: classes/x_class_perm_item.md
+    - PHP Redis: classes/x_class_redis.md
+    - PHP Referer: classes/x_class_referer.md
+    - PHP Session Blocking: classes/x_class_block.md
+    - PHP Table: classes/x_class_table.md
+    - PHP Translations: classes/x_class_lang.md
+    - PHP User: classes/x_class_user.md
+    - PHP Variables: classes/x_class_var.md
+    - PHP Version: classes/x_class_version.md
+    - PHP Zip: classes/x_class_zip.md
+    - Contributing: contributing.md
+    - Warranty: warranty.md
+    - Support: support.md
+    - License: license.md
+    - Impressum: https://bugfishtm.blogspot.com/2023/05/impressum.html
+    - Privacy: https://bugfishtm.blogspot.com/2023/05/privacy.html
+
+theme:
+  name: material
+  logo: ./logo.png
+  favicon: ./favicon.ico
+  primary: deep orange
+  language: 'en'
+  accent: deep orange
+  font: false
+  features:
+    - content.code.copy
+  palette:
+    - scheme: slate
+      primary: deep orange
+      accent: deep orange
+
+extra_css:
+  - extra.css
+
+extra_javascript:
+  - extra.js
+
+plugins:
+    - mkdocstrings
+    - search
+    - mkdocs-video
+    - glightbox
+    
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  
+use_directory_urls: false
+
+extra:
+  meta:
+    author: "Jan-Maurice Dahlmanns"

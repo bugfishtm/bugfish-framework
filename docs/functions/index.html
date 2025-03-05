@@ -1,0 +1,1877 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../javascript/index.html">
+      
+      
+        <link rel="next" href="../classes/x_class_2fa.html">
+      
+      
+      <link rel="icon" href="../favicon.ico">
+      <meta name="generator" content="mkdocs-1.6.0, mkdocs-material-9.5.31">
+    
+    
+      
+        <title>PHP Library - Bugfish Framework</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.3cba04c6.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "Bugfish Framework",
+    }
+    </script>
+	<script type="application/ld+json">
+	{
+	  "@context": "http://schema.org",
+	  "@type": "TechArticle",
+	  "headline": "PHP Library",
+	  "description": "Discover the PHP Function Library documentation for essential functions designed to streamline web development. Access detailed descriptions, usage examples, and integration guidelines for each PHP function to enhance your coding efficiency and project performance. Explore the functions and optimize your development workflow effectively.",
+	  "articleSection": "Introduction",
+	  "datePublished": "2025-03-04",
+	  "dateModified": "2025-03-04",
+	  "author": {
+		"@type": "Person",
+		"name": "Jan-Maurice Dahlmanns"
+	  },
+	  "publisher": {
+		"@type": "Organization",
+		"name": "Bugfish",
+		"logo": {
+		  "@type": "ImageObject",
+		  "url": "../logo.png"
+		}
+	  }
+	}
+	</script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="subject" content="documentation">
+	<meta name="copyright" content="bugfish">
+	<meta name='language' content='en'>
+	<meta name='robots' content='index,follow'>
+	<meta name='author' content='bugfish, ynvnzmlzaa@gmail.com'>
+	
+	
+	<meta property="og:title" content="PHP Library - Bugfish Framework"/>
+	<meta name="description" content="Discover the PHP Function Library documentation for essential functions designed to streamline web development. Access detailed descriptions, usage examples, and integration guidelines for each PHP function to enhance your coding efficiency and project performance. Explore the functions and optimize your development workflow effectively.">  
+	<meta name="og:description" content="Discover the PHP Function Library documentation for essential functions designed to streamline web development. Access detailed descriptions, usage examples, and integration guidelines for each PHP function to enhance your coding efficiency and project performance. Explore the functions and optimize your development workflow effectively.">  
+	<meta property="og:image" content="../meta.png" />
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#php-functions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Bugfish Framework" class="md-header__button md-logo" aria-label="Bugfish Framework" data-md-component="logo">
+      
+  <img src="../logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Bugfish Framework
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              PHP Library
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="deep-orange"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var media,input,key,value,palette=__md_get("__palette");if(palette&&palette.color){"(prefers-color-scheme)"===palette.color.media&&(media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']"),palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent"));for([key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/bugfishtm/bugfish-framework" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bugfish-framework
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Bugfish Framework" class="md-nav__button md-logo" aria-label="Bugfish Framework" data-md-component="logo">
+      
+  <img src="../logo.png" alt="logo">
+
+    </a>
+    Bugfish Framework
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/bugfishtm/bugfish-framework" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    bugfish-framework
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Overview
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../download.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Download
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../css/index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    CSS Library
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../javascript/index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    JS Library
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    PHP Library
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="index.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    PHP Library
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#curl-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      CURL Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thumbnail-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thumbnail Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#library-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Library Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Library Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#various-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Various Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation Functions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Button Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventbox-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eventbox Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cookie-banner-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie Banner Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rss-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      RSS Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#captcha-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Captcha Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Search Functions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_2fa.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP 2FA
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_api.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_benchmark.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Benchmark
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_comment.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Comment
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_crypt.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Crypt
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_csrf.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP CSRF
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_curl.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Curl
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_debug.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Debug
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_eventbox.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Eventbox
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_hitcounter.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Hitcounter
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_ipbl.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP IP Blacklist
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_log.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Logging
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_mail.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Mail
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_mail_item.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Mail Item
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_mail_template.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Mail Template
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_mysql.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP MySQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_mysql_item.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP MySQL Item
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_perm.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Permission
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_perm_item.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Permission Item
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_redis.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Redis
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_referer.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Referer
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_block.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Session Blocking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_table.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Table
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_lang.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Translations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_user.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP User
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_var.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Variables
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_version.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Version
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_zip.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PHP Zip
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Contributing
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../warranty.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Warranty
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../support.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Support
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../license.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    License
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bugfishtm.blogspot.com/2023/05/impressum.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Impressum
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://bugfishtm.blogspot.com/2023/05/privacy.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Privacy
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#documentation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#curl-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      CURL Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#thumbnail-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Thumbnail Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#library-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Library Functions
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Library Functions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#various-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Various Functions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#validation-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Validation Functions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#button-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Button Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#eventbox-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Eventbox Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cookie-banner-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Cookie Banner Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rss-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      RSS Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#table-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#captcha-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Captcha Functions
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#search-functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Search Functions
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<div><h1 id="php-functions">PHP Functions</h1>
+<h2 id="documentation">Documentation</h2>
+<p>Discover a collection of indispensable PHP functions crafted for seamless integration across various projects. Witness how these functions expedite and refine coding processes within web development. Comprehensive documentation for each function is provided below. To incorporate these functions seamlessly, include the PHP files within the designated <code>_functions</code> subfolder in the overarching <code>_framework</code> folder. This strategic approach optimizes coding efficiency and enhances web project performance.</p>
+<p>Presenting our professional PHP Function Library, a valuable resource brimming with functions tailored for swift website deployment and efficiency. Explore the comprehensive collection within our framework's <code>/framework/functions/x_*</code> directory to streamline your development process and enhance your website's performance.</p>
+<h2 id="curl-functions">CURL Functions</h2>
+<p>Functions to work with fast Curl Requests inside <code>x_curl.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th>CURL Function Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_curl_getfile($file, $newFileName)</code></td>
+<td>Download a file with Curl and save to <code>NewFileName</code>.</td>
+</tr>
+<tr>
+<td><code>x_curl_gettext($url)</code></td>
+<td>Get text content of a Curl request to URL.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="thumbnail-functions">Thumbnail Functions</h2>
+<p>Functions to generate/work with thumbnails inside <code>x_library.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th>Thumbnail Function Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_thumbnail</code></td>
+<td>Creates a thumbnail image from a URL and saves it to a file. Parameters include:</td>
+</tr>
+<tr>
+<td></td>
+<td>- <code>url</code>: The URL of the image to create a thumbnail from.</td>
+</tr>
+<tr>
+<td></td>
+<td>- <code>filename</code>: The filename for the saved thumbnail.</td>
+</tr>
+<tr>
+<td></td>
+<td>- <code>width</code>: The width of the thumbnail.</td>
+</tr>
+<tr>
+<td></td>
+<td>- <code>height</code>: The height of the thumbnail (or <code>true</code> to maintain aspect ratio).</td>
+</tr>
+<tr>
+<td><code>x_thumbnail_save</code></td>
+<td>Creates a thumbnail image from a URL and optionally saves it to a file. Parameters include:</td>
+</tr>
+<tr>
+<td></td>
+<td>- <code>url</code>: The URL of the image to create a thumbnail from.</td>
+</tr>
+<tr>
+<td></td>
+<td>- <code>save_path</code>: An optional path to save the thumbnail file.</td>
+</tr>
+<tr>
+<td></td>
+<td>- <code>width</code>: The width of the thumbnail.</td>
+</tr>
+<tr>
+<td></td>
+<td>- <code>height</code>: The height of the thumbnail (or <code>true</code> to maintain aspect ratio).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="library-functions">Library Functions</h2>
+<p>Some functions that do not fit into other sections inside <code>x_library.php</code>:</p>
+<h3 id="various-functions">Various Functions</h3>
+<table>
+<thead>
+<tr>
+<th>Library Function Name</th>
+<th>Description</th>
+<th>Parameter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_copy_directory($src, $dst)</code></td>
+<td>Copy content of a folder recursively to another folder.</td>
+<td>- <code>src</code>: Folder Path (FULL) to Copy.<br>- <code>dst</code>: Destination Folder Name to Copy to.</td>
+</tr>
+<tr>
+<td><code>x_htaccess_secure($path)</code></td>
+<td>Secure a folder by placing an <code>.htaccess</code> file to deny folder content.</td>
+<td>- <code>path</code>: Path where the <code>.htaccess</code> should be placed.</td>
+</tr>
+<tr>
+<td><code>x_getRelativeFolderFromURL($url)</code></td>
+<td>Extract relative path from full URL string.</td>
+<td>- <code>url</code>: The URL the relative folder should be extracted from.</td>
+</tr>
+<tr>
+<td><code>x_firstimagetext</code></td>
+<td>Get first image out of "a" tag from text string.</td>
+<td>- <code>text</code>: Input text containing HTML.<br>- <code>all</code>: Whether to return all image tags or just the first one.</td>
+</tr>
+<tr>
+<td><code>x_connection_check</code></td>
+<td>Check a connection with <code>fsockopen</code>.</td>
+<td>- <code>host</code>: Hostname or IP address to check the connection to.<br>- <code>port</code>: Port number to check.<br>- <code>timeout</code>: Timeout duration in seconds.</td>
+</tr>
+<tr>
+<td><code>x_inCLI</code></td>
+<td>Check if the current script execution is handled via CGI and not in a web browser.</td>
+<td>Checks if the script is running in a Command Line Interface (CLI) environment and returns <code>true</code> if it is, <code>false</code> otherwise.</td>
+</tr>
+<tr>
+<td><code>x_rmdir</code></td>
+<td>Recursively delete a folder.</td>
+<td>- <code>dir</code>: Directory path to be deleted recursively.</td>
+</tr>
+<tr>
+<td><code>x_html_redirect</code></td>
+<td>Spawn HTML redirect meta tag for simple HTML redirects.</td>
+<td>- <code>url</code>: URL to redirect to.<br>- <code>seconds</code>: Number of seconds before the redirection occurs.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="validation-functions">Validation Functions</h3>
+<table>
+<thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_isset($val)</code></td>
+<td>Checks if a value is not null and has a length greater than 0 after trimming.</td>
+<td>The function returns <code>true</code> if <code>$val</code> is set, is not empty after trimming, and has a length greater than 0. The <code>@</code> operator suppresses errors in case <code>$val</code> is undefined, and the null coalescing operator (<code>??</code>) ensures a fallback to an empty string if <code>$val</code> is null.</td>
+</tr>
+<tr>
+<td><code>x_imgValid($url)</code></td>
+<td>Validates if a string is a valid image URL by checking its existence and if it is an image.</td>
+<td>The function checks if <code>$url</code> is set and is a string with a length greater than 3. It then attempts to fetch the image size using <code>getimagesize()</code>, which confirms if the URL points to a valid image. If these conditions aren't met, it returns <code>false</code>.</td>
+</tr>
+<tr>
+<td><code>x_hsc($string)</code></td>
+<td>Safely encodes special characters in a string to HTML entities.</td>
+<td>The function uses <code>htmlspecialchars()</code> to convert special characters to HTML entities, helping to prevent XSS attacks. If <code>$string</code> is null or undefined, it defaults to an empty string.</td>
+</tr>
+<tr>
+<td><code>x_het($string)</code></td>
+<td>Converts all applicable characters in a string to HTML entities.</td>
+<td>The function uses <code>htmlentities()</code> to convert all applicable characters to HTML entities, ensuring that the string is safe for output in an HTML context. Similar to <code>x_hsc()</code>, it handles null or undefined values gracefully.</td>
+</tr>
+<tr>
+<td><code>x_trim($string)</code></td>
+<td>Trims whitespace from both sides of a string.</td>
+<td>The function uses <code>trim()</code> to remove whitespace from the beginning and end of the string. The <code>@</code> operator handles cases where <code>$string</code> might be undefined.</td>
+</tr>
+<tr>
+<td><code>x_contains_cyrillic($val)</code></td>
+<td>Checks if a string contains Cyrillic characters.</td>
+<td>The function uses a regular expression to check if <code>$val</code> contains any Cyrillic characters. If it does, it returns <code>true</code>; otherwise, it returns <code>false</code>. The regular expression pattern <code>[\p{Cyrillic}]</code> matches any Cyrillic character.</td>
+</tr>
+<tr>
+<td><code>x_contains_bad_word($val)</code></td>
+<td>Checks if a string contains the word "porn" or "Porn".</td>
+<td>The function checks if the string contains " porn " or " Porn " (with spaces around). If either is found, the function returns <code>false</code> (indicating it's a "bad" word). If neither is found, it returns <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>x_contains_url($val)</code></td>
+<td>Checks if a string contains an HTTP or HTTPS URL.</td>
+<td>The function looks for the substrings "http://" or "https://" within <code>$val</code>. If found, it returns <code>false</code> (indicating that a URL is present). If neither is found, it returns <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>x_getint($val)</code></td>
+<td>Retrieves a value from the <code>$_GET</code> array if it's numeric.</td>
+<td>The function checks if the value associated with the key <code>$val</code> in the <code>$_GET</code> array is numeric. If it is, it returns the value; otherwise, it returns <code>false</code>. The <code>@</code> operator handles cases where the key does not exist.</td>
+</tr>
+<tr>
+<td><code>x_postint($val)</code></td>
+<td>Retrieves a value from the <code>$_POST</code> array if it's numeric.</td>
+<td>Similar to <code>x_getint()</code>, this function checks if the value associated with the key <code>$val</code> in the <code>$_POST</code> array is numeric. If so, it returns the value; otherwise, it returns <code>false</code>. The <code>@</code> operator handles cases where the key does not exist.</td>
+</tr>
+<tr>
+<td><code>x_get($val)</code></td>
+<td>Retrieves a value from the <code>$_GET</code> array if it exists.</td>
+<td>The function checks if the key <code>$val</code> exists in the <code>$_GET</code> array. If it does, it returns the corresponding value; otherwise, it returns <code>false</code>. The <code>@</code> operator handles undefined keys.</td>
+</tr>
+<tr>
+<td><code>x_post($val)</code></td>
+<td>Retrieves a value from the <code>$_POST</code> array if it exists.</td>
+<td>Similar to <code>x_get()</code>, this function checks if the key <code>$val</code> exists in the <code>$_POST</code> array. If it does, it returns the corresponding value; otherwise, it returns <code>false</code>. The <code>@</code> operator handles undefined keys.</td>
+</tr>
+<tr>
+<td><code>x_datediff_before($d1, $d2, $length)</code></td>
+<td>Checks if the difference between two dates is greater than a specified length (in days).</td>
+<td>The function calculates the difference between two dates (<code>$d1</code> and <code>$d2</code>) and returns <code>true</code> if the difference (in days) is greater than <code>$length</code>. If either date is <code>false</code>, it returns <code>false</code>. The <code>date_diff()</code> function is used to calculate the interval, and <code>format('%a')</code> returns the difference in days.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="button-functions">Button Functions</h2>
+<p>Functions to work with buttons, which can execute code and more inside <code>x_button.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_executionButton($db, $name, $url, $query, $get, $msgerr = "Fehler!", $msgok = "Erfolgreich!", $break = false, $style = "")</code></td>
+<td>Creates an execution button that performs a database query when clicked and refreshes the page.</td>
+<td>The function constructs a URL with the specified <code>$get</code> parameter and generates an anchor tag (<code>&lt;a&gt;</code>) styled as a button. If the URL contains the query parameter <code>?</code>, it appends the <code>$get</code> parameter; otherwise, it adds it. If the button is clicked, it checks for the <code>$get</code> parameter in <code>$_GET</code>. If found, it executes the given SQL query using the database connection (<code>$db</code>). If successful, it refreshes the page with the updated URL after removing the <code>$get</code> parameter.</td>
+</tr>
+<tr>
+<td><code>x_button($name, $url, $break = false, $style = "", $reacttourl = true)</code></td>
+<td>Creates a simple button that links to a specified URL, optionally applying a different style if the current URL matches the link.</td>
+<td>The function generates an anchor tag (<code>&lt;a&gt;</code>) styled as a button, with the specified <code>$url</code> and <code>$name</code>. If <code>$reacttourl</code> is <code>true</code> and the current URL matches the <code>$url</code>, the button style is modified to indicate it as inactive. Optionally, the button can be followed by a line break if <code>$break</code> is <code>true</code>.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="eventbox-functions">Eventbox Functions</h2>
+<p>Functions to spawn notification boxes for users inside <code>x_eventbox.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_eventBoxPrep($text, $type = "x", $precookie = "", $morecss = "", $buttontext = "X", $imgok = false, $imgfail = false, $imgwarn = false, $imgelse = false)</code></td>
+<td>Prepares an event box with specified text, style, and optional images, saving it to a session variable for later display.</td>
+<td>The function creates an event box with a message (<code>$text</code>) and a specific type (<code>$type</code>), such as "success", "warning", or "error". It can include an image depending on the type. The event box's HTML and CSS are generated, including a close button (<code>$buttontext</code>). The generated content is stored in a session variable (<code>$_SESSION</code>) using the prefix <code>$precookie</code>. The box styling can be customized with the <code>$morecss</code> parameter.</td>
+</tr>
+<tr>
+<td><code>x_eventBoxShow($precookie = "")</code></td>
+<td>Displays the prepared event box by echoing the stored session variable, then clears the session variable.</td>
+<td>The function checks if the event box should be skipped (using a session variable). If not, it echoes the HTML stored in the session variable created by <code>x_eventBoxPrep()</code>, then unsets (deletes) the session variable to prevent repeated display. The <code>$precookie</code> parameter allows handling of multiple event boxes with different prefixes.</td>
+</tr>
+<tr>
+<td><code>x_eventBoxSet($precookie = "")</code></td>
+<td>Checks if an event box has been prepared and is stored in the session.</td>
+<td>The function checks if a session variable for an event box exists, returning <code>true</code> if it does and <code>false</code> otherwise. This can be used to determine if an event box has already been prepared. The <code>$precookie</code> parameter allows for checking different prefixed session variables.</td>
+</tr>
+<tr>
+<td><code>x_eventBoxSkip($precookie = "")</code></td>
+<td>Sets a session variable to skip displaying the event box.</td>
+<td>The function sets a session variable that prevents the event box from being displayed. This is useful if the event box should be temporarily skipped without clearing its content. The <code>$precookie</code> parameter allows this behavior to be controlled for specific prefixed event boxes.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cookie-banner-functions">Cookie Banner Functions</h2>
+<p>Function to spawn a simple cookie banner for users inside <code>x_cookiebanner.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_cookieBanner_Pre($precookie = "", $redirect = true)</code></td>
+<td>Prepares the cookie banner by setting a session variable if the banner is acknowledged, and optionally redirects to the current page.</td>
+<td>The function checks if a session is active; if not, it starts one. It then checks if the cookie banner has been acknowledged by looking for a specific session variable. If the banner is acknowledged (via POST or GET request), it sets this session variable and optionally redirects to the current page. This helps to prevent showing the banner repeatedly after acknowledgment.</td>
+</tr>
+<tr>
+<td><code>x_cookieBanner($precookie = "", $use_post = false, $text = false, $url_cookies = "", $redirect_url = false, $button_text = "I Agree")</code></td>
+<td>Displays a cookie consent banner with options for custom text, a redirect URL, and POST/GET submission handling.</td>
+<td>The function checks if a session is active; if not, it starts one. It determines whether to display the banner based on a session variable. If the banner is not acknowledged, it displays the banner with customizable text. The form can use GET or POST methods depending on the <code>$use_post</code> parameter. If a <code>$redirect_url</code> is provided, the form action will redirect to this URL upon submission. The <code>$button_text</code> parameter sets the button label.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="rss-functions">RSS Functions</h2>
+<p>Functions related to RSS feeds inside <code>x_rss.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_rss_list($urltemp, $defaultcover, $limit = 25)</code></td>
+<td>Fetches RSS feed items from a given URL, processes them, and displays them with a default cover image if needed. Limits the number of items displayed.</td>
+<td>The function loads the RSS feed from the provided URL (<code>$urltemp</code>) using <code>DOMDocument</code>. It extracts the title, link, publication date, and image URL from each feed item. It processes up to <code>$limit</code> items, ensuring that if no cover image is provided, a default image (<code>$defaultcover</code>) is used. It formats the date and displays each item as a clickable div with an image and title. If the image URL does not start with "http", it prepends "https://".</td>
+</tr>
+<tr>
+<td><code>x_rss_array($urltemp)</code></td>
+<td>Fetches RSS feed items from a given URL and returns them as an array.</td>
+<td>The function loads the RSS feed from the provided URL (<code>$urltemp</code>) using <code>DOMDocument</code>. It extracts the title, link, publication date, and image URL from each feed item and stores them in an associative array. The resulting array of feed items is returned. This array can be used for further processing or display.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="table-functions">Table Functions</h2>
+<p>Functions to spawn tables inside <code>x_table.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_table_div($array, $titlelist, $alignarray = false, $percentarray = false, $title = false)</code></td>
+<td>Renders a styled table in a <code>div</code> container, with customizable column alignment, width percentages, and optional title.</td>
+<td>The function creates a <code>div</code> containing a table with column titles and rows of data. It starts by optionally displaying a title. Column titles are styled based on alignment (<code>$alignarray</code>) and width percentages (<code>$percentarray</code>). It then populates rows of the table using data from <code>$array</code>, alternating row colors. Each column's width and alignment are controlled by the given parameters. If no cover image is provided, a default image is used.</td>
+</tr>
+<tr>
+<td><code>x_table_complex($array, $titlelist, $formid = "", $alignarray = false)</code></td>
+<td>Generates a table with search functionality, allowing filtering of data through input fields in the table headers.</td>
+<td>This function creates an HTML form with a table that includes search input fields in the headers. Each input field corresponds to a column in the table and allows users to filter rows based on their input. The table displays rows from <code>$array</code> that match the search criteria. The <code>$formid</code> parameter helps generate a unique ID for the form. Data filtering is performed using POST requests and the search fields' values.</td>
+</tr>
+<tr>
+<td><code>x_table_simple($array, $titlelist, $tableid = "x_table_simple", $alignarray = false)</code></td>
+<td>Displays a simple table with specified column titles and alignment, and an optional ID for the table.</td>
+<td>The function generates a basic HTML table with headers and rows from <code>$array</code>. It allows for customizable column alignment through <code>$alignarray</code> and sets the table ID via <code>$tableid</code>. If <code>$array</code> is empty, a message indicating no data is shown. Each cell's text alignment is determined based on the provided alignment array or defaults to left, right, or center. The table displays data without additional styling or features.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="captcha-functions">Captcha Functions</h2>
+<p>Functions to spawn captchas inside <code>x_captcha.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Function</strong></th>
+<th><strong>Description</strong></th>
+<th><strong>Explanation</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>x_captcha($preecookie = "", $width = 550, $height = 250, $square_count = 5, $eclipse_count = 5, $color_ar = false, $font = "", $code = "")</code></td>
+<td>Generates a CAPTCHA image with customizable dimensions, shapes, colors, and text.</td>
+<td>The function creates a CAPTCHA image for verification purposes. It initializes colors for squares, ellipses, background, and text. It then creates an image of specified dimensions and draws randomly placed squares and ellipses. The CAPTCHA code is stored in the session and rendered onto the image using a specified font. Headers are set to prevent caching of the image. The resulting image is output as JPEG.</td>
+</tr>
+<tr>
+<td><code>x_captcha_key($preecookie = "")</code></td>
+<td>Retrieves the CAPTCHA code stored in the session.</td>
+<td>This function returns the CAPTCHA code stored in the session variable specified by <code>$preecookie</code>. This allows for the comparison of user input against the generated CAPTCHA code to verify correctness.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="search-functions">Search Functions</h2>
+<p><strong>Warning: This function is experimental!</strong>
+Functions to search with scoring inside <code>x_search.php</code>:</p>
+<table>
+<thead>
+<tr>
+<th><strong>Section</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Function Signature</strong></td>
+<td><code>function x_search($mysql, $table, $search_fields = array(), $get_fields = array(), $search_string = "", $uniqueref = "id")</code></td>
+</tr>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Searches a database table based on a search string, scores the results, and returns them sorted by relevance.</td>
+</tr>
+<tr>
+<td><strong>Parameters</strong></td>
+<td>- <code>$mysql</code>: Database connection object. <br> - <code>$table</code>: Name of the table to search. <br> - <code>$search_fields</code>: Fields to search within. <br> - <code>$get_fields</code>: Fields to return in the results. <br> - <code>$search_string</code>: The search term or terms. <br> - <code>$uniqueref</code>: Unique identifier field for sorting.</td>
+</tr>
+<tr>
+<td><strong>Abort Condition</strong></td>
+<td>Checks if the search string is empty or null. If true, returns <code>false</code>.</td>
+</tr>
+<tr>
+<td><strong>Trim Search String</strong></td>
+<td>Removes extra whitespace from the search string.</td>
+</tr>
+<tr>
+<td><strong>Split Search String</strong></td>
+<td>Splits the search string into an array of terms if it contains spaces; otherwise, treats it as a single term.</td>
+</tr>
+<tr>
+<td><strong>Initialize Query and Bind Array</strong></td>
+<td>Prepares the SQL query and binds array for parameterized queries.</td>
+</tr>
+<tr>
+<td><strong>Build Query</strong></td>
+<td>Constructs the SQL query with conditions for each search term. <br> - For the first term, includes specific fields. <br> - For subsequent terms, adds conditions for additional search fields.</td>
+</tr>
+<tr>
+<td><strong>Prepare Bind Array</strong></td>
+<td>Adds each search term to the binding array for the SQL query.</td>
+</tr>
+<tr>
+<td><strong>Execute Query</strong></td>
+<td>Executes the SQL query using the <code>$mysql</code> object and retrieves the results.</td>
+</tr>
+<tr>
+<td><strong>Score Calculation</strong></td>
+<td>Calculates a relevance score for each result based on term frequency and weight.</td>
+</tr>
+<tr>
+<td><strong>Sort Results</strong></td>
+<td>Sorts the results by the calculated score in descending order using <code>array_multisort()</code>.</td>
+</tr>
+<tr>
+<td><strong>Return Results</strong></td>
+<td>Constructs and returns an array of results sorted by relevance.</td>
+</tr>
+<tr>
+<td><strong>Fallback</strong></td>
+<td>Returns an empty array if no results are found or if the scoring array is empty.</td>
+</tr>
+</tbody>
+</table></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["content.code.copy"], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
+      
+        <script src="../extra.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
