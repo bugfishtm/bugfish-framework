@@ -1,0 +1,100 @@
+site_name: Bugfish Framework
+repo_url: https://github.com/bugfishtm/bugfish-framework
+repo_name: bugfish-framework
+
+nav:
+    - Overview: index.md
+    - Download: download.md
+    - CSS Library:
+        - xcss_xfpe.css: css/index.md
+    - JavaScript Library:
+        - xjs_library.js: javascript/index.md
+    - PHP Functions:
+        - x_button.php: functions/x_button.md
+        - x_captcha.php: functions/x_captcha.md
+        - x_cookiebanner.php: functions/x_cookiebanner.md
+        - x_curl.php: functions/x_curl.md
+        - x_eventbox.php: functions/x_eventbox.md
+        - x_library.php: functions/x_library.md
+        - x_rss.php: functions/x_rss.md
+        - x_search.php: functions/x_search.md
+        - x_table.php: functions/x_table.md
+    - PHP Classes:
+        - x_class_2fa: classes/x_class_2fa.md
+        - x_class_api: classes/x_class_api.md
+        - x_class_benchmark: classes/x_class_benchmark.md
+        - x_class_comment: classes/x_class_comment.md
+        - x_class_crypt: classes/x_class_crypt.md
+        - x_class_csrf: classes/x_class_csrf.md
+        - x_class_curl: classes/x_class_curl.md
+        - x_class_debug: classes/x_class_debug.md
+        - x_class_eventbox: classes/x_class_eventbox.md
+        - x_class_hitcounter: classes/x_class_hitcounter.md
+        - x_class_ipbl: classes/x_class_ipbl.md
+        - x_class_log: classes/x_class_log.md
+        - x_class_mail: classes/x_class_mail.md
+        - x_class_mail_item: classes/x_class_mail_item.md
+        - x_class_mail_template: classes/x_class_mail_template.md
+        - x_class_mysql: classes/x_class_mysql.md
+        - x_class_mysql_item: classes/x_class_mysql_item.md
+        - x_class_perm: classes/x_class_perm.md
+        - x_class_perm_item: classes/x_class_perm_item.md
+        - x_class_redis: classes/x_class_redis.md
+        - x_class_referer: classes/x_class_referer.md
+        - x_class_block: classes/x_class_block.md
+        - x_class_table: classes/x_class_table.md
+        - x_class_lang: classes/x_class_lang.md
+        - x_class_user: classes/x_class_user.md
+        - x_class_var: classes/x_class_var.md
+        - x_class_version: classes/x_class_version.md
+        - x_class_zip: classes/x_class_zip.md
+    - Contributing: contributing.md
+    - Warranty: warranty.md
+    - Support: support.md
+    - License: license.md
+    - Impressum: https://bugfishtm.blogspot.com/2023/05/impressum.html
+    - Privacy: https://bugfishtm.blogspot.com/2023/05/privacy.html
+
+theme:
+  name: material
+  logo: ./logo.png
+  favicon: ./favicon.ico
+  primary: deep orange
+  language: 'en'
+  accent: deep orange
+  font: false
+  features:
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: blue
+      accent: blue
+
+extra_css:
+  - extra.css
+
+extra_javascript:
+  - extra.js
+
+plugins:
+    - mkdocstrings
+    - search
+    - mkdocs-video
+    - glightbox
+    
+markdown_extensions:
+  - admonition
+  - attr_list
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  
+use_directory_urls: false
+
+extra:
+  meta:
+    author: "Jan-Maurice Dahlmanns"
