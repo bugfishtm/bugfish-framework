@@ -1,0 +1,21 @@
+# PHP Functions: Tables
+
+Use table-related functions by including `/_framework/functions/x_table.php`.
+
+
+
+!!! warning "Dependencies"
+	- PHP 7.1-7.4
+	- PHP 8.0-8.4
+	
+!!! warning "PHP-Modules"
+	- `mbstring`: Required for preg_match functions.
+
+
+
+| **Function**                                    | **Description**                                                                                                                                                                                                                                                | **Explanation**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+|-------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `x_table_div($array, $titlelist, $alignarray = false, $percentarray = false, $title = false)` | Renders a styled table in a `div` container, with customizable column alignment, width percentages, and optional title.                                                                                                                                       | The function creates a `div` containing a table with column titles and rows of data. It starts by optionally displaying a title. Column titles are styled based on alignment (`$alignarray`) and width percentages (`$percentarray`). It then populates rows of the table using data from `$array`, alternating row colors. Each column's width and alignment are controlled by the given parameters. If no cover image is provided, a default image is used.                |
+| `x_table_complex($array, $titlelist, $formid = "", $alignarray = false)` | Generates a table with search functionality, allowing filtering of data through input fields in the table headers.                                                                                                        | This function creates an HTML form with a table that includes search input fields in the headers. Each input field corresponds to a column in the table and allows users to filter rows based on their input. The table displays rows from `$array` that match the search criteria. The `$formid` parameter helps generate a unique ID for the form. Data filtering is performed using POST requests and the search fields' values.                  |
+| `x_table_simple($array, $titlelist, $tableid = "x_table_simple", $alignarray = false)` | Displays a simple table with specified column titles and alignment, and an optional ID for the table.                                                                                                                                 | The function generates a basic HTML table with headers and rows from `$array`. It allows for customizable column alignment through `$alignarray` and sets the table ID via `$tableid`. If `$array` is empty, a message indicating no data is shown. Each cell's text alignment is determined based on the provided alignment array or defaults to left, right, or center. The table displays data without additional styling or features. |
+
