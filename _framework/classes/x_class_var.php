@@ -1,29 +1,25 @@
 <?php
 	/* 
-		 ____  __  __  ___  ____  ____  ___  _   _ 
-		(  _ \(  )(  )/ __)( ___)(_  _)/ __)( )_( )
-		 ) _ < )(__)(( (_-. )__)  _)(_ \__ \ ) _ ( 
-		(____/(______)\___/(__)  (____)(___/(_) (_) www.bugfish.eu
-			  ___                                         _     
-			 / __)                                       | |    
-			| |__ ____ ____ ____   ____ _ _ _  ___   ____| |  _ 
-			|  __) ___) _  |    \ / _  ) | | |/ _ \ / ___) | / )
-			| | | |  ( ( | | | | ( (/ /| | | | |_| | |   | |< ( 
-			|_| |_|   \_||_|_|_|_|\____)\____|\___/|_|   |_| \_)
+		 ______  _     _ _______ _______ _  ______ _     _ 
+		(____  \(_)   (_|_______|_______) |/ _____|_)   (_)
+		 ____)  )_     _ _   ___ _____  | ( (____  _______ 
+		|  __  (| |   | | | (_  |  ___) | |\____ \|  ___  |
+		| |__)  ) |___| | |___) | |     | |_____) ) |   | |
+		|______/ \_____/ \_____/|_|     |_(______/|_|   |_|
 		Copyright (C) 2024 Jan Maurice Dahlmanns [Bugfish]
 
-		This program is free software: you can redistribute it and/or modify
-		it under the terms of the GNU General Public License as published by
-		the Free Software Foundation, either version 3 of the License, or
-		(at your option) any later version.
+		This program is free software; you can redistribute it and/or
+		modify it under the terms of the GNU Lesser General Public License
+		as published by the Free Software Foundation; either version 2.1
+		of the License, or (at your option) any later version.
 
 		This program is distributed in the hope that it will be useful,
 		but WITHOUT ANY WARRANTY; without even the implied warranty of
 		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU General Public License for more details.
+		GNU Lesser General Public License for more details.
 
-		You should have received a copy of the GNU General Public License
-		along with this program.  If not, see <https://www.gnu.org/licenses/>.
+		You should have received a copy of the GNU Lesser General Public License
+		along with this program; if not, see <https://www.gnu.org/licenses/>.
 	*/
 	class x_class_var {
 		// Class Variables
@@ -199,7 +195,7 @@
 		
 		
 		// Setup Int
-		public function form($varname, $type = "int", $selectarray = array(), $precookie = "", $button_class="btn btn-warning waves-effect waves-light", $itemclass = "form-control", $editbuttonname = "Edit", $editbuttonclass = "btn btn-primary") {	
+		public function form($varname, $type = "int", $selectarray = array(), $precookie = "", $button_class="btn btn-warning waves-effect waves-light", $itemclass = "form-control", $editbuttonname = "Edit") {	
 			$outputform = 0;
 			if(!$this->exists($varname)) { return "error-var-not-found";}
 			if(!isset($_SESSION[$precookie."x_class_var"])) {$_SESSION[$precookie."x_class_var"] = mt_rand(10000000, 90000000); }
@@ -218,10 +214,10 @@
 					} 		
 					if(@$_POST[$varnamenews] != $tmp_var[$this->db_r_c_value]) {
 						if($this->set($varname, $finalvalue, false, true, true)) {
-							$text = "<div class='x_class_var_change_ok'>Changed successfully!</div>";
-						} else {$text = "<div class='x_class_var_change_fail'>Could not be changed!</div>";}	
-					} else {$text = "<div class='x_class_var_change_ok'>Changed successfully!</div>";}	
-				} else { $text = "<div class='x_class_var_change_fail'>CSRF Error Try Again!</div>"; }
+							$text = "<div class='x_class_var_change_ok'>Changed successfully!</div>"; if(!defined("X_CLASS_VAR_FORM_OUTPUT")) { define("X_CLASS_VAR_FORM_OUTPUT", 1); }
+						} else {$text = "<div class='x_class_var_change_fail'>Could not be changed!</div>"; if(!defined("X_CLASS_VAR_FORM_OUTPUT")) { define("X_CLASS_VAR_FORM_OUTPUT", 2); } }	
+					} else {$text = "<div class='x_class_var_change_ok'>Changed successfully!</div>"; if(!defined("X_CLASS_VAR_FORM_OUTPUT")) { define("X_CLASS_VAR_FORM_OUTPUT", 1); } }	
+				} else { $text = "<div class='x_class_var_change_fail'>CSRF Error Try Again!</div>"; if(!defined("X_CLASS_VAR_FORM_OUTPUT")) { define("X_CLASS_VAR_FORM_OUTPUT", 2); }}
 			} $current = $this->get_full($varname);  ?>
 			<section id="<?php echo $precookie; ?>x_class_var_anchor_<?php echo $current[$this->db_r_c_id]; ?>"></section><br />
 			<div class="x_class_var" >
@@ -230,17 +226,17 @@
 					<?php if(is_string($current[$this->db_r_c_descr])) { echo "<div class='x_class_var_setup_descr'>".$current[$this->db_r_c_descr]; echo "</div>"; } ?>
 					<?php if(is_string(@$text) AND strlen(@$text) > 5) { echo @$text; echo ""; } ?>
 						<!-- Int -->
-						<?php if($type == "int") { ?> <input class="<?php echo $itemclass; ?>"  type="number" value="<?php if(is_array($current)) { echo htmlentities($current[$this->db_r_c_value] ?? ''); } ?>" name="<?php echo $varnamenews; ?>"><br /><?php } ?>				
+						<?php if($type == "int") { ?> <input class="x_class_var_item_form_object <?php echo $itemclass; ?>"  type="number" value="<?php if(is_array($current)) { echo htmlentities($current[$this->db_r_c_value] ?? ''); } ?>" name="<?php echo $varnamenews; ?>"><br /><?php } ?>				
 						<!-- String -->
-						<?php if($type == "string") { ?> <input class="<?php echo $itemclass; ?>"  type="text" value="<?php if(is_array($current)) { echo htmlentities($current[$this->db_r_c_value] ?? ''); } ?>" name="<?php echo $varnamenews; ?>"><br /><?php } ?>					
+						<?php if($type == "string") { ?> <input class="x_class_var_item_form_object <?php echo $itemclass; ?>"  type="text" value="<?php if(is_array($current)) { echo htmlentities($current[$this->db_r_c_value] ?? ''); } ?>" name="<?php echo $varnamenews; ?>"><br /><?php } ?>					
 						<!-- Text -->
-						<?php if($type == "text") { ?> <textarea class="<?php echo $itemclass; ?>"  name="<?php echo $varnamenews; ?>"><?php if(is_array($current)) { echo htmlspecialchars($current[$this->db_r_c_value] ?? ''); } ?></textarea><br /><?php } ?>
+						<?php if($type == "text") { ?> <textarea class="x_class_var_item_form_object <?php echo $itemclass; ?>"  name="<?php echo $varnamenews; ?>"><?php if(is_array($current)) { echo htmlspecialchars($current[$this->db_r_c_value] ?? ''); } ?></textarea><br /><?php } ?>
 						<!-- Bool -->
 						<?php if(false AND is_array($current) AND $current[$this->db_r_c_value] == 1) { $xxx = "checked"; } else { $xxx = ""; } ?>	
-						<?php if(false) { ?>Configure: <input class="<?php echo $itemclass; ?>" type="checkbox" name="<?php echo $varnamenews; ?>" <?php echo $xxx; ?>><?php } ?>		
+						<?php if(false) { ?>Configure: <input class="x_class_var_item_form_object <?php echo $itemclass; ?>" type="checkbox" name="<?php echo $varnamenews; ?>" <?php echo $xxx; ?>><?php } ?>		
 						<!-- Select -->
 						<?php if($type == "select") { ?>
-							<select class="<?php echo $itemclass; ?>"  name="<?php echo $varnamenews; ?>">
+							<select class="x_class_var_item_form_object <?php echo $itemclass; ?>"  name="<?php echo $varnamenews; ?>">
 							<option value="<?php echo htmlentities($current[$this->db_r_c_value] ?? ''); ?>"><?php 
 								$nochange = htmlentities($current[$this->db_r_c_value] ?? '');
 								if(is_array($selectarray)) {
@@ -266,7 +262,7 @@
 						<!-- Misc Form -->
 						<input type="hidden" value="<?php echo $_SESSION[$precookie."x_class_var"]; ?>" name="<?php echo $precookie; ?>x_class_var_csrf">
 						<input type="hidden" value="<?php echo "true"; ?>" name="<?php $varnamenew; ?>">
-						<input type="submit" class="<?php echo @$editbuttonclass; ?>" value="<?php echo $editbuttonname; ?>" name="<?php echo $varnamenew; ?>" class="<?php echo $button_class; ?>">			
+						<button type="submit" name="<?php echo $varnamenew; ?>" class="<?php echo $button_class; ?>"><?php echo $editbuttonname; ?></button>		
 				</form>
 			</div>
 		<?php  return $outputform; }	

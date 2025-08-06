@@ -39,9 +39,17 @@ Introducing the Bugfish PHP Framework: a robust toolkit designed to empower web 
 
 Discover a collection of indispensable PHP functions crafted for seamless integration across various projects. Witness how these functions expedite and refine coding processes within web development. Comprehensive documentation for each function is provided below. To incorporate these functions seamlessly, include the PHP files within the designated `_functions` subfolder in the overarching `_framework` folder. This strategic approach optimizes coding efficiency and enhances web project performance.
 
-| Name | License |
-|------|---------|
-| [PHP Function Library](./functions/index.html) | GPLv3 |
+| Name             | Description                                               | License  |
+|------------------|-----------------------------------------------------------|----------|
+| [x_button.php](./functions/x_button.html)    | PHP script providing button UI components or helpers.    | LGPL-2.1 |
+| [x_captcha.php](./functions/x_captcha.html)   | PHP implementation of CAPTCHA for spam prevention.       | LGPL-2.1 |
+| [x_cookiebanner.php](./_functions/x_cookiebanner.html) | PHP code to display and manage cookie consent banners. | LGPL-2.1 |
+| [x_curl.php](./functions/x_curl.html)       | PHP wrapper or helper functions for cURL HTTP requests. | LGPL-2.1 |
+| [x_eventbox.php](./functions/x_eventbox.html)   | PHP component for displaying or managing event boxes/messages. | LGPL-2.1 |
+| [x_library.php](./functions/x_library.html)    | Collection of utility functions for general use in PHP.  | LGPL-2.1 |
+| [x_rss.php](./functions/x_rss.html)        | PHP script to generate or parse RSS feeds.               | LGPL-2.1 |
+| [x_search.php](./functions/x_search.html)     | PHP functions for search implementation and indexing.    | LGPL-2.1 |
+| [x_table.php](./functions/x_table.html)      | PHP helper for generating or manipulating HTML tables.   | LGPL-2.1 |
 
 ## PHP Classes
 
@@ -51,35 +59,35 @@ Note: Some classes require a database connection. They will install necessary ta
 
 | Name | Description | License |
 |------|-------------|---------|
-| [x_class_2fa](./classes/x_class_2fa.html) | The TwoFactorAuthenticator class in PHP generates and verifies Time-Based One-Time Password (TOTP) codes for two-factor authentication (2FA). It offers methods for generating random secret keys, creating 2FA codes, and validating them, enhancing security in PHP applications. | GPLv3 |
-| [x_class_api](./classes/x_class_api.html) | Facilitates the creation of simple and secure API requests. This class needs PHP Module CURL to work properly. It supports token-authentication on API Requests and more. | GPLv3 |
-| [x_class_benchmark](./classes/x_class_benchmark.html) | Lets you benchmark resource consumption for sites on your website. PHP values related to benchmarking will be saved in a database per URL and overwritten if the URL is refreshed to monitor consumption even after changes. | GPLv3 |
-| [x_class_block](./classes/x_class_block.html) | Facilitates session-based user counting and block operations. Easily block users from various areas if they make bad decisions and raise their counter. | GPLv3 |
-| [x_class_comment](./classes/x_class_comment.html) | Enables commenting functionality, suitable for guestbooks or website comment sections. Can also act as a simple chat or logging tool. | GPLv3 |
-| [x_class_csrf](./classes/x_class_csrf.html) | Provides robust CSRF protection for web forms, supporting external actions. Includes functions to control everything related to CSRF keys, saving you time and adding basic security to your website. | GPLv3 |
-| [x_class_curl](./classes/x_class_curl.html) | Efficiently handles Curl requests and logs them for web operations. This class makes it easier to build PHP Curl requests. PHP Module CURL is needed to run this class. | GPLv3 |
-| [x_class_crypt](./classes/x_class_crypt.html) | Provides file and string encryption capabilities. Encrypt and decrypt strings/files using a simple encryption method. | GPLv3 |
-| [x_class_debug](./classes/x_class_debug.html) | Aids in debugging and offers development notifications and functions. Check if PHP modules are enabled or get benchmarks for your website. | GPLv3 |
-| [x_class_eventbox](./classes/x_class_eventbox.html) | Simplifies the display of user notifications and messages on a web page. | GPLv3 |
-| [x_class_hitcounter](./classes/x_class_hitcounter.html) | Counts website visitors per page URL with configurable options to handle various cases. | GPLv3 |
-| [x_class_ipbl](./classes/x_class_ipbl.html) | Implements IP blacklisting. Allows you to raise counters for IPs and block certain areas if an IP is acting suspiciously. Can help prevent brute-force attacks if implemented correctly. | GPLv3 |
-| [x_class_log](./classes/x_class_log.html) | Provides a class for logging operations, allowing you to make log entries for almost every possibility. | GPLv3 |
-| [x_class_lang](./classes/x_class_lang.html) | Manages language translation for multi-language websites with functions and parameters for adding and managing translation keys. | GPLv3 |
-| [x_class_mail](./classes/x_class_mail.html) | Handles mail sending operations with a subclass for sending operation items. Depends on `x_class_phpmailer`. | GPLv3 |
-| [x_class_mail_item](./classes/x_class_mail_item.html) | Together with x_class_mail simplifies single object transmissions. Depends on `x_class_phpmailer`. | GPLv3 |
-| [x_class_mail_template](./classes/x_class_mail_template.html) | Creates mail templates with substitutions and footer/header options, compatible with `x_class_mail`. Simplifies the preparation of email templates. | GPLv3 |
-| [x_class_mysql](./classes/x_class_mysql.html) | Provides MySQL database handling capabilities with additional features. Most classes need an `x_class_mysql` object to run properly. Includes a database logging system to store errors and more. | GPLv3 |
-| [x_class_mysql_item](./classes/x_class_mysql_item.html) | Provides MySQL database handling capabilities for single database table elements. | GPLv3 |
+| [x_class_2fa](./classes/x_class_2fa.html) | The TwoFactorAuthenticator class in PHP generates and verifies Time-Based One-Time Password (TOTP) codes for two-factor authentication (2FA). It offers methods for generating random secret keys, creating 2FA codes, and validating them, enhancing security in PHP applications. | LGPL-2.1 |
+| [x_class_api](./classes/x_class_api.html) | Facilitates the creation of simple and secure API requests. This class needs PHP Module CURL to work properly. It supports token-authentication on API Requests and more. | LGPL-2.1 |
+| [x_class_benchmark](./classes/x_class_benchmark.html) | Lets you benchmark resource consumption for sites on your website. PHP values related to benchmarking will be saved in a database per URL and overwritten if the URL is refreshed to monitor consumption even after changes. | LGPL-2.1 |
+| [x_class_block](./classes/x_class_block.html) | Facilitates session-based user counting and block operations. Easily block users from various areas if they make bad decisions and raise their counter. | LGPL-2.1 |
+| [x_class_comment](./classes/x_class_comment.html) | Enables commenting functionality, suitable for guestbooks or website comment sections. Can also act as a simple chat or logging tool. | LGPL-2.1 |
+| [x_class_csrf](./classes/x_class_csrf.html) | Provides robust CSRF protection for web forms, supporting external actions. Includes functions to control everything related to CSRF keys, saving you time and adding basic security to your website. | LGPL-2.1 |
+| [x_class_curl](./classes/x_class_curl.html) | Efficiently handles Curl requests and logs them for web operations. This class makes it easier to build PHP Curl requests. PHP Module CURL is needed to run this class. | LGPL-2.1 |
+| [x_class_crypt](./classes/x_class_crypt.html) | Provides file and string encryption capabilities. Encrypt and decrypt strings/files using a simple encryption method. | LGPL-2.1 |
+| [x_class_debug](./classes/x_class_debug.html) | Aids in debugging and offers development notifications and functions. Check if PHP modules are enabled or get benchmarks for your website. | LGPL-2.1 |
+| [x_class_eventbox](./classes/x_class_eventbox.html) | Simplifies the display of user notifications and messages on a web page. | LGPL-2.1 |
+| [x_class_hitcounter](./classes/x_class_hitcounter.html) | Counts website visitors per page URL with configurable options to handle various cases. | LGPL-2.1 |
+| [x_class_ipbl](./classes/x_class_ipbl.html) | Implements IP blacklisting. Allows you to raise counters for IPs and block certain areas if an IP is acting suspiciously. Can help prevent brute-force attacks if implemented correctly. | LGPL-2.1 |
+| [x_class_log](./classes/x_class_log.html) | Provides a class for logging operations, allowing you to make log entries for almost every possibility. | LGPL-2.1 |
+| [x_class_lang](./classes/x_class_lang.html) | Manages language translation for multi-language websites with functions and parameters for adding and managing translation keys. | LGPL-2.1 |
+| [x_class_mail](./classes/x_class_mail.html) | Handles mail sending operations with a subclass for sending operation items. Depends on `x_class_phpmailer`. | LGPL-2.1 |
+| [x_class_mail_item](./classes/x_class_mail_item.html) | Together with x_class_mail simplifies single object transmissions. Depends on `x_class_phpmailer`. | LGPL-2.1 |
+| [x_class_mail_template](./classes/x_class_mail_template.html) | Creates mail templates with substitutions and footer/header options, compatible with `x_class_mail`. Simplifies the preparation of email templates. | LGPL-2.1 |
+| [x_class_mysql](./classes/x_class_mysql.html) | Provides MySQL database handling capabilities with additional features. Most classes need an `x_class_mysql` object to run properly. Includes a database logging system to store errors and more. | LGPL-2.1 |
+| [x_class_mysql_item](./classes/x_class_mysql_item.html) | Provides MySQL database handling capabilities for single database table elements. | LGPL-2.1 |
 | [x_class_phpmailer](https://github.com/PHPMailer/PHPMailer) | Manages email sending operations within the framework. Note: This class is from PHPMailer, not created by Bugfish. | LGPL-2.1 |
-| [x_class_perm](./classes/x_class_perm.html) | Controls user permissions and management functionalities. Ideal for implementing a permission system. | GPLv3 |
-| [x_class_perm_item](./classes/x_class_perm_item.html) | Controls user permissions, including single-item permission objects. Ideal for implementing a permission system. | GPLv3 |
-| [x_class_referer](./classes/x_class_referer.html) | Logs visitor referrers with configuration functions to control how referrers are saved in the database. | GPLv3 |
-| [x_class_redis](./classes/x_class_redis.html) | Offers control over Redis functionality. Caches content on a Redis server to improve website speed. Requires PHP Module REDIS. | GPLv3 |
-| [x_class_table](./classes/x_class_table.html) | Simplifies the creation of dynamic HTML tables with PHP editing capabilities. | GPLv3 |
-| [x_class_user](./classes/x_class_user.html) | Creates various types of user logins with full functionality for password recovery, mail editing, and token operations. A comprehensive login/authentication and token system. | GPLv3 |
-| [x_class_var](./classes/x_class_var.html) | Controls setup variables for websites and includes a function for creating forms to change these values. Ideal for managing constants. | GPLv3 |
-| [x_class_zip](./classes/x_class_zip.html) | Enables file compression and decompression, compatible with `x_class_crypt` for direct encryption and decryption. Requires PHP Module ZIP. | GPLv3 |
-| [x_class_version](./classes/x_class_version.html) | Retrieves version and author information about the currently included framework. | GPLv3 |
+| [x_class_perm](./classes/x_class_perm.html) | Controls user permissions and management functionalities. Ideal for implementing a permission system. | LGPL-2.1 |
+| [x_class_perm_item](./classes/x_class_perm_item.html) | Controls user permissions, including single-item permission objects. Ideal for implementing a permission system. | LGPL-2.1 |
+| [x_class_referer](./classes/x_class_referer.html) | Logs visitor referrers with configuration functions to control how referrers are saved in the database. | LGPL-2.1 |
+| [x_class_redis](./classes/x_class_redis.html) | Offers control over Redis functionality. Caches content on a Redis server to improve website speed. Requires PHP Module REDIS. | LGPL-2.1 |
+| [x_class_table](./classes/x_class_table.html) | Simplifies the creation of dynamic HTML tables with PHP editing capabilities. | LGPL-2.1 |
+| [x_class_user](./classes/x_class_user.html) | Creates various types of user logins with full functionality for password recovery, mail editing, and token operations. A comprehensive login/authentication and token system. | LGPL-2.1 |
+| [x_class_var](./classes/x_class_var.html) | Controls setup variables for websites and includes a function for creating forms to change these values. Ideal for managing constants. | LGPL-2.1 |
+| [x_class_zip](./classes/x_class_zip.html) | Enables file compression and decompression, compatible with `x_class_crypt` for direct encryption and decryption. Requires PHP Module ZIP. | LGPL-2.1 |
+| [x_class_version](./classes/x_class_version.html) | Retrieves version and author information about the currently included framework. | LGPL-2.1 |
 
 ## CSS Library
 
@@ -87,7 +95,7 @@ Introducing the "Bugfish CSS Framework" – a solution for efficient web design.
 
 | Name | License |
 |------|---------|
-| [CSS Classes Library](./css/index.html) | GPLv3 |
+| [CSS Classes Library](./css/index.html) | LGPL-2.1 |
 
 
 ## JavaScript Library
@@ -98,7 +106,7 @@ Find the JavaScript function file in: `/_framework/javascript/*.js`
 
 | Name | License |
 |------|---------|
-| [JavaScript Function Library](./javascript/index.html) | GPLv3 |
+| [JavaScript Function Library](./javascript/index.html) | LGPL-2.1 |
 
 -----------
 
