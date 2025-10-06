@@ -1,28 +1,28 @@
-<?php
-	/* 
-		 ______  _     _ _______ _______ _  ______ _     _ 
-		(____  \(_)   (_|_______|_______) |/ _____|_)   (_)
-		 ____)  )_     _ _   ___ _____  | ( (____  _______ 
-		|  __  (| |   | | | (_  |  ___) | |\____ \|  ___  |
-		| |__)  ) |___| | |___) | |     | |_____) ) |   | |
-		|______/ \_____/ \_____/|_|     |_(______/|_|   |_|
-		Copyright (C) 2024 Jan Maurice Dahlmanns [Bugfish]
+<?php                                                  
+	#	@@@@@@@  @@@  @@@  @@@@@@@  @@@@@@@@ @@@  @@@@@@ @@@  @@@ 
+	#	@@!  @@@ @@!  @@@ !@@       @@!      @@! !@@     @@!  @@@ 
+	#	@!@!@!@  @!@  !@! !@! @!@!@ @!!!:!   !!@  !@@!!  @!@!@!@! 
+	#	!!:  !!! !!:  !!! :!!   !!: !!:      !!:     !:! !!:  !!! 
+	#	:: : ::   :.:: :   :: :: :   :       :   ::.: :   :   : : 						
+	#		 ______  ______   ______   _________   ______  _   _   _   ______   ______   _    __ 
+	#		| |     | |  | \ | |  | | | | | | | \ | |     | | | | | | / |  | \ | |  | \ | |  / / 
+	#		| |---- | |__| | | |__| | | | | | | | | |---- | | | | | | | |  | | | |__| | | |-< <  
+	#		|_|     |_|  \_\ |_|  |_| |_| |_| |_| |_|____ |_|_|_|_|_/ \_|__|_/ |_|  \_\ |_|  \_\ 
+																							 
+	#	Copyright (C) 2025 Jan Maurice Dahlmanns [Bugfish]
 
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU Lesser General Public License
-		as published by the Free Software Foundation; either version 2.1
-		of the License, or (at your option) any later version.
+	#	This program is free software; you can redistribute it and/or
+	#	modify it under the terms of the GNU Lesser General Public License
+	#	as published by the Free Software Foundation; either version 2.1
+	#	of the License, or (at your option) any later version.
 
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU Lesser General Public License for more details.
+	#	This program is distributed in the hope that it will be useful,
+	#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	#	GNU Lesser General Public License for more details.
 
-		You should have received a copy of the GNU Lesser General Public License
-		along with this program; if not, see <https://www.gnu.org/licenses/>.
-	*/
-	use PHPMailer\PHPMailer\PHPMailer;
-	use PHPMailer\PHPMailer\Exception;
+	#	You should have received a copy of the GNU Lesser General Public License
+	#	along with this program; if not, see <https://www.gnu.org/licenses/>.
 
 	class x_class_mail {
 		// Variables for Mail Setup
@@ -119,7 +119,7 @@
 		// Send Mail Function Method #1
 		public function send($to, $toname, $title, $mailContent, $ishtml = false, $FOOTER = false, $HEADER = false, $attachments = false) {
 			// Create Object PHPMailer
-			$tmp_mailer = new PHPMailer;
+			$tmp_mailer = new \PHPMailer\PHPMailer\PHPMailer;
 			
 			// Buildup Connection
 			$tmp_mailer->isSMTP();
@@ -189,7 +189,7 @@
 		// Advanced Mail Functions #2
 		public function mail($subject, $content, $receiver, $cc, $bcc, $attachment, $settings = array()) {
 			// Create Object PHPMailer
-			$tmp_mailer = new PHPMailer;
+			$tmp_mailer = new \PHPMailer\PHPMailer\PHPMailer;
 			$tmp_mailer->isSMTP();
 		
 			// Write SMTP Settings from Class or Settings Override Array		

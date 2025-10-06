@@ -1,26 +1,29 @@
-<?php
-	/* 
-		 ______  _     _ _______ _______ _  ______ _     _ 
-		(____  \(_)   (_|_______|_______) |/ _____|_)   (_)
-		 ____)  )_     _ _   ___ _____  | ( (____  _______ 
-		|  __  (| |   | | | (_  |  ___) | |\____ \|  ___  |
-		| |__)  ) |___| | |___) | |     | |_____) ) |   | |
-		|______/ \_____/ \_____/|_|     |_(______/|_|   |_|
-		Copyright (C) 2024 Jan Maurice Dahlmanns [Bugfish]
+<?php                                                  
+	#	@@@@@@@  @@@  @@@  @@@@@@@  @@@@@@@@ @@@  @@@@@@ @@@  @@@ 
+	#	@@!  @@@ @@!  @@@ !@@       @@!      @@! !@@     @@!  @@@ 
+	#	@!@!@!@  @!@  !@! !@! @!@!@ @!!!:!   !!@  !@@!!  @!@!@!@! 
+	#	!!:  !!! !!:  !!! :!!   !!: !!:      !!:     !:! !!:  !!! 
+	#	:: : ::   :.:: :   :: :: :   :       :   ::.: :   :   : : 						
+	#		 ______  ______   ______   _________   ______  _   _   _   ______   ______   _    __ 
+	#		| |     | |  | \ | |  | | | | | | | \ | |     | | | | | | / |  | \ | |  | \ | |  / / 
+	#		| |---- | |__| | | |__| | | | | | | | | |---- | | | | | | | |  | | | |__| | | |-< <  
+	#		|_|     |_|  \_\ |_|  |_| |_| |_| |_| |_|____ |_|_|_|_|_/ \_|__|_/ |_|  \_\ |_|  \_\ 
+																							 
+	#	Copyright (C) 2025 Jan Maurice Dahlmanns [Bugfish]
 
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU Lesser General Public License
-		as published by the Free Software Foundation; either version 2.1
-		of the License, or (at your option) any later version.
+	#	This program is free software; you can redistribute it and/or
+	#	modify it under the terms of the GNU Lesser General Public License
+	#	as published by the Free Software Foundation; either version 2.1
+	#	of the License, or (at your option) any later version.
 
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU Lesser General Public License for more details.
+	#	This program is distributed in the hope that it will be useful,
+	#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	#	GNU Lesser General Public License for more details.
 
-		You should have received a copy of the GNU Lesser General Public License
-		along with this program; if not, see <https://www.gnu.org/licenses/>.
-	*/
+	#	You should have received a copy of the GNU Lesser General Public License
+	#	along with this program; if not, see <https://www.gnu.org/licenses/>.
+	
 	// Class for Handling Mail Templates and Substitutions to them, eventually directly send with x_class_mail
 	class x_class_mail_template {
 		// Class Variables
@@ -69,7 +72,7 @@
 								  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation',
 								  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification | Auto - Set',
 								  PRIMARY KEY (`id`),
-								  UNIQUE KEY `x_class_mail_template` (`name`, `lang`, `section`));");}
+								  UNIQUE KEY `".$this->table."_unique` (`name`, `lang`, `section`));");}
 
 		// Construct		
 		function __construct($mysql, $table, $section = "", $lang = "") {
@@ -78,16 +81,65 @@
 			$this->section = @substr(trim($section ?? ''), 0, 127);		
 			$this->lang = @substr(trim($lang ?? ''), 0, 127);		
 			if(!$this->mysql->table_exists($table)) { $this->create_table(); $this->mysql->free_all(); }} 
-					
+
+		// Setup new Mail template 
+		public function setup($name, $subject, $content, $description = "", $overwrite = false, $lang = false) {
+			if(!$lang) { $lang = $this->lang; }
+			$bind[0]["value"] 	= $name;
+			$bind[0]["type"] 	= "s";
+			$bind[1]["value"] 	= $this->section;
+			$bind[1]["type"] 	= "s";
+			$bind[2]["value"] 	= $lang;
+			$bind[2]["type"] 	= "s";
+			$ar = $this->mysql->select("SELECT * FROM `".$this->table."` WHERE name = ? AND section = ? AND lang = ?", false, $bind);
+			if(is_array($ar)) {
+				if($overwrite) { 
+					$bind[0]["value"] 	= $name;
+					$bind[0]["type"] 	= "s";
+					$bind[1]["value"] 	= $subject;
+					$bind[1]["type"] 	= "s";
+					$bind[2]["value"] 	= $content;
+					$bind[2]["type"] 	= "s";
+					$bind[3]["value"] 	= $description;
+					$bind[3]["type"] 	= "s";
+					$bind[4]["value"] 	= $name;
+					$bind[4]["type"] 	= "s";
+					$bind[5]["type"]	= "s";
+					$bind[5]["value"]	= $this->section;
+					$bind[6]["type"]	= "s";
+					$bind[6]["value"]	= $lang;
+					$this->mysql->query("UPDATE `".$this->table."` SET name = ?, subject = ?, content = ?, description = ? WHERE name = ? AND section = ? AND lang = ?", $bind);
+				}
+			} else { 
+				$bind[0]["value"] 	= $name;
+				$bind[0]["type"] 	= "s";
+				$bind[1]["value"] 	= $subject;
+				$bind[1]["type"] 	= "s";
+				$bind[2]["value"] 	= $content;
+				$bind[2]["type"] 	= "s";
+				$bind[3]["value"] 	= $description;
+				$bind[3]["type"] 	= "s";
+				$bind[4]["type"]	= "s";
+				$bind[4]["value"]	= $this->section;
+				$bind[5]["type"]	= "s";
+				$bind[5]["value"]	= $lang;
+				$this->mysql->query("INSERT IGNORE INTO `".$this->table."` (name, subject, content, description, section, lang) VALUES(?, ?, ?, ?, ?, ?);", $bind);
+				return $this->mysql->insert_id;
+			}			
+		}
+		
 		// Substitutions
 		private $substitute = array(); // Section for Templates	
+		
 		// Reset Substitutions
 		public function reset_substitution() { $this->substitute = array(); }
+		
 		// Add Substitutions
 		public function add_substitution($name, $replace) { 
 			$substitute = $this->substitute; 
 			array_push($substitute, array($name, $replace));
 			$this->substitute = $substitute;}
+			
 		// Do Substitutions on Text
 		public function do_substitute($text) {
 			if(is_array($this->substitute)) {
@@ -112,54 +164,9 @@
 			} else {
 				return $this->subject;
 			}
-		}			
+		}		
 		
-		// Setup new Mail template 
-		public function setup($name, $subject, $content, $description = "", $overwrite = false, $lang = "") {
-			$bind[0]["value"] 	= $name;
-			$bind[0]["type"] 	= "s";
-			$bind[1]["value"] 	= $this->section;
-			$bind[1]["type"] 	= "s";
-			$bind[2]["value"] 	= $this->lang;
-			$bind[2]["type"] 	= "s";
-			$ar = $this->mysql->select("SELECT * FROM `".$this->table."` WHERE name = ? AND section = ? AND lang = ?", false, $bind);
-			if(is_array($ar)) {
-				if($overwrite) { 
-					$bind[0]["value"] 	= $name;
-					$bind[0]["type"] 	= "s";
-					$bind[1]["value"] 	= $subject;
-					$bind[1]["type"] 	= "s";
-					$bind[2]["value"] 	= $content;
-					$bind[2]["type"] 	= "s";
-					$bind[3]["value"] 	= $description;
-					$bind[3]["type"] 	= "s";
-					$bind[4]["value"] 	= $name;
-					$bind[4]["type"] 	= "s";
-					$bind[5]["type"]	=	"s";
-					$bind[5]["value"]	=	$this->section;
-					$bind[6]["type"]	=	"s";
-					$bind[6]["value"]	=	$this->lang;
-					$this->mysql->query("UPDATE `".$this->table."` SET name = ?, subject = ?, content = ?, description = ? WHERE name = ? AND section = ? AND lang = ?", $bind);
-				}
-			} else { 
-				$bind[0]["value"] 	= $name;
-				$bind[0]["type"] 	= "s";
-				$bind[1]["value"] 	= $subject;
-				$bind[1]["type"] 	= "s";
-				$bind[2]["value"] 	= $content;
-				$bind[2]["type"] 	= "s";
-				$bind[3]["value"] 	= $description;
-				$bind[3]["type"] 	= "s";
-				$bind[4]["type"]	=	"s";
-				$bind[4]["value"]	=	$this->section;
-				$bind[5]["type"]	=	"s";
-				$bind[5]["value"]	=	$this->lang;
-				$this->mysql->query("INSERT IGNORE INTO `".$this->table."` (name, subject, content, description, section, lang) VALUES(?, ?, ?, ?, ?, ?);", $bind);
-				return $this->mysql->insert_id;
-			}			
-		}
-		
-		// Setup new Mail template 
+		// Different Set of Functions depending on current set section and language
 		public function change($id, $name, $subject, $content, $description = "") {
 			if(!is_numeric($id)) { return false; }
 			$bind[0]["value"] = $this->section;

@@ -1,5 +1,7 @@
 # PHP Class: `x_class_hitcounter`
 
+## Introduction
+
 The `x_class_hitcounter` class is designed to track and manage hits on specific URLs within a section of a website. It counts both unique "arrivals" (first visits by a user) and "switches" (subsequent hits to the same URL during a session). The class relies on MySQL for data storage and can dynamically create its own table if it doesn't exist.
 
 - **Session Management:** The class relies on PHP sessions to track arrivals and switches, ensuring unique hits within a session.
@@ -22,7 +24,7 @@ Use the class by including `/_framework/classes/x_class_hitcounter.php`.
 	- `x_class_mysql`: Required for database operations.
 
 
-## Table
+## MySQL Table
 
 This section explains the table structure that will be automatically created by the hit counter class to log site visits. The table captures detailed information about each visit, including the URL, visit counts, and associated sections. Below is a summary of the columns and keys used in the table, along with their intended purpose.
 

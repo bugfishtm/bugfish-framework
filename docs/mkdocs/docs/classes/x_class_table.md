@@ -1,5 +1,7 @@
 # PHP Class: `x_class_table` 
 
+## Introduction
+
 The `x_class_table` class is a PHP utility designed for easy manipulation and management of database tables. It facilitates creating, editing, deleting, and displaying records through a straightforward API. The class is intended for developers who need to handle these operations consistently and securely, incorporating CSRF protection.
 
 - **CSRF Handling:** All `exec_*` methods incorporate CSRF protection using `x_class_csrf`.  

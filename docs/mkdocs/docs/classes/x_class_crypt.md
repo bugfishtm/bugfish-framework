@@ -1,5 +1,7 @@
 # PHP Class: `x_class_crypt`
 
+## Introduction
+
 The `x_class_crypt` class provides encryption and decryption methods using the AES-256-CBC algorithm by default. It allows for secure data handling by encrypting and decrypting data with a specified key.
 
 Use the class by including `/_framework/classes/x_class_crypt.php`.

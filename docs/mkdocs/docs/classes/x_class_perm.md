@@ -1,5 +1,7 @@
 # PHP Class: `x_class_perm`
 
+## Introduction
+
 The `x_class_perm` class provides a comprehensive system for managing permissions associated with references in a database. It supports creating tables, retrieving, adding, and removing permissions for specific references.
 
 Use the class by including `/_framework/classes/x_class_perm.php`.
@@ -14,7 +16,7 @@ Use the class by including `/_framework/classes/x_class_perm.php`.
 !!! warning "PHP-Classes"
 	- `x_class_mysql`: Required for database operations.
 
-## Table
+## MySQL Table
 
 This section describes the table structure used by the Permissions class to store permissions for various objects. The table is automatically created by the class if required for its functionality. Below is a summary of the columns and keys used in the table, along with their purposes.
 

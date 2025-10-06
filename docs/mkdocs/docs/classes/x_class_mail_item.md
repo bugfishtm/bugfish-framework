@@ -1,5 +1,7 @@
 # PHP Class: `x_class_mail_item`
 
+## Introduction
+
 The `x_class_mail_item` class provides a structured way to prepare and send emails with customizable parameters such as recipients, attachments, and settings. It integrates with an external mail handling class (`x_class_mail`) to actually send the email.
 
 Use the class by including `/_framework/classes/x_class_mail_item.php`.

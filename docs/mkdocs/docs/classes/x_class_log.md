@@ -1,5 +1,7 @@
 # PHP Class: `x_class_log` 
 
+## Introduction
+
 The `x_class_log` class provides functionality for logging messages to a database table. It supports various log levels (such as errors, warnings, and notifications) and includes methods for retrieving, posting, and managing log entries.
 
 - **Table Management**: The class ensures that the log table exists and is created if necessary. This includes managing the table schema and auto-increment settings.
@@ -22,7 +24,7 @@ Use the class by including `/_framework/classes/x_class_log.php`.
 !!! warning "PHP-Classes"
 	- `x_class_mysql`: Required for database operations.
 
-## Table
+## MySQL Table
 
 This section details the structure of the table used by the logging class to record various activities, such as errors, warnings, and notifications. The table is automatically created by the class if needed for functionality. Below is a summary of the columns and keys in the table, along with their intended use.
 
@@ -74,14 +76,6 @@ This section details the structure of the table used by the logging class to rec
 | `$section`   | string | Optional. The section or category for the logs. |
 
 - **Description**: Initializes the `x_class_log` object, sets up the table if it does not exist.
-
-### `create_table`
-
-| Parameter | Type  | Description                              |
-|-----------|-------|------------------------------------------|
-| None      | None  | Creates the log table in the database if it does not exist. |
-
-- **Description**: This private method executes a SQL query to create the table schema.
 
 ### `get_array`
 
@@ -175,27 +169,7 @@ This section details the structure of the table used by the logging class to rec
 - **Description**: Inserts a warning log entry.
 - **Returns**: Result of the database query execution.
 
-### `err`
-
-| Parameter | Type   | Description                           |
-|-----------|--------|---------------------------------------|
-| `$message`| string | The log message to store.             |
-| `$ref`    | mixed  | Optional. A reference or additional info. |
-
-- **Description**: Alias for `error()`. Inserts an error log entry.
-- **Returns**: Result of the database query execution.
-
-### `failure`
-
-| Parameter | Type   | Description                           |
-|-----------|--------|---------------------------------------|
-| `$message`| string | The log message to store.             |
-| `$ref`    | mixed  | Optional. A reference or additional info. |
-
-- **Description**: Alias for `error()`. Inserts an error log entry.
-- **Returns**: Result of the database query execution.
-
-### `fail`
+### `fail, failure, err`
 
 | Parameter | Type   | Description                           |
 |-----------|--------|---------------------------------------|

@@ -1,5 +1,7 @@
 # PHP Class: `x_class_curl` 
 
+## Introduction
+
 The `x_class_curl` class is designed to facilitate various types of HTTP requests, including file downloads and uploads, while optionally logging requests and responses to a database. It provides a straightforward interface for making `GET`, `POST`, or custom requests and converting between XML and JSON formats.
 
 1. **Logging**: The class supports logging, which can be enabled using the `logging()` method. The log data is stored in a specified MySQL table. Ensure the MySQL table exists, or the class will automatically create it.
@@ -24,7 +26,7 @@ Use the class by including `/_framework/classes/x_class_curl.php`.
 !!! warning "Required Classes"
 	- **`x_class_mysql`** — This class is required for all logging operations. 
 
-## Table
+## MySQL Table
 
 This section describes the table structure that the cURL class will automatically create to log HTTP requests made using cURL. The table is designed to store detailed information about each request, such as the URL, request type, and response data. Below is an overview of the columns and keys used in the table, along with their intended purpose.
 

@@ -1,5 +1,7 @@
 # PHP Class: `x_class_2fa`
 
+## Introduction
+
 The `x_class_2fa` class enables secure two-factor authentication (2FA) using time-based one-time passwords (TOTPs). It relies on a **Base32-encoded** secret key (RFC 4648, no padding) to generate and verify short-lived codes, typically valid for 30 seconds. The default code length is 6 digits but can be customized via the `$codeLength` parameter. Accurate server time is crucial for successful code validation.
 
 Use the class by including `/_framework/classes/x_class_2fa.php`.

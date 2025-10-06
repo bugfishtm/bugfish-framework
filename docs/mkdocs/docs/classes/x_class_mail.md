@@ -1,5 +1,7 @@
 # PHP Class: `x_class_mail` 
 
+## Introduction
+
 The `x_class_mail` class provides an interface for sending emails using the PHPMailer library. It offers various configuration options and logging capabilities to manage email sending effectively. This class allows you to set up SMTP details, manage email content, handle attachments, and log email activities to a database.
 
 
@@ -17,7 +19,7 @@ Use the class by including `/_framework/classes/x_class_mail.php`.
 	- `x_class_mail_phpmailer`: The PHPMailer library is required for sending emails.  
 	- `x_class_mysql`: Required for logging email activities if enabled.  
 
-## Table
+## MySQL Table
 
 This section describes the table structure used by the mail class to log email sending activities, including both successful and failed attempts. The table is automatically created by the class if required for its functionality. Below is a summary of the columns and keys used in the table, along with their purposes.
 
@@ -41,15 +43,13 @@ This section describes the table structure used by the mail class to log email s
 |---------------|-----------|---------|--------------------------------------------------------------------------------------------------------|
 | `PRIMARY KEY` | Primary   | `id`    | Ensures that each email log entry is uniquely identifiable.                                            |
 
-## Class Usage
-
-#### Constructor
+## Constructor
 
 | Method      | Parameters | Description                                          |
 |-------------|------------|------------------------------------------------------|
 | `__construct` | `host` (string), `port` (int, default 25), `auth_type` (string, default false), `user` (string, default false), `pass` (string, default false), `from_mail` (string, default false), `from_name` (string, default false) | Initializes the mail settings including SMTP configuration and default sender information. |
 
-#### Public Methods
+## Public Methods
 
 | Method                   | Parameters                                                                                  | Description                                                                                                                                                                               |
 |--------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -71,14 +71,15 @@ This section describes the table structure used by the mail class to log email s
 | `mail`                   | `subject` (string), `content` (string), `receiver` (array), `cc` (array), `bcc` (array), `attachment` (array), `settings` (array, default empty array) | Send an email using the provided settings and parameters, allowing for advanced configuration and overriding of default settings.                                                            |
 | `object`                 | -                                                                                           | Create and return a new instance of `x_class_mail_item`, allowing further adjustments and sending of emails.                                                                              |
 
-#### Private Methods
+## Private Methods
 
 | Method           | Parameters                                     | Description                                               |
 |------------------|------------------------------------------------|-----------------------------------------------------------|
 | `log_execute`    | `subject` (string), `content` (string), `receiver` (array), `attachments` (array), `cc` (array), `bcc` (array), `success` (bool), `debug_message` (string), `settings` (array) | Log the details of the email operation to the database if logging is enabled.                                                             |
 | `create_table`   | -                                              | Create the logging table in the database if it does not already exist.                                                                         |
 
-## Details about Transmission Methods
+## Transmission Methods
+
 ### `send` Method
 
 The `send` method in the `x_class_mail` class is used to send an email with specified parameters. It utilizes PHPMailer for sending emails and includes options for handling attachments, HTML content, and default templates.

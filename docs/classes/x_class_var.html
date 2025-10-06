@@ -33,7 +33,6 @@
 
 
     
-    
 
     <script type="application/ld+json">
     {
@@ -80,6 +79,8 @@
 
 
     
+    
+    
       
     
     
@@ -88,7 +89,9 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../extra.css">
+      <link rel="stylesheet" href="../insert_css/extra.css">
+    
+      <link rel="stylesheet" href="../insert_css/neoteroi-mkdocs.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -594,6 +597,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../functions/x_folder.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_folder.php
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../functions/x_library.html" class="md-nav__link">
         
   
@@ -636,11 +660,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/x_search.html" class="md-nav__link">
+      <a href="../functions/x_table.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    x_search.php
+    x_table.php
   </span>
   
 
@@ -657,11 +681,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/x_table.html" class="md-nav__link">
+      <a href="../functions/x_thumbnail.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    x_table.php
+    x_thumbnail.php
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/x_search.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_search.php
   </span>
   
 
@@ -974,6 +1019,48 @@
   
   
     <li class="md-nav__item">
+      <a href="x_class_block.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_class_block
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="x_class_lang.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_class_lang
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="x_class_mail.html" class="md-nav__link">
         
   
@@ -1163,53 +1250,11 @@
   
   
     <li class="md-nav__item">
-      <a href="x_class_block.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    x_class_block
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="x_class_table.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     x_class_table
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="x_class_lang.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    x_class_lang
   </span>
   
 
@@ -1293,9 +1338,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Table
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      MySQL Table
     </span>
   </a>
   
@@ -1312,27 +1366,126 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#constructor" class="md-nav__link">
+  <a href="#__construct" class="md-nav__link">
     <span class="md-ellipsis">
-      Constructor
+      __construct
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#private-methods" class="md-nav__link">
+  <a href="#init_constant" class="md-nav__link">
     <span class="md-ellipsis">
-      Private Methods
+      init_constant
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#public-methods" class="md-nav__link">
+  <a href="#get_array" class="md-nav__link">
     <span class="md-ellipsis">
-      Public Methods
+      get_array
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_array_full" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_array_full
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_full" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_full
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      exists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      get
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#del" class="md-nav__link">
+    <span class="md-ellipsis">
+      del
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add" class="md-nav__link">
+    <span class="md-ellipsis">
+      add
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set" class="md-nav__link">
+    <span class="md-ellipsis">
+      set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form_start" class="md-nav__link">
+    <span class="md-ellipsis">
+      form_start
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form_end" class="md-nav__link">
+    <span class="md-ellipsis">
+      form_end
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form" class="md-nav__link">
+    <span class="md-ellipsis">
+      form
     </span>
   </a>
   
@@ -1349,66 +1502,6 @@
       Example
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Example">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#constructing-the-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      Constructing the Class
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#initializing-constants" class="md-nav__link">
-    <span class="md-ellipsis">
-      Initializing Constants
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adding-a-new-variable" class="md-nav__link">
-    <span class="md-ellipsis">
-      Adding a New Variable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#updating-an-existing-variable" class="md-nav__link">
-    <span class="md-ellipsis">
-      Updating an Existing Variable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deleting-a-variable" class="md-nav__link">
-    <span class="md-ellipsis">
-      Deleting a Variable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-a-form" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generating a Form
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1617,9 +1710,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Table
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      MySQL Table
     </span>
   </a>
   
@@ -1636,27 +1738,126 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#constructor" class="md-nav__link">
+  <a href="#__construct" class="md-nav__link">
     <span class="md-ellipsis">
-      Constructor
+      __construct
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#private-methods" class="md-nav__link">
+  <a href="#init_constant" class="md-nav__link">
     <span class="md-ellipsis">
-      Private Methods
+      init_constant
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#public-methods" class="md-nav__link">
+  <a href="#get_array" class="md-nav__link">
     <span class="md-ellipsis">
-      Public Methods
+      get_array
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_array_full" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_array_full
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get_full" class="md-nav__link">
+    <span class="md-ellipsis">
+      get_full
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      exists
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      get
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#del" class="md-nav__link">
+    <span class="md-ellipsis">
+      del
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      setup
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#add" class="md-nav__link">
+    <span class="md-ellipsis">
+      add
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set" class="md-nav__link">
+    <span class="md-ellipsis">
+      set
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form_start" class="md-nav__link">
+    <span class="md-ellipsis">
+      form_start
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form_end" class="md-nav__link">
+    <span class="md-ellipsis">
+      form_end
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#form" class="md-nav__link">
+    <span class="md-ellipsis">
+      form
     </span>
   </a>
   
@@ -1673,66 +1874,6 @@
       Example
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="Example">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#constructing-the-class" class="md-nav__link">
-    <span class="md-ellipsis">
-      Constructing the Class
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#initializing-constants" class="md-nav__link">
-    <span class="md-ellipsis">
-      Initializing Constants
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adding-a-new-variable" class="md-nav__link">
-    <span class="md-ellipsis">
-      Adding a New Variable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#updating-an-existing-variable" class="md-nav__link">
-    <span class="md-ellipsis">
-      Updating an Existing Variable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#deleting-a-variable" class="md-nav__link">
-    <span class="md-ellipsis">
-      Deleting a Variable
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#generating-a-form" class="md-nav__link">
-    <span class="md-ellipsis">
-      Generating a Form
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1755,7 +1896,8 @@
 
 
 <div><h1 id="php-class-x_class_var">PHP Class: <code>x_class_var</code></h1>
-<p>The <code>x_class_var</code> class is designed for managing configuration variables stored in a MySQL database. It allows you to create, read, update, and delete configuration values, as well as manage them via a form interface with built-in CSRF protection. This class is particularly useful for handling application settings that may need to be modified dynamically.</p>
+<h2 id="introduction">Introduction</h2>
+<p>The <code>x_class_var</code> class provides a way to manage and persist configuration variables or constants in a MySQL database table. It supports automatic table creation and allows storing variables with descriptors, values, descriptions, and multi-site section identifiers. Variables can be loaded as PHP constants or retrieved as arrays. It also supports updating and deleting variables and includes helper methods for secure web form integration to edit values.</p>
 <p>Use the class by including <code>/_framework/classes/x_class_var.php</code>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Dependencies</p>
@@ -1767,7 +1909,7 @@
 <div class="admonition warning">
 <p class="admonition-title">PHP-Modules</p>
 <ul>
-<li><code>mysqli</code>: The PHP MySQLi extension must be installed and enabled.  </li>
+<li><code>mysqli</code>: The PHP MySQLi extension must be installed and enabled.</li>
 </ul>
 </div>
 <div class="admonition warning">
@@ -1776,10 +1918,10 @@
 <li><code>x_class_mysql</code>: Required for database operations.</li>
 </ul>
 </div>
-<h2 id="table">Table</h2>
-<p>This section details the table structure used by the Variables class to store variables and their associated values. The table is automatically created by the class if needed. The column names can be customized through class properties. Below is a summary of the table's columns, keys, and their usage.</p>
+<h2 id="mysql-table">MySQL Table</h2>
+<p>This section describes the structure of the table used for storing variables managed by <code>x_class_var</code>. The table will be automatically created by the class if it does not exist.</p>
 <div class="admonition note">
-<p class="admonition-title">The table will be automatically installed upon constructor execution.</p>
+<p class="admonition-title">The table will be automatically created upon constructor execution if it does not exist.</p>
 </div>
 <table>
 <thead>
@@ -1795,43 +1937,43 @@
 <td><code>id</code></td>
 <td><code>int(9)</code></td>
 <td><code>NOT NULL</code>, <code>AUTO_INCREMENT</code>, <code>PRIMARY KEY</code></td>
-<td>Unique identifier for each entry, ensuring that each record can be individually accessed and managed.</td>
+<td>Unique identifier for each variable entry.</td>
 </tr>
 <tr>
 <td><code>descriptor</code></td>
 <td><code>varchar(256)</code></td>
 <td><code>NOT NULL</code></td>
-<td>Descriptor for the constant or variable, serving as the key or name for the stored value.</td>
+<td>The variable name or key descriptor.</td>
 </tr>
 <tr>
 <td><code>value</code></td>
 <td><code>text</code></td>
-<td><code>NULL</code></td>
-<td>Holds the value associated with the descriptor, which can be any text-based content.</td>
+<td></td>
+<td>The stored value for the variable. Serialized if array or object.</td>
 </tr>
 <tr>
 <td><code>description</code></td>
 <td><code>text</code></td>
-<td><code>NULL</code></td>
-<td>Provides a description or additional details about the constant or variable.</td>
+<td></td>
+<td>Optional descriptive text about the variable.</td>
 </tr>
 <tr>
 <td><code>section</code></td>
 <td><code>varchar(128)</code></td>
 <td><code>DEFAULT ''</code></td>
-<td>For Multi Site Purposes to split database data in categories.</td>
+<td>Section or namespace for the variable, suitable for multi-site or multi-context separation.</td>
 </tr>
 <tr>
 <td><code>creation</code></td>
 <td><code>datetime</code></td>
 <td><code>DEFAULT CURRENT_TIMESTAMP</code></td>
-<td>Records the date and time when the entry was created. Automatically set upon insertion.</td>
+<td>Timestamp when the entry was created.</td>
 </tr>
 <tr>
 <td><code>modification</code></td>
 <td><code>datetime</code></td>
-<td><code>DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP</code></td>
-<td>Logs the date and time of the last modification to the entry. Automatically updated on changes.</td>
+<td><code>DEFAULT CURRENT_TIMESTAMP</code> on update</td>
+<td>Automatically updates timestamp when the entry is modified.</td>
 </tr>
 </tbody>
 </table>
@@ -1846,151 +1988,670 @@
 </thead>
 <tbody>
 <tr>
-<td><code>PRIMARY KEY</code></td>
+<td><code>PRIMARY</code></td>
 <td>Primary</td>
 <td><code>id</code></td>
-<td>Ensures that each entry has a unique identifier, allowing for precise record management and retrieval.</td>
+<td>Ensures each row is uniquely identifiable.</td>
 </tr>
 <tr>
-<td><code>x_class_var_unique</code></td>
+<td><code>unique_key</code></td>
 <td>Unique</td>
-<td><code>section</code>, <code>descriptor</code></td>
-<td>Ensures that each combination of <code>section</code> and <code>descriptor</code> is unique, preventing duplicate entries for the same section and descriptor.</td>
+<td><code>section, descriptor</code></td>
+<td>Enforces unique variable names per section, preventing duplicates.</td>
 </tr>
 </tbody>
 </table>
 <h2 id="methods">Methods</h2>
-<p>The following tables provide detailed information about each method and function in the <code>x_class_var</code> class, including their parameters and descriptions.</p>
-<h3 id="constructor">Constructor</h3>
+<hr>
+<h3 id="__construct"><code>__construct</code></h3>
+<p>Initializes the class with the database connection, table name, and section (namespace) for variable segregation.</p>
 <table>
 <thead>
 <tr>
-<th>Method</th>
-<th>Parameters</th>
+<th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
+<th>Default</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>__construct</code></td>
-<td><code>$mysql</code> (x_class_mysql object), <code>$tablename</code> (string), <code>$section</code> (string), <code>$descriptor</code> (string, optional), <code>$value</code> (string, optional), <code>$description</code> (string, optional), <code>$sectionfield</code> (string, optional), <code>$idfield</code> (string, optional)</td>
-<td>Initializes the class with database connection and table configuration. Creates the table if it does not exist.</td>
+<td><code>$mysql</code></td>
+<td>object</td>
+<td>Database connection supporting typical query/select operations.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$tablename</code></td>
+<td>string</td>
+<td>Table name to store variables.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$section</code></td>
+<td>string</td>
+<td>Section name to scope variables (for multi-site or context).</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$descriptor</code></td>
+<td>string</td>
+<td>Column name for descriptor (variable name/key).</td>
+<td><code>"descriptor"</code></td>
+</tr>
+<tr>
+<td><code>$value</code></td>
+<td>string</td>
+<td>Column name for variable value.</td>
+<td><code>"value"</code></td>
+</tr>
+<tr>
+<td><code>$description</code></td>
+<td>string</td>
+<td>Column name for descriptions.</td>
+<td><code>"description"</code></td>
+</tr>
+<tr>
+<td><code>$sectionfield</code></td>
+<td>string</td>
+<td>Column name for section.</td>
+<td><code>"section"</code></td>
+</tr>
+<tr>
+<td><code>$idfield</code></td>
+<td>string</td>
+<td>Column name for primary ID.</td>
+<td><code>"id"</code></td>
 </tr>
 </tbody>
 </table>
-<h3 id="private-methods">Private Methods</h3>
 <table>
 <thead>
 <tr>
-<th>Method</th>
-<th>Parameters</th>
-<th>Description</th>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>create_table</code></td>
-<td>None</td>
-<td>Creates the table in the database if it does not exist.</td>
+<td><code>void</code></td>
+<td>Constructor does not return a value. It creates the table if it does not exist.</td>
 </tr>
 </tbody>
 </table>
-<h3 id="public-methods">Public Methods</h3>
+<hr>
+<h3 id="init_constant"><code>init_constant</code></h3>
+<p>Defines the stored variables as PHP constants in the current script for the current section.</p>
 <table>
 <thead>
 <tr>
-<th>Method</th>
-<th>Parameters</th>
+<th>Parameter</th>
+<th>Type</th>
 <th>Description</th>
+<th>Default</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>init_constant</code></td>
-<td><code>$unserialize_arrays</code> (bool)</td>
-<td>Initializes constants from the database. Defines PHP constants for each entry.</td>
-</tr>
-<tr>
-<td><code>get_array</code></td>
-<td>None</td>
-<td>Retrieves an array of variable names and their values.</td>
-</tr>
-<tr>
-<td><code>get_array_full</code></td>
-<td>None</td>
-<td>Retrieves an array of all variables with full details from the database.</td>
-</tr>
-<tr>
-<td><code>get_full</code></td>
-<td><code>$name</code> (string)</td>
-<td>Retrieves the full details of a specific variable by name.</td>
-</tr>
-<tr>
-<td><code>exists</code></td>
-<td><code>$name</code> (string)</td>
-<td>Checks if a variable exists in the database.</td>
-</tr>
-<tr>
-<td><code>get</code></td>
-<td><code>$name</code> (string)</td>
-<td>Retrieves the value of a specific variable by name.</td>
-</tr>
-<tr>
-<td><code>del</code></td>
-<td><code>$name</code> (string)</td>
-<td>Deletes a variable from the database by name.</td>
-</tr>
-<tr>
-<td><code>setup</code></td>
-<td><code>$name</code> (string), <code>$value</code> (mixed), <code>$description</code> (string, optional)</td>
-<td>Sets up a new variable if it does not exist.</td>
-</tr>
-<tr>
-<td><code>add</code></td>
-<td><code>$name</code> (string), <code>$value</code> (mixed), <code>$description</code> (string, optional), <code>$overwrite</code> (bool, optional)</td>
-<td>Adds a new variable or updates it if it already exists, based on the <code>$overwrite</code> flag.</td>
-</tr>
-<tr>
-<td><code>set</code></td>
-<td><code>$name</code> (string), <code>$value</code> (mixed), <code>$description</code> (string, optional), <code>$add</code> (bool, optional), <code>$overwrite</code> (bool, optional)</td>
-<td>Internal method to handle adding or updating variables.</td>
-</tr>
-<tr>
-<td><code>form_start</code></td>
-<td><code>$precookie</code> (string, optional)</td>
-<td>Starts a new form for variable management with CSRF protection.</td>
-</tr>
-<tr>
-<td><code>form_end</code></td>
-<td><code>$precookie</code> (string, optional)</td>
-<td>Ends the form and sets a CSRF token in the session.</td>
-</tr>
-<tr>
-<td><code>form</code></td>
-<td><code>$varname</code> (string), <code>$type</code> (string, optional), <code>$selectarray</code> (array, optional), <code>$precookie</code> (string, optional), <code>$button_class</code> (string, optional), <code>$itemclass</code> (string, optional), <code>$editbuttonname</code> (string, optional), <code>$editbuttonclass</code> (string, optional)</td>
-<td>Generates and handles a form for editing a variable. Supports different input types.</td>
+<td><code>$unserialize_arrays</code></td>
+<td>boolean</td>
+<td>Automatically unserialize values if they are serializations of arrays or objects.</td>
+<td><code>true</code></td>
 </tr>
 </tbody>
 </table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>true</code></td>
+<td>Always returns <code>true</code> after defining constants.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="get_array"><code>get_array</code></h3>
+<p>Retrieves all variables as an array of key-value pairs for the current section.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>None</em></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>array</code></td>
+<td>Array of variables with descriptor and value pairs.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="get_array_full"><code>get_array_full</code></h3>
+<p>Retrieves all variable records including metadata for the current section.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>None</em></td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>array</code></td>
+<td>Array of full records including descriptor, value, description, section, creation date, modification date.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="get_full"><code>get_full</code></h3>
+<p>Retrieves full record details of a single variable by descriptor.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$name</code></td>
+<td>string</td>
+<td>Variable descriptor to fetch.</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>array|false</code></td>
+<td>Full variable record array if found, otherwise <code>false</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="exists"><code>exists</code></h3>
+<p>Checks existence of a variable by descriptor in the current section.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$name</code></td>
+<td>string</td>
+<td>Variable descriptor to check.</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td><code>true</code> if variable exists, <code>false</code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="get"><code>get</code></h3>
+<p>Retrieves the value of a variable by descriptor.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$name</code></td>
+<td>string</td>
+<td>Variable descriptor to retrieve.</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mixed|false</code></td>
+<td>Variable value if found, otherwise <code>false</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="del"><code>del</code></h3>
+<p>Deletes a variable record by descriptor.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$name</code></td>
+<td>string</td>
+<td>Variable descriptor to delete.</td>
+<td>None</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td><code>true</code> if deletion succeeded, <code>false</code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="setup"><code>setup</code></h3>
+<p>Adds a new variable only if it does not already exist.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$name</code></td>
+<td>string</td>
+<td>Variable descriptor to add.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$value</code></td>
+<td>mixed</td>
+<td>Value of the variable.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$description</code></td>
+<td>string</td>
+<td>Optional description.</td>
+<td><code>""</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td><code>true</code> if added, <code>false</code> if variable already exists.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="add"><code>add</code></h3>
+<p>Adds or updates a variable.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$name</code></td>
+<td>string</td>
+<td>Variable descriptor to add/update.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$value</code></td>
+<td>mixed</td>
+<td>Value for the variable.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$description</code></td>
+<td>string</td>
+<td>Optional description.</td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>$overwrite</code></td>
+<td>boolean</td>
+<td>Whether to overwrite existing variable.</td>
+<td><code>false</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td><code>true</code> if operation succeeded, otherwise <code>false</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="set"><code>set</code></h3>
+<p>Internal method to add or update variables with control over overwrite behavior.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$name</code></td>
+<td>string</td>
+<td>Variable descriptor.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$value</code></td>
+<td>mixed</td>
+<td>Value to set, serialized if array/object.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$description</code></td>
+<td>string</td>
+<td>Optional description.</td>
+<td><code>false</code></td>
+</tr>
+<tr>
+<td><code>$add</code></td>
+<td>boolean</td>
+<td>Whether to add new entry if not existing.</td>
+<td><code>true</code></td>
+</tr>
+<tr>
+<td><code>$overwrite</code></td>
+<td>boolean</td>
+<td>Whether to overwrite existing entry.</td>
+<td><code>true</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>boolean</code></td>
+<td><code>true</code> if successful, <code>false</code> otherwise.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="form_start"><code>form_start</code></h3>
+<p>Starts a web form session with CSRF token generation for secure editing.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$precookie</code></td>
+<td>string</td>
+<td>Prefix for session variables to allow multiple form instances.</td>
+<td><code>""</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>void</code></td>
+<td>Always.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="form_end"><code>form_end</code></h3>
+<p>Ends a web form session updating CSRF tokens.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$precookie</code></td>
+<td>string</td>
+<td>Prefix for session variables.</td>
+<td><code>""</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>void</code></td>
+<td>Always.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="form"><code>form</code></h3>
+<p>Generates and processes an HTML form to edit a stored variable with various input types and CSRF protection.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$varname</code></td>
+<td>string</td>
+<td>Variable descriptor to edit.</td>
+<td>None</td>
+</tr>
+<tr>
+<td><code>$type</code></td>
+<td>string</td>
+<td>Form input type (<code>int</code>, <code>text</code>, <code>string</code>, <code>select</code>).</td>
+<td><code>"int"</code></td>
+</tr>
+<tr>
+<td><code>$selectarray</code></td>
+<td>array</td>
+<td>For select inputs, list of options to show.</td>
+<td><code>array()</code></td>
+</tr>
+<tr>
+<td><code>$precookie</code></td>
+<td>string</td>
+<td>Prefix for session and form element names to isolate forms.</td>
+<td><code>""</code></td>
+</tr>
+<tr>
+<td><code>$button_class</code></td>
+<td>string</td>
+<td>CSS class for submit button styling.</td>
+<td><code>"btn btn-warning waves-effect waves-light"</code></td>
+</tr>
+<tr>
+<td><code>$itemclass</code></td>
+<td>string</td>
+<td>CSS class for form input styling.</td>
+<td><code>"form-control"</code></td>
+</tr>
+<tr>
+<td><code>$editbuttonname</code></td>
+<td>string</td>
+<td>Text for submit button.</td>
+<td><code>"Edit"</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Return Value</th>
+<th>When does this return value occur?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int</code></td>
+<td>Always returns <code>0</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h2 id="example">Example</h2>
-<h3 id="constructing-the-class">Constructing the Class</h3>
-<div class="language-php highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="x">$mysql = new x_class_mysql(...); // Assumes mysql_con is a valid class</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="x">$var = new x_class_var($mysql, 'my_table', 'my_section');</span>
-</span></code></pre></div>
-<h3 id="initializing-constants">Initializing Constants</h3>
-<div class="language-php highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="x">$var-&gt;init_constant();</span>
-</span></code></pre></div>
-<h3 id="adding-a-new-variable">Adding a New Variable</h3>
-<div class="language-php highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="x">$var-&gt;add('MY_VAR', 'value', 'Description of MY_VAR');</span>
-</span></code></pre></div>
-<h3 id="updating-an-existing-variable">Updating an Existing Variable</h3>
-<div class="language-php highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="x">$var-&gt;setup('MY_VAR', 'new_value', 'Updated description');</span>
-</span></code></pre></div>
-<h3 id="deleting-a-variable">Deleting a Variable</h3>
-<div class="language-php highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="x">$var-&gt;del('MY_VAR');</span>
-</span></code></pre></div>
-<h3 id="generating-a-form">Generating a Form</h3>
-<div class="language-php highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="x">echo $var-&gt;form('MY_VAR', 'text', [], '', 'btn-primary', 'form-control');</span>
+<div class="language-php highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="cp">&lt;?php</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// Example usage:</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1">// Use your MySQL DB connection object compatible with x_class_mysql</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nv">$db</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">x_class_mysql</span><span class="p">(</span><span class="o">...</span><span class="p">);</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1">// Initialize variable manager with section "SiteConfig"</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nv">$varManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">x_class_var</span><span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="s1">'configuration_table'</span><span class="p">,</span> <span class="s1">'SiteConfig'</span><span class="p">);</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">// Add or update a variable</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="nv">$varManager</span><span class="o">-&gt;</span><span class="na">add</span><span class="p">(</span><span class="s1">'MAX_USERS'</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">'Maximum allowed users'</span><span class="p">,</span> <span class="k">true</span><span class="p">);</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1">// Check if a variable exists</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">if</span> <span class="p">(</span><span class="nv">$varManager</span><span class="o">-&gt;</span><span class="na">exists</span><span class="p">(</span><span class="s1">'MAX_USERS'</span><span class="p">))</span> <span class="p">{</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="k">echo</span> <span class="s1">'Max users: '</span> <span class="o">.</span> <span class="nv">$varManager</span><span class="o">-&gt;</span><span class="na">get</span><span class="p">(</span><span class="s1">'MAX_USERS'</span><span class="p">);</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="p">}</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="c1">// Define all variables in section as constants</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="nv">$varManager</span><span class="o">-&gt;</span><span class="na">init_constant</span><span class="p">();</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="c1">// Render a form to edit a variable on a web page</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="k">echo</span> <span class="nv">$varManager</span><span class="o">-&gt;</span><span class="na">form</span><span class="p">(</span><span class="s1">'MAX_USERS'</span><span class="p">,</span> <span class="s1">'int'</span><span class="p">);</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="c1">// Delete a variable</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="nv">$varManager</span><span class="o">-&gt;</span><span class="na">del</span><span class="p">(</span><span class="s1">'MAX_USERS'</span><span class="p">);</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="cp">?&gt;</span>
 </span></code></pre></div></div>
 
 
@@ -2043,7 +2704,7 @@
     
       <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
-        <script src="../extra.js"></script>
+        <script src="../insert_js/extra.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

@@ -1,5 +1,7 @@
 # PHP Class: `x_class_debug`
 
+## Introduction
+
 The `x_class_debug` class is designed to aid in debugging and monitoring of PHP applications. It provides functionality to check for required PHP modules, display error screens, log errors, and gather system information. This class is useful for developers who need to ensure that their application has all necessary PHP extensions and to monitor the application’s resource usage and performance.
 
 - **Error Screen Customization**: The `error_screen()` method provides a basic HTML template for displaying critical errors. Customize the HTML/CSS as needed for your application.
@@ -24,7 +26,7 @@ Use the class by including `/_framework/classes/x_class_debug.php`.
 !!! warning "PHP-Classes"
 	- **`x_class_mysql`** — Required for MySQL Operations.
 
-## Table
+## MySQL Table
 
 This section explains the table structure that will be automatically created by the debugging class to log JavaScript errors encountered by users. The table captures essential details such as the error message, user information, and the URL where the error occurred. Below is a summary of the columns and keys used in the table, along with their intended usage.
 

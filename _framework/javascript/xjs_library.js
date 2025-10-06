@@ -1,24 +1,28 @@
-	/* 
-		 ______  _     _ _______ _______ _  ______ _     _ 
-		(____  \(_)   (_|_______|_______) |/ _____|_)   (_)
-		 ____)  )_     _ _   ___ _____  | ( (____  _______ 
-		|  __  (| |   | | | (_  |  ___) | |\____ \|  ___  |
-		| |__)  ) |___| | |___) | |     | |_____) ) |   | |
-		|______/ \_____/ \_____/|_|     |_(______/|_|   |_|
-		Copyright (C) 2024 Jan Maurice Dahlmanns [Bugfish]
+	/*
+		#	@@@@@@@  @@@  @@@  @@@@@@@  @@@@@@@@ @@@  @@@@@@ @@@  @@@ 
+		#	@@!  @@@ @@!  @@@ !@@       @@!      @@! !@@     @@!  @@@ 
+		#	@!@!@!@  @!@  !@! !@! @!@!@ @!!!:!   !!@  !@@!!  @!@!@!@! 
+		#	!!:  !!! !!:  !!! :!!   !!: !!:      !!:     !:! !!:  !!! 
+		#	:: : ::   :.:: :   :: :: :   :       :   ::.: :   :   : : 						
+		#		 ______  ______   ______   _________   ______  _   _   _   ______   ______   _    __ 
+		#		| |     | |  | \ | |  | | | | | | | \ | |     | | | | | | / |  | \ | |  | \ | |  / / 
+		#		| |---- | |__| | | |__| | | | | | | | | |---- | | | | | | | |  | | | |__| | | |-< <  
+		#		|_|     |_|  \_\ |_|  |_| |_| |_| |_| |_|____ |_|_|_|_|_/ \_|__|_/ |_|  \_\ |_|  \_\ 
+																								 
+		#	Copyright (C) 2025 Jan Maurice Dahlmanns [Bugfish]
 
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU Lesser General Public License
-		as published by the Free Software Foundation; either version 2.1
-		of the License, or (at your option) any later version.
+		#	This program is free software; you can redistribute it and/or
+		#	modify it under the terms of the GNU Lesser General Public License
+		#	as published by the Free Software Foundation; either version 2.1
+		#	of the License, or (at your option) any later version.
 
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU Lesser General Public License for more details.
+		#	This program is distributed in the hope that it will be useful,
+		#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+		#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+		#	GNU Lesser General Public License for more details.
 
-		You should have received a copy of the GNU Lesser General Public License
-		along with this program; if not, see <https://www.gnu.org/licenses/>.
+		#	You should have received a copy of the GNU Lesser General Public License
+		#	along with this program; if not, see <https://www.gnu.org/licenses/>.
 	*/
 
 	/* ################################################################## */	
@@ -81,6 +85,44 @@
 			dropdown.add(option);
 		});
 	}
+	
+	/* ################################################################## */
+	/** Get Request Function **/
+	/* ################################################################## */
+	function xjs_request_get(url, params, callback) {
+		var xhr = new XMLHttpRequest();
+		// Encode parameters as URL query string
+		var queryString = Object.keys(params).map(function(k) {
+			return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+		}).join("&");
+		xhr.open("GET", url + (queryString ? ("?" + queryString) : ""), true);
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				callback(xhr.responseText, xhr.status);
+			}
+		};
+		xhr.send(null);
+	}	
+	
+	/* ################################################################## */
+	/** Post Request Function **/
+	/* ################################################################## */
+	function xjs_request_post(url, params, callback) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", url, true);
+		// Set request header for POST form data
+		xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xhr.onreadystatechange = function () {
+			if (xhr.readyState === 4) {
+				callback(xhr.responseText, xhr.status);
+			}
+		};
+		// Encode parameters as URL-encoded string
+		var encodedParams = Object.keys(params).map(function(k) {
+			return encodeURIComponent(k) + "=" + encodeURIComponent(params[k]);
+		}).join("&");
+		xhr.send(encodedParams);
+	}	
 	
 	/* End of Bugfish Framework Javascript Library...
 	/* ################################################################## */

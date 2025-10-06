@@ -1,5 +1,7 @@
 # PHP Class: `x_class_csrf`
 
+## Introduction
+
 This document provides an in-depth explanation of the `x_class_csrf` class, which is designed to manage Cross-Site Request Forgery (CSRF) tokens in a PHP application. It explains the class structure, required PHP modules, and provides detailed descriptions of the methods and their parameters. The documentation is aimed at developers who need to integrate this class into their applications and require clear guidance on how to use it effectively.
 
 - The `norenewal` and `external_action` properties provide flexibility for different use cases, such as handling tokens across external systems or preventing token renewal.

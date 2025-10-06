@@ -1,180 +1,184 @@
 # PHP Class: `x_class_api`
 
-The `x_class_api` class is designed to manage secure API keys within a MySQL database. Each key can be scoped to a specific section, assigned a reference, and managed through status flags (`active`, `revoked`, `expired`). The class supports key generation, validation, revocation, expiration, refreshing, and deletion. Time-based expiration and usage tracking are also supported.
+## Introduction
 
-Use the class by including `/_framework/classes/x_class_api.php`.
+The `x_class_api` class provides a structured way to manage API keys stored in a MySQL database. It supports creation, validation, revocation, expiration, refreshing, referencing, and deletion of API keys while maintaining related metadata such as key status, expiration dates, and usage tracking. The class automatically ensures the table for storing API keys exists.
+
+Use this class by including `/_framework/classes/x_class_api.php`.
 
 !!! warning "Dependencies"
-	* PHP 7.1–7.4
-	* PHP 8.0–8.4
-	* Requires a MySQL wrapper class (provided via the `$mysql` parameter) that supports `select()`, `query()`, `table_exists()`, and `free_all()`.
+	- PHP 7.0-7.4
+	- PHP 8.0-8.4
 
-!!! warning "PHP Modules"
-	* `pdo_mysql` or `mysqli`: Required for MySQL database interaction.
-	* `openssl` or `random_bytes`: Required for secure API key generation.
+!!! warning "PHP-Modules"
+	- `mysqli`: The PHP MySQLi extension must be installed and enabled.
 
----
+!!! warning "PHP-Classes"
+	- `x_class_mysql`: Required for database operations.
 
-## Database Table Structure
+## MySQL Table
 
-When initialized, this class automatically creates the table (if it doesn't already exist). The structure is as follows:
+This section describes the structure of the table used for storing API keys and their metadata. The table will be created automatically by the class constructor if it does not already exist.
 
-| Column         | Type                                 | Description                           |
-| -------------- | ------------------------------------ | ------------------------------------- |
-| `id`           | `INT UNSIGNED AUTO_INCREMENT`        | Primary key (auto-increment).         |
-| `api_key`      | `VARCHAR(128)`                       | Unique API key.                       |
-| `reference`    | `VARCHAR(128)` (nullable)            | Optional external identifier or note. |
-| `section`      | `VARCHAR(128)`                       | Defines scope or logical group.       |
-| `status`       | `ENUM('active','revoked','expired')` | Current status of the key.            |
-| `created_at`   | `DATETIME`                           | Timestamp when the key was created.   |
-| `expires_at`   | `DATETIME` (nullable)                | Optional expiration date.             |
-| `last_used_at` | `DATETIME` (nullable)                | Timestamp of last use.                |
+| Column Name  | Data Type          | Attributes                     | Description                                                   |
+|--------------|--------------------|--------------------------------|----------------------------------------------------------------|
+| `id`         | `INT UNSIGNED`     | `NOT NULL AUTO_INCREMENT PRIMARY KEY` | Unique identifier for each API key entry.                      |
+| `api_key`    | `VARCHAR(128)`     | `NOT NULL UNIQUE`               | The generated API key (unique).                                |
+| `reference`  | `VARCHAR(128)`     | `NULL`                         | Optional reference or label for the API key.                  |
+| `section`    | `VARCHAR(128)`     | `NOT NULL`                     | Section or scope for which the API key is valid.              |
+| `api_note`   | `TEXT`             | `NOT NULL`                     | User-defined note describing the API key purpose or comments. |
+| `status`     | `ENUM`             | `'active','revoked','expired'`<br/>Default: `active` | Current status of the API key.                                 |
+| `created_at` | `DATETIME`         | `DEFAULT CURRENT_TIMESTAMP`    | Timestamp when the API key was created.                        |
+| `expires_at` | `DATETIME`         | `NULL`                         | Optional expiration date for the API key.                      |
+| `last_used_at`| `DATETIME`        | `NULL`                         | Timestamp of the last time the API key was used.               |
 
----
+| Key Name            | Key Type    | Columns    | Usage                             |
+|---------------------|-------------|------------|----------------------------------|
+| `PRIMARY KEY`       | Primary     | `id`       | Uniquely identifies each entry.  |
+| `{$table}_unique`    | Unique      | `api_key`  | Ensures unique API keys.          |
 
 ## Methods
 
----
+***
 
 ### `__construct`
 
-Initializes the API key manager with a MySQL instance and table name. Creates the table if it does not exist.
+Initializes the class with the database connection, table name, and optionally a section/scope name.
 
-| Parameter  | Type   | Description                            | Default |
-| ---------- | ------ | -------------------------------------- | ------- |
-| `$mysql`   | object | An instance of a custom MySQL wrapper. | None    |
-| `$table`   | string | Name of the table to store API keys.   | None    |
-| `$section` | string | Logical scope of the key (optional).   | `""`    |
+| Parameter  | Type    | Description                            | Default       |
+|------------|---------|--------------------------------------|---------------|
+| `$mysql`   | object  | MySQL-like DB handler instance       | None          |
+| `$table`   | string  | Name of the table for API key storage| None          |
+| `$section` | string  | Optional API section/scope for keys  | `""` (empty)  |
 
-| Return Value | When does this return value occur? |
-| ------------ | ---------------------------------- |
-| `void`       | Always. This is a constructor.     |
+| Return Value | Description                |
+|--------------|----------------------------|
+| `void`      | Constructor does not return |
 
----
+***
 
 ### `addKey`
 
-Adds a new API key with an optional expiration date.
+Generates a new API key and stores it, optionally with expiration, note, and reference.
 
-| Parameter          | Type | Description                                      | Default |
-| ------------------ | ---- | ------------------------------------------------ | ------- |
-| `$expires_in_days` | int  | Number of days until the key expires (nullable). | `null`  |
+| Parameter        | Type             | Description                                | Default   |
+|------------------|------------------|--------------------------------------------|-----------|
+| `$expires_in_days`| integer/boolean  | Number of days until expiration or false for none | `false` |
+| `$note`          | string/boolean   | Optional note for the API key              | `false`   |
+| `$api_reference` | string/boolean   | Optional reference label for the key       | `false`   |
 
-| Return Value | When does this return value occur?    |
-| ------------ | ------------------------------------- |
-| `string`     | Always returns the generated API key. |
+| Return Value | Description                  |
+|--------------|------------------------------|
+| `string`    | The newly created API key    |
 
----
+***
 
 ### `validateKey`
 
-Checks whether an API key is active and not expired. Also updates the `last_used_at` timestamp.
+Checks if a given API key and reference are valid and active, with expiration enforcement. Updates last used timestamp on success.
 
-| Parameter  | Type   | Description              | Default |
-| ---------- | ------ | ------------------------ | ------- |
-| `$api_key` | string | The API key to validate. | None    |
+| Parameter      | Type   | Description                        | Default |
+|----------------|--------|----------------------------------|---------|
+| `$api_key`     | string | API key to validate              | None    |
+| `$api_reference`| string | Reference to match                | None    |
 
-| Return Value | When does this return value occur?                   |
-| ------------ | ---------------------------------------------------- |
-| `true`       | If the key exists, is active, and not expired.       |
-| `false`      | If the key is missing, revoked, expired, or invalid. |
+| Return Value | Description                             |
+|--------------|---------------------------------------|
+| `int|false` | Returns the database record ID on success, or `false` if invalid |
 
----
-
-### `revokeKey`
-
-Marks an API key as "revoked" in the database.
-
-| Parameter  | Type   | Description            | Default |
-| ---------- | ------ | ---------------------- | ------- |
-| `$api_key` | string | The API key to revoke. | None    |
-
-| Return Value | When does this return value occur?  |
-| ------------ | ----------------------------------- |
-| `true`       | Always returns `true` after update. |
-
----
-
-### `expireKey`
-
-Marks an API key as "expired" in the database.
-
-| Parameter  | Type   | Description            | Default |
-| ---------- | ------ | ---------------------- | ------- |
-| `$api_key` | string | The API key to expire. | None    |
-
-| Return Value | When does this return value occur?  |
-| ------------ | ----------------------------------- |
-| `true`       | Always returns `true` after update. |
-
----
-
-### `deleteKey`
-
-Permanently removes an API key from the database.
-
-| Parameter  | Type   | Description            | Default |
-| ---------- | ------ | ---------------------- | ------- |
-| `$api_key` | string | The API key to delete. | None    |
-
-| Return Value | When does this return value occur?    |
-| ------------ | ------------------------------------- |
-| `true`       | Always returns `true` after deletion. |
-
----
-
-### `refreshKey`
-
-Replaces an existing API key with a new one.
-
-| Parameter  | Type   | Description                     | Default |
-| ---------- | ------ | ------------------------------- | ------- |
-| `$api_key` | string | The old API key to be replaced. | None    |
-
-| Return Value | When does this return value occur?   |
-| ------------ | ------------------------------------ |
-| `string`     | Returns the newly generated API key. |
-
----
+***
 
 ### `referenceKey`
 
-Associates a human-readable or system reference to an API key.
+Sets or updates the reference (label) for a specified API key.
 
-| Parameter    | Type   | Description                  | Default |
-| ------------ | ------ | ---------------------------- | ------- |
-| `$api_key`   | string | The API key to update.       | None    |
-| `$reference` | string | A reference value to attach. | None    |
+| Parameter     | Type   | Description                      | Default |
+|---------------|--------|--------------------------------|---------|
+| `$api_key`    | string | The API key to update           | None    |
+| `$reference`  | string | The new reference to assign     | None    |
 
-| Return Value | When does this return value occur?  |
-| ------------ | ----------------------------------- |
-| `true`       | Always returns `true` after update. |
+| Return Value | Description                      |
+|--------------|---------------------------------|
+| `boolean`    | Always returns `true`            |
 
----
+***
+
+### `refreshKey`
+
+Generates a new unique API key to replace an existing one.
+
+| Parameter  | Type   | Description                    | Default |
+|------------|--------|--------------------------------|---------|
+| `$api_key` | string | The current API key to refresh | None    |
+
+| Return Value | Description                  |
+|--------------|------------------------------|
+| `string`    | The newly generated API key  |
+
+***
+
+### `revokeKey`
+
+Marks an API key as revoked, disabling its usage.
+
+| Parameter  | Type   | Description              | Default |
+|------------|--------|--------------------------|---------|
+| `$api_key` | string | The API key to revoke    | None    |
+
+| Return Value | Description           |
+|--------------|-----------------------|
+| `boolean`    | Always returns `true`  |
+
+***
+
+### `expireKey`
+
+Marks an API key as expired, disabling its usage.
+
+| Parameter  | Type   | Description           | Default |
+|------------|--------|-----------------------|---------|
+| `$api_key` | string | The API key to expire | None    |
+
+| Return Value | Description           |
+|--------------|-----------------------|
+| `boolean`    | Always returns `true`  |
+
+***
+
+### `deleteKey`
+
+Deletes an API key and its record from the database entirely.
+
+| Parameter  | Type   | Description                | Default |
+|------------|--------|----------------------------|---------|
+| `$api_key` | string | The API key to delete      | None    |
+
+| Return Value | Description           |
+|--------------|-----------------------|
+| `boolean`    | Always returns `true`  |
+
+***
 
 ## Example
 
 ```php
 <?php
-// Initialize MySQL wrapper and API manager
-$mysql = new custom_mysql(); // assume this is your wrapper class
-$api = new x_class_api($mysql, 'api_keys', 'internal-service');
+// Instantiate DB handler
+$db = new x_class_mysql(...);
+$apiManager = new x_class_api($db, 'api_keys', 'my_section');
 
-// Add a new key (expires in 7 days)
-$newKey = $api->addKey(7);
-echo "Generated API Key: $newKey\n";
+// Create a new API key valid for 30 days with a note
+$newKey = $apiManager->addKey(30, 'Key for project X');
 
-// Validate it
-if ($api->validateKey($newKey)) {
-	echo "API key is valid.\n";
+// Validate the key when received from a client
+$valid = $apiManager->validateKey($newKey, 'my_section');
+if ($valid !== false) {
+    echo "API key is valid, id: $valid";
 } else {
-	echo "API key is invalid or expired.\n";
+    echo "Invalid or expired API key.";
 }
 
-// Revoke it
-$api->revokeKey($newKey);
-
-// Try validation again
-echo $api->validateKey($newKey) ? "Still valid.\n" : "Now invalid.\n";
+// Revoke the key later if needed
+$apiManager->revokeKey($newKey);
 ?>
 ```

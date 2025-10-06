@@ -1,8 +1,6 @@
 # 🖼️ Images
 
-This folder houses images utilized in the repository's readme file.
-
-To incorporate these images in the repository's readme file, utilize the following Markdown syntax:
+This folder houses images utilized in the repository's readme file. To incorporate these images in the repository's readme file, utilize the following Markdown syntax:
 
 ```markdown
 ![Alt Text](image_path)

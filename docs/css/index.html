@@ -32,8 +32,6 @@
       
 
 
-    
-
  
     <script type="application/ld+json">
     {
@@ -81,8 +79,6 @@
    
     
     
-    
-    
       
     
     
@@ -91,7 +87,9 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../extra.css">
+      <link rel="stylesheet" href="../insert_css/extra.css">
+    
+      <link rel="stylesheet" href="../insert_css/neoteroi-mkdocs.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -412,6 +410,15 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#columnrows" class="md-nav__link">
@@ -774,6 +781,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../functions/x_folder.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_folder.php
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../functions/x_library.html" class="md-nav__link">
         
   
@@ -816,11 +844,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/x_search.html" class="md-nav__link">
+      <a href="../functions/x_table.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    x_search.php
+    x_table.php
   </span>
   
 
@@ -837,11 +865,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/x_table.html" class="md-nav__link">
+      <a href="../functions/x_thumbnail.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    x_table.php
+    x_thumbnail.php
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/x_search.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_search.php
   </span>
   
 
@@ -1152,6 +1201,48 @@
   
   
     <li class="md-nav__item">
+      <a href="../classes/x_class_block.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_class_block
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../classes/x_class_lang.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_class_lang
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../classes/x_class_mail.html" class="md-nav__link">
         
   
@@ -1341,53 +1432,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../classes/x_class_block.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    x_class_block
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../classes/x_class_table.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     x_class_table
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../classes/x_class_lang.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    x_class_lang
   </span>
   
 
@@ -1635,6 +1684,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#columnrows" class="md-nav__link">
     <span class="md-ellipsis">
       Column/Rows
@@ -1788,9 +1846,11 @@
 
 
 <div><h1 id="css-classes">CSS Classes</h1>
-<p>Bugfish CSS Framework simplifies web design with a robust set of pre-built classes for fast, responsive layouts. Speed up development and create professional designs effortlessly. To use, include the <code>xcss_xfpe.css</code> file from the css folder.</p>
+<h2 id="introduction">Introduction</h2>
+<p>Bugfish CSS Framework simplifies web design with a robust set of pre-built classes for fast, responsive layouts. Speed up development and create professional designs effortlessly. To use, include the <code>_framework/css/xcss_xfpe.css</code> file.</p>
 <div class="admonition info">
-<p class="admonition-title">Add _f to a class name to apply <code>!important</code> automatically.</p>
+<p class="admonition-title">General Notice</p>
+<p>Add _f to a class name to apply <code>!important</code> automatically. </p>
 </div>
 <h2 id="columnrows">Column/Rows</h2>
 <table>
@@ -2684,7 +2744,7 @@
     
       <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
-        <script src="../extra.js"></script>
+        <script src="../insert_js/extra.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

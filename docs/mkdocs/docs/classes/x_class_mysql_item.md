@@ -1,5 +1,7 @@
 # PHP Class: `x_class_mysql_item`
 
+## Introduction
+
 The `x_class_mysql_item` class is designed to manage database records efficiently. It provides a convenient way to interact with a single database item by abstracting common operations such as retrieving, updating, and deleting records based on a specified primary key. This class simplifies CRUD (Create, Read, Update, Delete) operations, especially when dealing with single-row queries in a MySQL database.
 
 - **Parameter Binding:** The `update()` method uses parameter binding to prevent SQL injection, making it a secure option for dynamic queries.  

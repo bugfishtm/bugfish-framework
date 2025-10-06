@@ -1,5 +1,7 @@
 # PHP Class: `x_class_block`
 
+## Introduction
+
 The `x_class_block` class is designed to manage access control based on a counter mechanism. It uses PHP sessions to track and limit actions, blocking further attempts if a predefined limit is exceeded within a specified time frame. This class is useful for implementing rate limiting or blocking mechanisms.
 
 - **Dummy Mode**: When `dummy` mode is enabled, the class bypasses all blocking logic. This mode is useful for testing purposes or when you want to disable blocking temporarily.  

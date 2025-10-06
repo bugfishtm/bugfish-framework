@@ -1,5 +1,7 @@
 # PHP Class: `x_class_comment`
 
+## Introduction
+
 The `x_class_comment` class is designed to manage a commenting system. It allows users to post comments, upvote comments, and manage the display and storage of comments in a MySQL database. This class integrates with a MySQL database and uses sessions to track user votes.
 
 - **Session Management**: Ensure sessions are started before using the class.
@@ -21,7 +23,7 @@ Use the class by including `/_framework/classes/x_class_comment.php`.
 !!! warning "PHP-Classes"
 	- `x_class_mysql`: Required for database operations.
 
-## Table
+## MySQL Table
 
 This section explains the structure of the database table that will be automatically created by the class to log activities. The table captures information such as the target entity, user details, activity text, and status. Below is a summary of the columns and keys used in the table, along with their purposes.
 

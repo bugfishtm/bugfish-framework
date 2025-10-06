@@ -1,5 +1,7 @@
 # PHP Class: `x_class_benchmark`
 
+## Introduction
+
 The `x_class_benchmark` class is designed for benchmarking various aspects of a web application's performance, such as load time, memory usage, and query count. It stores these metrics in a MySQL database for later analysis. The class also allows you to filter records by section and URL path.
 
 - **Table Initialization:** The `create_table()` method ensures that the necessary table structure is created in the database, with columns for storing performance metrics and other relevant data.
@@ -20,7 +22,7 @@ Use the class by including `/_framework/classes/x_class_benchmark.php`.
 	- `x_class_mysql`: Required for database operations.
 	- `x_class_debug`: This class should be implemented separately to provide performance metrics.
 
-## Table
+## MySQL Table
 
 This section describes the structure of the database table that the class automatically creates to log benchmarking data. This table tracks various performance metrics such as site loading time, memory usage, and query counts. The table will be automatically installed by the class when required by its functionality.
 

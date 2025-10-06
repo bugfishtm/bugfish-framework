@@ -1,112 +1,110 @@
-<?php
-	/* 
-		 ______  _     _ _______ _______ _  ______ _     _ 
-		(____  \(_)   (_|_______|_______) |/ _____|_)   (_)
-		 ____)  )_     _ _   ___ _____  | ( (____  _______ 
-		|  __  (| |   | | | (_  |  ___) | |\____ \|  ___  |
-		| |__)  ) |___| | |___) | |     | |_____) ) |   | |
-		|______/ \_____/ \_____/|_|     |_(______/|_|   |_|
-		Copyright (C) 2024 Jan Maurice Dahlmanns [Bugfish]
+<?php                                                  
+	#	@@@@@@@  @@@  @@@  @@@@@@@  @@@@@@@@ @@@  @@@@@@ @@@  @@@ 
+	#	@@!  @@@ @@!  @@@ !@@       @@!      @@! !@@     @@!  @@@ 
+	#	@!@!@!@  @!@  !@! !@! @!@!@ @!!!:!   !!@  !@@!!  @!@!@!@! 
+	#	!!:  !!! !!:  !!! :!!   !!: !!:      !!:     !:! !!:  !!! 
+	#	:: : ::   :.:: :   :: :: :   :       :   ::.: :   :   : : 						
+	#		 ______  ______   ______   _________   ______  _   _   _   ______   ______   _    __ 
+	#		| |     | |  | \ | |  | | | | | | | \ | |     | | | | | | / |  | \ | |  | \ | |  / / 
+	#		| |---- | |__| | | |__| | | | | | | | | |---- | | | | | | | |  | | | |__| | | |-< <  
+	#		|_|     |_|  \_\ |_|  |_| |_| |_| |_| |_|____ |_|_|_|_|_/ \_|__|_/ |_|  \_\ |_|  \_\ 
+																							 
+	#	Copyright (C) 2025 Jan Maurice Dahlmanns [Bugfish]
 
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU Lesser General Public License
-		as published by the Free Software Foundation; either version 2.1
-		of the License, or (at your option) any later version.
+	#	This program is free software; you can redistribute it and/or
+	#	modify it under the terms of the GNU Lesser General Public License
+	#	as published by the Free Software Foundation; either version 2.1
+	#	of the License, or (at your option) any later version.
 
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU Lesser General Public License for more details.
+	#	This program is distributed in the hope that it will be useful,
+	#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	#	GNU Lesser General Public License for more details.
 
-		You should have received a copy of the GNU Lesser General Public License
-		along with this program; if not, see <https://www.gnu.org/licenses/>.
-	*/
+	#	You should have received a copy of the GNU Lesser General Public License
+	#	along with this program; if not, see <https://www.gnu.org/licenses/>.
 	
 	########################################################################
 	// Search Function with Scoring
 	########################################################################
-	function x_search($mysql, $table, $search_fields = array(), $get_fields = array(), $search_string = "", $uniqueref = "id") {
-		// Abort if Search String if not Set
-		if(empty($search_string) OR trim(@$search_string ?? '') == "" OR @$search_string == false) { return false; }
-		
-		// Trim Search String
-		$search_string = trim($search_string ?? '');
-		
-		// Get Current Search Tag Array
-		if(strpos($search_string, " ") > -1) { 
-			$search_string = preg_replace('/\s+/', ' ', $search_string); 
-			$search_array =  explode(" ", $search_string);
-		} else {$search_array[0] = trim($search_string ?? '');}
-		
-		// Prepare Array for Binds for Search Query
-		$new_bind_array	=	array();
-		$counter = 0; // Search String Counter
-		$c_q	=	""; // Serach Query Counter
-		$bindcounter = 0;
-		
-		// Prepare the Query for Search Results
-		while (is_numeric($counter)) {
-			if(@$search_array[$counter] != null) {
-				if(trim(@$search_array[$counter] ?? '') != "") {
-					
-					if($counter == 0) {
-						if($bindcounter == 0) {
-							$c_q = "SELECT * FROM `".$table ."` WHERE (title LIKE CONCAT( '%', ?, '%') OR text LIKE CONCAT( '%', ?, '%') OR category = CONCAT( '%', ?, '%') OR sec_category LIKE CONCAT( '%', ?, '%')) ";
-							$bindcounter++;
-						} else {
-							
-						}
-							
-					} else {
-						foreach($search_fields AS $tmpkey => $tmpvalue) {
-							$c_q .= " OR ".$tmpvalue[0]." LIKE CONCAT( '%', ?, '%') ";	
-						}
-					}
-					
-					$new_ar["type"]	 =	"s";
-					$new_ar["value"] =	$search_array[$counter];
-					
-					foreach($search_fields AS $tmpkey => $tmpvalue) {
-						array_push($new_bind_array, $new_ar);				
-					}
-				}  $counter	= $counter + 1;
-			} else {$counter	= "notset";}
+	function x_search($mysql, $table, $search_fields = [], $get_fields = [], $search_string = "", $uniqueref = "id") {
+		// Abort if Search String is empty or invalid
+		if (empty($search_string) || trim($search_string) === "") {
+			return false;
 		}
-		
-		// Query and Sorting Variables
-		$cur_ar		=	$mysql->select( $c_q." ORDER BY ".$uniqueref." DESC", true, $new_bind_array);
-		$ra		=	null;
-		$rad	=	null;
-		
-		// Scoring for Items
-		foreach($cur_ar as $key => $score_r){
-			// Set Fields available for Score
-			$counter = 0;
-			foreach($get_fields AS $tmpkey => $tmpvalue) {
-				$ra[$score_r[$uniqueref]][$tmpvalue]  	  = $score_r[$tmpvalue];
-			}
-			
-			$rad[0][$score_r[$uniqueref]]["score"]  = 0;
-				
-			while (is_numeric($counter)) {
-				if(@$search_array[$counter] != null) {
-					if(trim(@$search_array[$counter] ?? '') != "") {
-						foreach($search_fields AS $tmpkey => $tmpvalue) {
-							$rad[0][$score_r[$uniqueref]]["score"] = @$rad[0][$score_r[$uniqueref]][$tmpvalue[0]] + (substr_count(strtolower($score_r[$tmpvalue[0]]), strtolower($search_array[$counter])) * $tmpvalue[1]);
-						}	
-					} $counter	= $counter + 1;
-				} else { $counter	= "notset"; }
-			}
-			
-			// Add Related IF for later Recognizing
-			$rad[0][$score_r[$uniqueref]][$uniqueref] = $score_r[$uniqueref];
-		}	
-		
-		if(@$rad[0]) {
-			array_multisort($rad[0], SORT_DESC);
-			$output = array();
-			foreach (@$rad[0] as &$value) {array_push($output, $ra[$value[$uniqueref]]);}	
-			return $output;
-		} else { return array(); }
-	}
 
+		$search_string = trim($search_string);
+		// Split search string on spaces, normalize multiple spaces
+		if (strpos($search_string, " ") !== false) {
+			$search_string = preg_replace('/\s+/', ' ', $search_string);
+			$search_terms = explode(" ", $search_string);
+		} else {
+			$search_terms = [$search_string];
+		}
+
+		if (empty($search_fields)) {
+			// Default search fields with weights
+			$search_fields = [
+				["title", 3],
+				["text", 1],
+				["category", 2],
+				["sec_category", 2],
+			];
+		}
+
+		// Prepare query parts
+		$where_clauses = [];
+		$bindings = [];
+
+		foreach ($search_terms as $term) {
+			$term_clauses = [];
+			foreach ($search_fields as $field_weight) {
+				$field = $field_weight[0];
+				$term_clauses[] = "`$field` LIKE ?";
+				$bindings[] = "%$term%";
+			}
+			$where_clauses[] = "(" . implode(" OR ", $term_clauses) . ")";
+		}
+
+		$where_sql = implode(" AND ", $where_clauses);
+
+		// Select fields to get, at least include uniqueref
+		if (empty($get_fields)) {
+			$get_fields = array_map(fn($f) => $f[0], $search_fields);
+		}
+		if (!in_array($uniqueref, $get_fields, true)) {
+			array_unshift($get_fields, $uniqueref);
+		}
+
+		$fields_sql = implode(", ", array_map(fn($f) => "`$f`", $get_fields));
+
+		$query = "SELECT $fields_sql FROM `$table` WHERE $where_sql";
+
+		$results = $mysql->select($query, true, array_map(fn($b) => ["type" => "s", "value" => $b], $bindings));
+		if (!$results) {
+			return [];
+		}
+
+		// Score calculation per result row
+		$scored_results = [];
+		foreach ($results as $row) {
+			$score = 0;
+			foreach ($search_terms as $term) {
+				$termLower = mb_strtolower($term);
+				foreach ($search_fields as $field_weight) {
+					$field = $field_weight[0];
+					$weight = $field_weight[1];
+					$fieldValue = mb_strtolower($row[$field] ?? "");
+					$count = substr_count($fieldValue, $termLower);
+					$score += $count * $weight;
+				}
+			}
+			$row['score'] = $score;
+			$scored_results[] = $row;
+		}
+
+		// Sort results by score descending
+		usort($scored_results, fn($a, $b) => $b['score'] <=> $a['score']);
+
+		return $scored_results;
+	}

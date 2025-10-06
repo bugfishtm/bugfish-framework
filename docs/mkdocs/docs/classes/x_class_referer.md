@@ -1,5 +1,7 @@
 # PHP Class: `x_class_referer` 
 
+## Introduction
+
 The `x_class_referer` class is designed to manage and track referer URLs for websites. It interacts with a MySQL database to store and update information about incoming traffic, including the referer URL, site URL, and associated metadata.
 
 - **URL Preparation:** The method `prepareUrl()` is used internally to clean up the referer URL by removing query parameters, protocols (`http://`, `https://`), and `www.` prefix.  
@@ -19,7 +21,7 @@ Use the class by including `/_framework/classes/x_class_referer.php`.
 !!! warning "PHP-Classes"
 	- `x_class_mysql`: Required for database operations.
 
-## Table
+## MySQL Table
 
 This section describes the table structure used by the Referer class to log referer information. The table is automatically created by the class if needed. Below is a summary of the columns and keys used in the table, along with their purposes.
 

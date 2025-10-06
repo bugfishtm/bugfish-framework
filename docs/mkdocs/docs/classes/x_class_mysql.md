@@ -1,5 +1,7 @@
 # PHP Class: `x_class_mysql` 
 
+## Introduction
+
 The `x_class_mysql` class provides an interface for interacting with a MySQL database. It encapsulates common database operations and includes additional features for error handling and logging.
 
 - **Error Handling**: Errors are managed by the `handler` method which updates internal error states and logs errors if configured.  
@@ -17,7 +19,7 @@ Use the class by including `/_framework/classes/x_class_mysql.php`.
 	- `mysqli`: The PHP MySQLi extension must be installed and enabled.  
 	- `session`: Required for Benchmarking.
 
-## Table
+## MySQL Table
 
 This section describes the table structure used by the MySQL class to log failures if logging is activated. The table is automatically created by the class if necessary. Below is a summary of the columns and keys used in the table, along with their purposes.
 

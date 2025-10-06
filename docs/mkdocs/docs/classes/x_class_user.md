@@ -1,5 +1,7 @@
 # PHP Class: `x_class_user`
 
+## Introduction
+
 The `x_class_user` PHP class is a versatile and robust solution designed for seamless integration of user management into web projects. As a core component of the Bugfish Framework, it offers essential features for managing user sessions, authentication, and profile customization.
 
 Use the class by including `/_framework/classes/x_class_user.php`.
@@ -11,50 +13,29 @@ Use the class by including `/_framework/classes/x_class_user.php`.
 !!! warning "PHP-Modules"
 	- `mysqli`: The PHP MySQLi extension must be installed and enabled.  
 	- `session`: PHP sessions must be enabled and started before CSRF protection can function correctly.
+	- `openssl`: Used for cryptographic functions, such as token generation.  
+	- `mbstring`: Required for handling multibyte character encodings.  
 
 !!! warning "PHP-Classes"
 	- `x_class_mysql`: Required for database operations.
 
 ## Key Features
 
-### User Registration and Authentication
-- **Secure Password Handling**: Implements secure password hashing and supports persistent authentication using cookies.
-- **User Sessions**: Efficiently manages user sessions for a consistent user experience.
+| Category | Features |
+|-----------|-----------|
+| **User Registration and Authentication** | - Secure password hashing and persistent authentication via cookies<br>- Efficient session management for consistent user experience |
+| **Profile Customization** | - Supports user groups and additional profile fields<br>- Manages user-specific settings |
+| **Session Management** | - Integrates PHP sessions with MySQL for reliable session handling |
+| **Security Measures** | - Protects against SQL injection (not a full security guarantee) |
+| **User Activity Management** | - Handles account activation via email codes<br>- Supports password recovery and secure login procedures |
+| **Multi-Login Control and Login Flexibility** | - Option to enable or disable multi-login per user<br>- Configurable login using either username or email |
+| **Reference Management** | - Manages and resets internal references for clean user operations |
 
-### Profile Customization
-- **User Groups and Settings**: Supports the creation and management of user groups, additional profile fields, and user settings.
+## Table Structure
 
-### Session Management
-- **PHP Sessions and MySQL Integration**: Combines PHP sessions with MySQL for reliable session handling.
-
-### Security Measures
-- **SQL Injection Protection**: Includes mechanisms to protect against MySQL injection, though it does not guarantee complete security.
-
-### User Activity Management
-- **Account Activation and Recovery**: Manages email-based activation codes, password recovery, and secure login procedures.
-
-### Multi-Login Control and Login Flexibility
-- **Control Over Multi-Login**: Allows enabling or disabling multi-login for users.
-- **Customizable Login Credentials**: Configures the login field to be either the username or email address.
-
-### Reference Management
-- **Internal Reference Handling**: Manages and resets internal references to ensure clean user management operations.
-
-## Requirements
-
-### PHP Modules
-- `mysqli`: Required for data storage, using the `x_class_mysql` object.  
-- `openssl`: Used for cryptographic functions, such as token generation.  
-- `mbstring`: Required for handling multibyte character encodings.  
-
-### External Classes
-- `x_class_mysql`: Required for Database Operations.
-
-
-## Table Structures
 Tables will be installed automatically upon initialization.
 
-### Users Table
+**Users Table**
 
 | Column Name      | Data Type    | Nullable | Default Value                            | Comment                                   |
 |------------------|--------------|----------|------------------------------------------|-------------------------------------------|
@@ -93,7 +74,7 @@ Tables will be installed automatically upon initialization.
 | modify_date      | datetime     | Yes      | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | Modification date                     |
 | Primary Key      |              |          | (id)                                     |                                           |
 
-### Users Session Table
+**Sessions Table**
 
 | Column Name    | Data Type    | Nullable | Default Value                            | Comment                                |
 |----------------|--------------|----------|------------------------------------------|----------------------------------------|
@@ -109,7 +90,7 @@ Tables will be installed automatically upon initialization.
 | execute_ip     | varchar(128) | Yes      | NULL                                     | IP at session invalidation (if enabled) |
 | Primary Key    |              |          | (id)                                     |                                        |
 
-### Group Table
+**Group Table**
 
 | Column Name        | Data Type    | Nullable | Default Value                            | Comment             |
 |--------------------|--------------|----------|------------------------------------------|---------------------|
@@ -120,8 +101,7 @@ Tables will be installed automatically upon initialization.
 | modification       | datetime     | Yes      | CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP | Modification date |
 | Primary Key        |              |          | (id)                                     |                     |
 
-### Group Link Table
-
+**Group Relation Table**
 
 | Column Name  | Data Type    | Nullable | Default Value | Comment           |
 |--------------|--------------|----------|---------------|-------------------|
@@ -132,7 +112,7 @@ Tables will be installed automatically upon initialization.
 | Primary Key  |              |          | (id)          |                   |
 | Unique Constraint |          |          | UNIQUE (fk_user, fk_group) | Unique combination of user and group |
 
-### Extrafield Table
+**Extrafield Table**
 
 
 | Column Name    | Data Type    | Nullable | Default Value | Comment             |

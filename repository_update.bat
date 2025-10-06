@@ -1,4 +1,11 @@
 @echo off
+setlocal enabledelayedexpansion
+
+:: Configurable variables
+set "REPO_URL=https://github.com/bugfishtm/bugfish-framework"
+set "BRANCH=main"
+set "INITIAL_COMMIT_MSG=Initial commit"
+
 :: Cool Output Messages
 echo ==============================
 echo Welcome to the Bugfish Git Update Script!
@@ -9,41 +16,52 @@ echo 2. Commit with a message of your choice
 echo 3. Push the commit to the branch you specify
 echo ==============================
 
-:: Asking for the branch name
-set /p branch=Enter the branch you want to push to (default is 'main'): 
+:: Confirm before proceeding
+set /p "confirm=Are you sure you want to proceed? (y/n): "
+if /i not "!confirm!"=="y" (
+    echo Operation cancelled.
+    pause
+    exit /b 1
+)
 
-:: Set default branch to 'main' if no input is given
-if "%branch%"=="" set branch=main
-
-:: Asking for the commit message
-set /p commitMsg=Enter your commit message: 
+:: Ask for commit message for this update (cannot be empty)
+:commitmsg
+set /p "commitMsg=Enter your commit message: "
+if "!commitMsg!"=="" (
+    echo Commit message cannot be empty.
+    goto commitmsg
+)
 
 :: Cool message before starting the Git commands
 echo ==============================
-echo Staging files (excluding the .bat file)...
+echo Staging all files...
 echo ==============================
 
-:: Staging all files except this .bat file
-git add . 
+:: Stage all files except batch script itself (optional: modify if you want to exclude)
+git add .
 
-:: Cool message before committing
+:: Commit with user input message
 echo ==============================
-echo Committing with message: "%commitMsg%"
+echo Committing with message: "!commitMsg!"
 echo ==============================
+git commit -m "!commitMsg!"
 
-:: Committing the changes
-git commit -m "%commitMsg%"
+:: Add remote origin (only if not already added)
+git remote get-url origin >nul 2>&1
+if errorlevel 1 (
+    git remote add origin %REPO_URL%
+)
 
-:: Cool message before pushing
+:: Push to specified branch
 echo ==============================
-echo Pushing to branch: %branch%
+echo Pushing to branch: %BRANCH%
 echo ==============================
-
-:: Pushing to the specified branch
-git push -u origin %branch%
+git push -u origin %BRANCH%
 
 :: Completion message
 echo ==============================
 echo All done! Your changes have been pushed to the repository.
 echo ==============================
 pause
+
+endlocal

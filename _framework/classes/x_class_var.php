@@ -1,26 +1,29 @@
-<?php
-	/* 
-		 ______  _     _ _______ _______ _  ______ _     _ 
-		(____  \(_)   (_|_______|_______) |/ _____|_)   (_)
-		 ____)  )_     _ _   ___ _____  | ( (____  _______ 
-		|  __  (| |   | | | (_  |  ___) | |\____ \|  ___  |
-		| |__)  ) |___| | |___) | |     | |_____) ) |   | |
-		|______/ \_____/ \_____/|_|     |_(______/|_|   |_|
-		Copyright (C) 2024 Jan Maurice Dahlmanns [Bugfish]
+<?php                                                  
+	#	@@@@@@@  @@@  @@@  @@@@@@@  @@@@@@@@ @@@  @@@@@@ @@@  @@@ 
+	#	@@!  @@@ @@!  @@@ !@@       @@!      @@! !@@     @@!  @@@ 
+	#	@!@!@!@  @!@  !@! !@! @!@!@ @!!!:!   !!@  !@@!!  @!@!@!@! 
+	#	!!:  !!! !!:  !!! :!!   !!: !!:      !!:     !:! !!:  !!! 
+	#	:: : ::   :.:: :   :: :: :   :       :   ::.: :   :   : : 						
+	#		 ______  ______   ______   _________   ______  _   _   _   ______   ______   _    __ 
+	#		| |     | |  | \ | |  | | | | | | | \ | |     | | | | | | / |  | \ | |  | \ | |  / / 
+	#		| |---- | |__| | | |__| | | | | | | | | |---- | | | | | | | |  | | | |__| | | |-< <  
+	#		|_|     |_|  \_\ |_|  |_| |_| |_| |_| |_|____ |_|_|_|_|_/ \_|__|_/ |_|  \_\ |_|  \_\ 
+																							 
+	#	Copyright (C) 2025 Jan Maurice Dahlmanns [Bugfish]
 
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU Lesser General Public License
-		as published by the Free Software Foundation; either version 2.1
-		of the License, or (at your option) any later version.
+	#	This program is free software; you can redistribute it and/or
+	#	modify it under the terms of the GNU Lesser General Public License
+	#	as published by the Free Software Foundation; either version 2.1
+	#	of the License, or (at your option) any later version.
 
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU Lesser General Public License for more details.
+	#	This program is distributed in the hope that it will be useful,
+	#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	#	GNU Lesser General Public License for more details.
 
-		You should have received a copy of the GNU Lesser General Public License
-		along with this program; if not, see <https://www.gnu.org/licenses/>.
-	*/
+	#	You should have received a copy of the GNU Lesser General Public License
+	#	along with this program; if not, see <https://www.gnu.org/licenses/>.
+	
 	class x_class_var {
 		// Class Variables
 		private $variable_msqlcon   = false; 
@@ -42,7 +45,7 @@
 												  `creation` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date of Entry | Will be Auto-Set',
 												  `modification` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date of Entry with Auto-Update on Change',
 												  PRIMARY KEY (`id`),
-												  UNIQUE KEY `x_class_var_unique` (`section`,`descriptor`) USING BTREE);");}
+												  UNIQUE KEY `".$this->variable_table."_unique` (`section`,`descriptor`) USING BTREE);");}
 		// Construct
 		function __construct($mysql, $tablename, $section, $descriptor = "descriptor", $value = "value", $description = "description", $sectionfield = "section", $idfield = "id") { 
 			if (session_status() !== PHP_SESSION_ACTIVE) {@session_start();}
@@ -132,7 +135,8 @@
 		// Internal Function to Handle Variables
 		public function set($name, $value, $description = false, $add = true, $overwrite = true) {
 			if(!$description OR !$this->db_r_c_descr) { $descriptionedit = false; $descriptioneditv = ""; } else { $descriptionedit = true ;$descriptioneditv = $description;}
-			
+			if(is_array($value)) { $value = serialize($value); }
+			if(is_object($value)) { $value = serialize($value); }
 			if($this->exists($name)) { 
 				if($overwrite) {	
 					if($descriptionedit) {
@@ -192,7 +196,6 @@
 		public function form_end($precookie = "") {
 			$_SESSION[$precookie."x_class_var_csrf"] = $_SESSION[$precookie."x_class_var"];
 		}
-		
 		
 		// Setup Int
 		public function form($varname, $type = "int", $selectarray = array(), $precookie = "", $button_class="btn btn-warning waves-effect waves-light", $itemclass = "form-control", $editbuttonname = "Edit") {	

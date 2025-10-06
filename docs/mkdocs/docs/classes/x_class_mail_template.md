@@ -1,73 +1,331 @@
 # PHP Class: `x_class_mail_template`
 
-The `x_class_mail_template` class provides a powerful interface for managing email templates in PHP applications. It allows you to set up, modify, retrieve, and delete email templates stored in a MySQL database. Templates can be customized with content substitutions and dynamically generated, making it highly adaptable for various scenarios such as newsletters, notifications, and other email-based communications.
+## Introduction
 
-- **Substitutions:** The class uses an internal array to manage substitutions. These are key-value pairs where the keys represent placeholders within the template content that should be replaced by specific values when generating the email.
-- **Table Management:** The class automatically creates the required table if it doesn’t exist, making it easier to integrate into new environments without requiring additional setup.
+The `x_class_mail_template` class manages email templates stored in a MySQL database. It supports creation, retrieval, modification, and deletion of email templates with multi-language and section support. Additionally, the class provides mechanisms for content and subject substitution, allowing dynamic customization of email content before sending. Templates can optionally include headers and footers, and the class can be integrated with mailing functionality (e.g., `x_class_mail`).
 
-Use the class by including `/_framework/classes/x_class_mail_template.php`.
+Use the class by including the file containing it in your project.
 
 !!! warning "Dependencies"
-	- PHP 7.0-7.4
-	- PHP 8.0-8.4
-	
+	- PHP 7.0-8.x
+	- PHP MySQLi or compatible DB wrapper for SQL execution
+
 !!! warning "PHP-Modules"
-	- `mysqli`: The PHP MySQLi extension must be installed and enabled.  
+	- A MySQL-compatible PHP DB handler (custom or like `x_class_mysql`)
 
-!!! warning "PHP-Classes"
-	- `x_class_mysql`: Required for database operations.
+## MySQL Table
 
-## Table
+This class automatically creates and manages a database table for storing email templates. Below is the description of the table structure.
 
-This section describes the table structure used by the Mail Template class to store email templates. The table is automatically created by the class if necessary for its functionality. Below is a summary of the columns and keys used in the table, along with their purposes.
+!!! note "The table is automatically created in the constructor if it does not exist."
 
-!!! note "The table will be automatically installed upon constructor execution."
+| Column Name | Data Type   | Attributes                                                       | Description                                  |
+|-------------|-------------|-----------------------------------------------------------------|----------------------------------------------|
+| `id`        | `int(10)`   | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`                    | Unique identifier for each template          |
+| `name`      | `varchar(256)` | `NOT NULL`                                                    | Unique template identifier                    |
+| `subject`   | `text`      | `NULL`                                                          | Template email subject                        |
+| `description`| `text`     | `NULL`                                                          | Optional description of the template         |
+| `content`   | `text`      | `DEFAULT NULL`                                                  | Email template body content                   |
+| `lang`      | `varchar(32)` | `DEFAULT ''`                                                  | Language code key for template variation     |
+| `section`   | `varchar(128)`| `DEFAULT NULL`                                                | Logical section or grouping for templates    |
+| `creation`  | `datetime`  | `DEFAULT CURRENT_TIMESTAMP`                                     | Creation timestamp                            |
+| `modification` | `datetime` | `DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`      | Last modification timestamp, auto-updated    |
 
-| Column Name   | Data Type    | Attributes                                    | Description                                                                                         |
-|---------------|--------------|-----------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| `id`          | `int(10)`    | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`  | A unique identifier for each email template, ensuring that each template is individually trackable. |
-| `name`        | `varchar(256)` | `NOT NULL`                                  | The name or identifier of the template.                                                             |
-| `subject`     | `text`       | `NULL`                                      | The subject line for the email template, providing context for the email.                           |
-| `description` | `text`       | `NULL`                                      | A description of the template's purpose or content, useful for understanding the template's use case.|
-| `content`     | `text`       | `DEFAULT NULL`                              | The main content of the email template, including the body of the email.                           |
-| `section`     | `varchar(128)` | `DEFAULT NULL`                              | For Multi Site Purposes to split database data in categories.                         |
-| `creation`    | `datetime`   | `DEFAULT CURRENT_TIMESTAMP`                 | The timestamp when the template was created. Automatically set upon insertion.                    |
-| `modification`| `datetime`   | `DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP` | The timestamp of the last modification to the template. Automatically updated on changes.         |
+| Key Name              | Key Type | Columns                  | Usage                                             |
+|-----------------------|----------|--------------------------|---------------------------------------------------|
+| `PRIMARY KEY`          | Primary  | `id`                     | Unique primary key                                |
+| `${table}_unique`      | Unique   | `name`, `lang`, `section`| Ensures template uniqueness per name/lang/section|
 
+## Methods
 
-| Key Name      | Key Type  | Columns | Usage                                                                                                  |
-|---------------|-----------|---------|--------------------------------------------------------------------------------------------------------|
-| `PRIMARY KEY` | Primary   | `id`    | Ensures that each email template is uniquely identifiable.                                            |
-| `x_class_mail_template` | Unique    | `name`, `section`    | Ensures that each combination of template name and section is unique, preventing duplicate entries for the same section. |
+***
 
+### `__construct`
 
-## Methods & Properties
+Initializes the class with DB connection, table name, section, and language settings.
 
-| Method/Variable         | Description                                                                                     | Parameters                                                                                                                                                 | Return Type     |
-|-------------------------|-------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
-| **`$x_class_mysql`**            | Stores the x_class_mysql object.                                                             | N/A                                                                                                                                                        | Object          |
-| **`$table`**            | Stores the name of the table used for storing templates.                                        | N/A                                                                                                                                                        | String          |
-| **`$section`**          | Section associated with templates, allowing categorization.                                     | N/A                                                                                                                                                        | String          |
-| **`set_header`**        | Sets the header for the email content.                                                          | `string $header`: Header content.                                                                                                                          | void            |
-| **`set_footer`**        | Sets the footer for the email content.                                                          | `string $footer`: Footer content.                                                                                                                          | void            |
-| **`set_content`**       | Sets the email body content along with the subject.                                             | `string $content`: Main content of the email.<br>`string $subject`: Email subject.                                                                          | void            |
-| **`set_template`**      | Loads a template from the database using the name and section.                                  | `string $name`: Template name.                                                                                                                             | `bool`          |
-| **`create_table`**      | Creates the table structure for storing email templates if it doesn’t already exist.            | N/A                                                                                                                                                        | void            |
-| **`reset_substitution`**| Resets all stored substitutions for template content.                                           | N/A                                                                                                                                                        | void            |
-| **`add_substitution`**  | Adds a substitution pair for replacing placeholders in the content.                             | `string $name`: Placeholder text.<br>`string $replace`: Replacement text.                                                                                  | void            |
-| **`do_substitute`**     | Applies the substitutions to a given text.                                                      | `string $text`: The content to process.                                                                                                                    | `string`        |
-| **`get_content`**       | Retrieves the email content with optional substitution applied.                                 | `bool $substitute` (optional): Whether to apply substitutions. Default is `false`.                                                                         | `string`        |
-| **`get_subject`**       | Retrieves the email subject with optional substitution applied.                                 | `bool $substitute` (optional): Whether to apply substitutions. Default is `false`.                                                                         | `string`        |
-| **`setup`**             | Sets up a new template or overwrites an existing one.                                           | `string $name`: Template name.<br>`string $subject`: Subject.<br>`string $content`: Main content.<br>`string $description` (optional): Description.<br>`bool $overwrite` (optional): Whether to overwrite an existing template. | `mixed` (insert ID or void) |
-| **`change`**            | Modifies an existing template by ID.                                                            | `int $id`: Template ID.<br>`string $name`: New name.<br>`string $subject`: New subject.<br>`string $content`: New content.<br>`string $description` (optional): New description. | void |
-| **`name_exists`**       | Checks if a template with a specific name exists in the current section.                        | `string $name`: Name of the template.                                                                                                                      | `bool`          |
-| **`get_name_by_id`**    | Retrieves the name of a template based on its ID.                                               | `int $id`: Template ID.                                                                                                                                    | `string|bool`   |
-| **`id_exists`**         | Checks if a template with a specific ID exists in the current section.                          | `int $id`: Template ID.                                                                                                                                    | `bool`          |
-| **`id_delete`**         | Deletes a template based on its ID.                                                             | `int $id`: Template ID.                                                                                                                                    | `bool`          |
-| **`get_full`**          | Retrieves all details of a template based on its ID.                                            | `int $id`: Template ID.                                                                                                                                    | `array|bool`    |
+| Parameter | Type   | Description                          | Default      |
+|-----------|--------|------------------------------------|--------------|
+| `$mysql`  | object | MySQL-compatible DB handler          | None         |
+| `$table`  | string | Database table name for templates   | None         |
+| `$section`| string | Section/grouping for template scope | `""`         |
+| `$lang`   | string | Language code for templates          | `""`         |
 
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `void`       | Class instance constructed          |
 
-## Return Values
+***
 
-- Functions that check for the existence of templates (`name_exists`, `id_exists`, etc.) return a boolean indicating success or failure.
-- Functions like `setup` and `change` can return mixed values, such as insert IDs or boolean, depending on the context.
+### `set_header`
+
+Sets global header content for emails.
+
+| Parameter | Type   | Description             |
+|-----------|--------|-------------------------|
+| `$header` | string | Header HTML/text content|
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `void`       | Method does not return a value     |
+
+***
+
+### `set_footer`
+
+Sets global footer content for emails.
+
+| Parameter | Type   | Description             |
+|-----------|--------|-------------------------|
+| `$footer` | string | Footer HTML/text content|
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `void`       | Method does not return a value     |
+
+***
+
+### `set_content`
+
+Sets the full email content and subject, overwriting the current template content.
+
+| Parameter | Type   | Description                |
+|-----------|--------|----------------------------|
+| `$content`| string | Email body content          |
+| `$subject`| string | Email subject line          |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `void`       | Sets internal content and subject  |
+
+***
+
+### `set_template`
+
+Loads a template by name from the database based on current section and language.
+
+| Parameter | Type   | Description           |
+|-----------|--------|-----------------------|
+| `$name`   | string | Template identifier   |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `bool`       | `true` if template found and loaded; otherwise `false` |
+
+***
+
+### `setup`
+
+Creates or updates a mail template in the database.
+
+| Parameter  | Type    | Description                                 | Default       |
+|------------|---------|---------------------------------------------|---------------|
+| `$name`    | string  | Unique template name                         | None          |
+| `$subject` | string  | Subject text                                | None          |
+| `$content` | string  | Email content                               | None          |
+| `$description`| string| Optional description of the template       | `""`          |
+| `$overwrite`| bool   | Whether to overwrite existing template      | `false`       |
+| `$lang`    | string  | Language override for this setup             | Current class language |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `int|void`   | Insert ID on new record, or void when updating |
+
+***
+
+### `reset_substitution`
+
+Clears all added text substitutions.
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `void`       | Always                            |
+
+***
+
+### `add_substitution`
+
+Adds a text substitution pair to be applied on email content or subject.
+
+| Parameter | Type   | Description                   |
+|-----------|--------|-------------------------------|
+| `$name`   | string | Placeholder name or text to replace |
+| `$replace`| string | Replacement text               |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `void`       | Always                            |
+
+***
+
+### `do_substitute`
+
+Applies all substitutions on given text.
+
+| Parameter | Type   | Description      |
+|-----------|--------|------------------|
+| `$text`   | string | Text to process  |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `string`     | Text after substitutions applied  |
+
+***
+
+### `get_content`
+
+Returns the email content, optionally with substitutions applied.
+
+| Parameter | Type   | Description               | Default |
+|-----------|--------|---------------------------|---------|
+| `$substitute` | bool| Whether to apply substitutions | `false` |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `string`     | Email content with or without substitutions |
+
+***
+
+### `get_subject`
+
+Returns the email subject, optionally with substitutions applied.
+
+| Parameter | Type   | Description               | Default |
+|-----------|--------|---------------------------|---------|
+| `$substitute` | bool| Whether to apply substitutions | `false` |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `string`     | Email subject with or without substitutions|
+
+***
+
+### `change`
+
+Updates an existing template identified by ID.
+
+| Parameter  | Type   | Description                  | Default        |
+|------------|--------|------------------------------|----------------|
+| `$id`      | int    | Template database ID          | None           |
+| `$name`    | string | New name for the template     | None           |
+| `$subject` | string | New subject text              | None           |
+| `$content` | string | New email content             | None           |
+| `$description` | string | Optional description        | `""`           |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `void|false` | `false` if invalid ID, else void   |
+
+***
+
+### `name_exists`
+
+Checks if a template with given name exists in current section and language.
+
+| Parameter | Type   | Description            |
+|-----------|--------|------------------------|
+| `$name`   | string | Template name          |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `int|false` | Returns template ID if exists, else `false` |
+
+***
+
+### `get_name_by_id`
+
+Retrieves template name by ID.
+
+| Parameter | Type   | Description           |
+|-----------|--------|-----------------------|
+| `$id`     | int    | Template ID           |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `string|false` | Template name or `false` if not found |
+
+***
+
+### `id_exists`
+
+Checks if a template ID exists in current section and language.
+
+| Parameter | Type   | Description             |
+|-----------|--------|-------------------------|
+| `$id`     | int    | Template ID             |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `bool`     | `true` if exists, else `false`      |
+
+***
+
+### `id_delete`
+
+Deletes a template by ID.
+
+| Parameter | Type   | Description             |
+|-----------|--------|-------------------------|
+| `$id`     | int    | Template ID             |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `bool|false`| Query success or `false` if invalid ID |
+
+***
+
+### `name_delete`
+
+Deletes a template by name.
+
+| Parameter | Type   | Description             |
+|-----------|--------|-------------------------|
+| `$name`   | string | Template name           |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `bool`      | Query success                    |
+
+***
+
+### `get_full`
+
+Retrieves all information for a template by ID.
+
+| Parameter | Type   | Description             |
+|-----------|--------|-------------------------|
+| `$id`     | int    | Template ID             |
+
+| Return Value | When does this return value occur? |
+|--------------|------------------------------------|
+| `array|false`| Associative array of template data or `false` if not found |
+
+***
+
+## Example
+
+```php
+<?php
+// Assuming $db is a MySQL DB wrapper instance
+$mailTemplates = new x_class_mail_template($db, 'mail_templates', 'notifications', 'en');
+
+// Create or update a template
+$mailTemplates->setup('welcome_email', 'Welcome!', '<p>Hello {{name}}, welcome!</p>', 'Welcome email template', true);
+
+// Load a template
+if ($mailTemplates->set_template('welcome_email')) {
+    // Add substitutions
+    $mailTemplates->add_substitution('{{name}}', 'John Doe');
+
+    // Get processed content
+    $content = $mailTemplates->get_content(true);
+    $subject = $mailTemplates->get_subject(true);
+
+    // Use $content and $subject for sending email...
+    echo $subject;
+    echo $content;
+} else {
+    echo "Template not found.";
+}
+?>
+```

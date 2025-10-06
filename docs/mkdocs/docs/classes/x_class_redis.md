@@ -1,5 +1,6 @@
 # PHP Class: `x_class_redis` 
 
+## Introduction
 
 The `x_class_redis` class is a wrapper for working with a Redis database, providing methods to connect, check the connection, and perform operations like storing and retrieving strings and lists. It logs errors to the PHP error log if the connection fails and supports optional key prefixing with `$pre` to prevent collisions. Redis methods such as `set`, `get`, `lpush`, and `lrange` are called directly on the Redis instance, so the Redis extension must support them.
 

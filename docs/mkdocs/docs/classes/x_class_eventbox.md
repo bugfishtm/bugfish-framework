@@ -1,5 +1,7 @@
 # PHP Class: `x_class_eventbox`
 
+## Introduction
+
 The `x_class_eventbox` class provides a mechanism for managing and displaying event messages within a web application. It utilizes PHP sessions to store messages temporarily and allows for various types of messages to be displayed or skipped.
 
 

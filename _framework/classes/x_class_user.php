@@ -1,26 +1,29 @@
-<?php
-	/* 
-		 ______  _     _ _______ _______ _  ______ _     _ 
-		(____  \(_)   (_|_______|_______) |/ _____|_)   (_)
-		 ____)  )_     _ _   ___ _____  | ( (____  _______ 
-		|  __  (| |   | | | (_  |  ___) | |\____ \|  ___  |
-		| |__)  ) |___| | |___) | |     | |_____) ) |   | |
-		|______/ \_____/ \_____/|_|     |_(______/|_|   |_|
-		Copyright (C) 2024 Jan Maurice Dahlmanns [Bugfish]
+<?php                                                  
+	#	@@@@@@@  @@@  @@@  @@@@@@@  @@@@@@@@ @@@  @@@@@@ @@@  @@@ 
+	#	@@!  @@@ @@!  @@@ !@@       @@!      @@! !@@     @@!  @@@ 
+	#	@!@!@!@  @!@  !@! !@! @!@!@ @!!!:!   !!@  !@@!!  @!@!@!@! 
+	#	!!:  !!! !!:  !!! :!!   !!: !!:      !!:     !:! !!:  !!! 
+	#	:: : ::   :.:: :   :: :: :   :       :   ::.: :   :   : : 						
+	#		 ______  ______   ______   _________   ______  _   _   _   ______   ______   _    __ 
+	#		| |     | |  | \ | |  | | | | | | | \ | |     | | | | | | / |  | \ | |  | \ | |  / / 
+	#		| |---- | |__| | | |__| | | | | | | | | |---- | | | | | | | |  | | | |__| | | |-< <  
+	#		|_|     |_|  \_\ |_|  |_| |_| |_| |_| |_|____ |_|_|_|_|_/ \_|__|_/ |_|  \_\ |_|  \_\ 
+																							 
+	#	Copyright (C) 2025 Jan Maurice Dahlmanns [Bugfish]
 
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU Lesser General Public License
-		as published by the Free Software Foundation; either version 2.1
-		of the License, or (at your option) any later version.
+	#	This program is free software; you can redistribute it and/or
+	#	modify it under the terms of the GNU Lesser General Public License
+	#	as published by the Free Software Foundation; either version 2.1
+	#	of the License, or (at your option) any later version.
 
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU Lesser General Public License for more details.
+	#	This program is distributed in the hope that it will be useful,
+	#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	#	GNU Lesser General Public License for more details.
 
-		You should have received a copy of the GNU Lesser General Public License
-		along with this program; if not, see <https://www.gnu.org/licenses/>.
-	*/
+	#	You should have received a copy of the GNU Lesser General Public License
+	#	along with this program; if not, see <https://www.gnu.org/licenses/>.
+	
 class x_class_user {  
 	/*		__________                                     __                       
 			\______   \_____ ____________    _____   _____/  |_  ___________  ______
@@ -144,7 +147,7 @@ class x_class_user {
 							`fk_user` int(10) NOT NULL COMMENT 'Related User ID',
 							`fk_group` int(10) NOT NULL COMMENT 'Related Group ID',
 							`creation` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
-							PRIMARY KEY (`id`), CONSTRAINT x_class_user_glink UNIQUE (`fk_user`,`fk_group`));");}
+							PRIMARY KEY (`id`), CONSTRAINT ".$this->table_group_link."_unique UNIQUE (`fk_user`,`fk_group`));");}
 		if(!$this->mysql->table_exists($this->table_group)) {
 			$this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->table_group."` (
 							`id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Unique Group ID',
@@ -170,7 +173,7 @@ class x_class_user {
 							`fk_user` int(10) NOT NULL COMMENT 'User Relation',
 							`creation` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
 							`modification` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
-							PRIMARY KEY (`id`));");	}}	
+							PRIMARY KEY (`id`), CONSTRAINT ".$this->table_ext."_unique UNIQUE (`fk_user`,`fk_group`));");	}}	
 	public function extrafield_add_field($string) { $x = $this->mysql->log_status(); $this->mysql->log_disable(); $y =   $this->mysql->query("ALTER TABLE `".$this->table_ext."` ADD COLUMN ".$string." ;"); if($x) {$this->mysql->log_enable();}return $y; }
 	public function extrafield_del_field($fieldname) { $x = $this->mysql->log_status(); $this->mysql->log_disable(); $y =  $this->mysql->query("ALTER TABLE `".$this->table_ext."` DROP COLUMN ".$fieldname." ;"); if($x) {$this->mysql->log_enable();} return $y; }	
 	public function extrafield_get($id) {
@@ -461,13 +464,20 @@ class x_class_user {
 		$this->mysql->query("CREATE TABLE IF NOT EXISTS `".$this->dt_users."` (
 								  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Unique ID',
 								  `user_name` varchar(512) DEFAULT 'undefined' COMMENT 'Users Name for Login if Ref',
-								  `user_initial` int(1) DEFAULT 0 COMMENT '1 if this user is initial created user',
-								  `user_pass` varchar(512) DEFAULT NULL COMMENT 'Users Pass for Login',
 								  `user_mail` varchar(512) NULL COMMENT 'Users Mail for Login if Ref',
+								  `user_shadow` varchar(512) DEFAULT NULL COMMENT 'Temporary Stored Mail if User Requests a Change this will be the new Mail',
+								  `user_pass` varchar(512) DEFAULT NULL COMMENT 'Users Pass for Login',
 								  `user_2fa` text DEFAULT NULL COMMENT 'Users 2FA key',
-								  `user_shadow` varchar(512) DEFAULT NULL COMMENT 'Users Store for Mail if Renew',
+								  `user_initial` int(1) DEFAULT 0 COMMENT '1 if this user is initial created user',
 								  `user_rank` int(9) NULL DEFAULT NULL COMMENT 'Users Rank',
 								  `user_confirmed` tinyint(1) DEFAULT '0' COMMENT 'User Activation Status',
+								  `user_disabled` int(1) DEFAULT 0 COMMENT '1 - User is Disabled',
+								  `user_blocked` tinyint(1) DEFAULT '0' COMMENT 'User Blocked/Disabled Status',
+								  `block_auto` int(1) DEFAULT 0 COMMENT 'Has this user been automatically blocked?',
+								  `fails_in_a_row` int(10) DEFAULT 1 COMMENT 'Fail Pass Enters without Success Login',
+								  `block_reset` int(1) DEFAULT NULL COMMENT 'Block Resets for this user',
+								  `block_activation` int(1) DEFAULT NULL COMMENT 'Block Activation for this User',
+								  `block_mail_edit` datetime DEFAULT NULL COMMENT 'Block Mail Edits for this User',
 								  `user_firstname` TEXT NULL COMMENT 'Users First Name',
 								  `user_lastname` TEXT NULL COMMENT 'Users Last Name',
 								  `user_street` TEXT NULL COMMENT 'Users Street',
@@ -477,27 +487,20 @@ class x_class_user {
 								  `user_city` TEXT NULL COMMENT 'Users City',
 								  `user_region` TEXT NULL COMMENT 'Users Region',
 								  `user_tel` TEXT NULL COMMENT 'Users Mobile',
-								  `req_activation` datetime DEFAULT NULL COMMENT 'Activation Date Counter for new Requests',
-								  `last_activation` datetime DEFAULT NULL COMMENT 'Activation Date Counter for new Requests',
-								  `user_disabled` int(1) DEFAULT 0 COMMENT '1 - User is Disabled',
-								  `last_login` datetime DEFAULT NULL COMMENT 'Last Login Date',
-								  `user_blocked` tinyint(1) DEFAULT '0' COMMENT 'User Blocked/Disabled Status',
-								  `block_reset` int(1) DEFAULT NULL COMMENT 'Block Resets for this user',
-								  `block_auto` int(1) DEFAULT 0 COMMENT 'Has this user been automatically blocked?',
-								  `block_activation` int(1) DEFAULT NULL COMMENT 'Block Activation for this User',
-								  `block_mail_edit` datetime DEFAULT NULL COMMENT 'Block Mail Edits for this User',
-								  `fails_in_a_row` int(10) DEFAULT 1 COMMENT 'Fail Pass Enters without Success Login',
-								  `last_block` datetime DEFAULT NULL COMMENT 'Block Date for this user',
 								  `user_lang` varchar(24) DEFAULT NULL COMMENT 'User Default Language',
 								  `user_color` varchar(24) DEFAULT NULL COMMENT 'User Default Color',
 								  `user_theme` varchar(24) DEFAULT NULL COMMENT 'User Default Theme',
 								  `user_theme_sub` varchar(24) DEFAULT NULL COMMENT 'User Default Sub Theme',
 								  `extradata` TEXT DEFAULT NULL COMMENT 'Additional Data',
-								  `hive_extradata` TEXT DEFAULT NULL COMMENT 'Additional Data for HIVE',
+								  `hive_extradata` TEXT DEFAULT NULL COMMENT 'Additional Data for Additional Software',
+								  `req_activation` datetime DEFAULT NULL COMMENT 'Activation Date Counter for new Requests',
+								  `last_activation` datetime DEFAULT NULL COMMENT 'Activation Date Counter for new Requests',
 								  `req_reset` datetime DEFAULT NULL COMMENT 'Reset Date Counter for new Requests',
 								  `last_reset` datetime DEFAULT NULL COMMENT 'Reset Date Counter for new Requests',
 								  `req_mail_edit` datetime DEFAULT NULL COMMENT 'Last Mail Change Request Date',
 								  `last_mail_edit` datetime DEFAULT NULL COMMENT 'Last Mail Change Request Date',
+								  `last_block` datetime DEFAULT NULL COMMENT 'Block Date for this user',
+								  `last_login` datetime DEFAULT NULL COMMENT 'Last Login Date',
 								  `last_activity` datetime DEFAULT NULL COMMENT 'Last User Activity on Site',
 								  `created_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
 								  `modify_date` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',

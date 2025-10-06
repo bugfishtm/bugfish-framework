@@ -1,112 +1,294 @@
-# PHP Class: `x_class_var` 
+# PHP Class: `x_class_var`
 
-The `x_class_var` class is designed for managing configuration variables stored in a MySQL database. It allows you to create, read, update, and delete configuration values, as well as manage them via a form interface with built-in CSRF protection. This class is particularly useful for handling application settings that may need to be modified dynamically.
+## Introduction
+
+The `x_class_var` class provides a way to manage and persist configuration variables or constants in a MySQL database table. It supports automatic table creation and allows storing variables with descriptors, values, descriptions, and multi-site section identifiers. Variables can be loaded as PHP constants or retrieved as arrays. It also supports updating and deleting variables and includes helper methods for secure web form integration to edit values.
 
 Use the class by including `/_framework/classes/x_class_var.php`.
 
 !!! warning "Dependencies"
 	- PHP 7.0-7.4
 	- PHP 8.0-8.4
-	
+
 !!! warning "PHP-Modules"
-	- `mysqli`: The PHP MySQLi extension must be installed and enabled.  
+	- `mysqli`: The PHP MySQLi extension must be installed and enabled.
 
 !!! warning "PHP-Classes"
 	- `x_class_mysql`: Required for database operations.
 
-## Table
 
-This section details the table structure used by the Variables class to store variables and their associated values. The table is automatically created by the class if needed. The column names can be customized through class properties. Below is a summary of the table's columns, keys, and their usage.
+## MySQL Table
 
-!!! note "The table will be automatically installed upon constructor execution."
+This section describes the structure of the table used for storing variables managed by `x_class_var`. The table will be automatically created by the class if it does not exist.
 
-| Column Name       | Data Type       | Attributes                                           | Description                                                                                         |
-|-------------------|-----------------|------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| `id`              | `int(9)`        | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`         | Unique identifier for each entry, ensuring that each record can be individually accessed and managed. |
-| `descriptor`      | `varchar(256)`  | `NOT NULL`                                          | Descriptor for the constant or variable, serving as the key or name for the stored value.          |
-| `value`           | `text`          | `NULL`                                              | Holds the value associated with the descriptor, which can be any text-based content.               |
-| `description`     | `text`          | `NULL`                                              | Provides a description or additional details about the constant or variable.                      |
-| `section`         | `varchar(128)`  | `DEFAULT ''`                                        | For Multi Site Purposes to split database data in categories.  |
-| `creation`        | `datetime`      | `DEFAULT CURRENT_TIMESTAMP`                        | Records the date and time when the entry was created. Automatically set upon insertion.            |
-| `modification`    | `datetime`      | `DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP` | Logs the date and time of the last modification to the entry. Automatically updated on changes.   |
+!!! note "The table will be automatically created upon constructor execution if it does not exist."
 
+| Column Name | Data Type | Attributes | Description |
+|--------------|---------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| `id` | `int(9)` | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY` | Unique identifier for each variable entry. |
+| `descriptor` | `varchar(256)` | `NOT NULL` | The variable name or key descriptor. |
+| `value` | `text` |  | The stored value for the variable. Serialized if array or object. |
+| `description` | `text` |  | Optional descriptive text about the variable. |
+| `section` | `varchar(128)` | `DEFAULT ''` | Section or namespace for the variable, suitable for multi-site or multi-context separation. |
+| `creation` | `datetime` | `DEFAULT CURRENT_TIMESTAMP` | Timestamp when the entry was created. |
+| `modification` | `datetime` | `DEFAULT CURRENT_TIMESTAMP` on update | Automatically updates timestamp when the entry is modified. |
 
-| Key Name      | Key Type  | Columns | Usage                                                                                                  |
-|---------------|-----------|---------|--------------------------------------------------------------------------------------------------------|
-| `PRIMARY KEY` | Primary   | `id`    | Ensures that each entry has a unique identifier, allowing for precise record management and retrieval. |
-| `x_class_var_unique`  | Unique    | `section`, `descriptor` | Ensures that each combination of `section` and `descriptor` is unique, preventing duplicate entries for the same section and descriptor. |
+| Key Name | Key Type | Columns | Usage |
+|---------------|-----------|---------|------------------------------------------------------------|
+| `PRIMARY` | Primary | `id` | Ensures each row is uniquely identifiable. |
+| `unique_key` | Unique | `section, descriptor` | Enforces unique variable names per section, preventing duplicates. |
 
 
 ## Methods
 
-The following tables provide detailed information about each method and function in the `x_class_var` class, including their parameters and descriptions.
+***
 
-### Constructor
+### `__construct`
 
-| Method       | Parameters                                                                                                        | Description                                                                                                                                                      |
-|--------------|-------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `__construct`| `$mysql` (x_class_mysql object), `$tablename` (string), `$section` (string), `$descriptor` (string, optional), `$value` (string, optional), `$description` (string, optional), `$sectionfield` (string, optional), `$idfield` (string, optional) | Initializes the class with database connection and table configuration. Creates the table if it does not exist. |
+Initializes the class with the database connection, table name, and section (namespace) for variable segregation.
 
-### Private Methods
+| Parameter | Type | Description | Default |
+|--------------|---------|--------------------------------------------------------------|----------|
+| `$mysql` | object | Database connection supporting typical query/select operations. | None |
+| `$tablename` | string | Table name to store variables. | None |
+| `$section` | string | Section name to scope variables (for multi-site or context). | None |
+| `$descriptor` | string | Column name for descriptor (variable name/key). | `"descriptor"` |
+| `$value` | string | Column name for variable value. | `"value"` |
+| `$description` | string | Column name for descriptions. | `"description"` |
+| `$sectionfield` | string | Column name for section. | `"section"` |
+| `$idfield` | string | Column name for primary ID. | `"id"` |
 
-| Method           | Parameters | Description                                             |
-|------------------|------------|---------------------------------------------------------|
-| `create_table`   | None       | Creates the table in the database if it does not exist. |
+| Return Value | When does this return value occur? |
+|--------------|-------------------------------------------|
+| `void` | Constructor does not return a value. It creates the table if it does not exist.|
 
-### Public Methods
+***
 
-| Method              | Parameters                                                                                           | Description                                                                                          |
-|---------------------|------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-| `init_constant`     | `$unserialize_arrays` (bool)                                                                         | Initializes constants from the database. Defines PHP constants for each entry.                       |
-| `get_array`         | None                                                                                                 | Retrieves an array of variable names and their values.                                               |
-| `get_array_full`    | None                                                                                                 | Retrieves an array of all variables with full details from the database.                            |
-| `get_full`          | `$name` (string)                                                                                    | Retrieves the full details of a specific variable by name.                                          |
-| `exists`            | `$name` (string)                                                                                    | Checks if a variable exists in the database.                                                        |
-| `get`               | `$name` (string)                                                                                    | Retrieves the value of a specific variable by name.                                                 |
-| `del`               | `$name` (string)                                                                                    | Deletes a variable from the database by name.                                                        |
-| `setup`             | `$name` (string), `$value` (mixed), `$description` (string, optional)                               | Sets up a new variable if it does not exist.                                                        |
-| `add`               | `$name` (string), `$value` (mixed), `$description` (string, optional), `$overwrite` (bool, optional) | Adds a new variable or updates it if it already exists, based on the `$overwrite` flag.              |
-| `set`               | `$name` (string), `$value` (mixed), `$description` (string, optional), `$add` (bool, optional), `$overwrite` (bool, optional) | Internal method to handle adding or updating variables.                                             |
-| `form_start`        | `$precookie` (string, optional)                                                                      | Starts a new form for variable management with CSRF protection.                                       |
-| `form_end`          | `$precookie` (string, optional)                                                                      | Ends the form and sets a CSRF token in the session.                                                  |
-| `form`              | `$varname` (string), `$type` (string, optional), `$selectarray` (array, optional), `$precookie` (string, optional), `$button_class` (string, optional), `$itemclass` (string, optional), `$editbuttonname` (string, optional), `$editbuttonclass` (string, optional) | Generates and handles a form for editing a variable. Supports different input types.                  |
+### `init_constant`
+
+Defines the stored variables as PHP constants in the current script for the current section.
+
+| Parameter | Type | Description | Default |
+|-----------|---------|-----------------------------------------------|---------|
+| `$unserialize_arrays` | boolean | Automatically unserialize values if they are serializations of arrays or objects. | `true` |
+
+| Return Value | When does this return value occur? |
+|--------------|----------------------------------------------------|
+| `true` | Always returns `true` after defining constants. |
+
+***
+
+### `get_array`
+
+Retrieves all variables as an array of key-value pairs for the current section.
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+| _None_ | — | — | — |
+
+| Return Value | When does this return value occur? |
+|--------------|-----------------------------------------------------|
+| `array` | Array of variables with descriptor and value pairs. |
+
+***
+
+### `get_array_full`
+
+Retrieves all variable records including metadata for the current section.
+
+| Parameter | Type | Description | Default |
+|-----------|------|-------------|---------|
+| _None_ | — | — | — |
+
+| Return Value | When does this return value occur? |
+|--------------|-----------------------------------------------------|
+| `array` | Array of full records including descriptor, value, description, section, creation date, modification date. |
+
+***
+
+### `get_full`
+
+Retrieves full record details of a single variable by descriptor.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|-------------------------------|---------|
+| `$name` | string | Variable descriptor to fetch. | None |
+
+| Return Value | When does this return value occur? |
+|--------------|---------------------------------------------------|
+| `array|false` | Full variable record array if found, otherwise `false`. |
+
+***
+
+### `exists`
+
+Checks existence of a variable by descriptor in the current section.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|---------------------------|---------|
+| `$name` | string | Variable descriptor to check. | None |
+
+| Return Value | When does this return value occur? |
+|--------------|-------------------------------------------|
+| `boolean` | `true` if variable exists, `false` otherwise. |
+
+***
+
+### `get`
+
+Retrieves the value of a variable by descriptor.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|------------------------------|---------|
+| `$name` | string | Variable descriptor to retrieve. | None |
+
+| Return Value | When does this return value occur? |
+|--------------|-----------------------------------------------|
+| `mixed|false` | Variable value if found, otherwise `false`. |
+
+***
+
+### `del`
+
+Deletes a variable record by descriptor.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|--------------------------|---------|
+| `$name` | string | Variable descriptor to delete. | None |
+
+| Return Value | When does this return value occur? |
+|--------------|----------------------------------------------|
+| `boolean` | `true` if deletion succeeded, `false` otherwise. |
+
+***
+
+### `setup`
+
+Adds a new variable only if it does not already exist.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|-----------------------------------------|---------|
+| `$name` | string | Variable descriptor to add. | None |
+| `$value` | mixed | Value of the variable. | None |
+| `$description` | string | Optional description. | `""` |
+
+| Return Value | When does this return value occur? |
+|--------------|---------------------------------------------------------|
+| `boolean` | `true` if added, `false` if variable already exists. |
+
+***
+
+### `add`
+
+Adds or updates a variable.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|------------------------------------|---------|
+| `$name` | string | Variable descriptor to add/update. | None |
+| `$value` | mixed | Value for the variable. | None |
+| `$description` | string | Optional description. | `""` |
+| `$overwrite` | boolean | Whether to overwrite existing variable. | `false` |
+
+| Return Value | When does this return value occur? |
+|--------------|----------------------------------------------|
+| `boolean` | `true` if operation succeeded, otherwise `false`. |
+
+***
+
+### `set`
+
+Internal method to add or update variables with control over overwrite behavior.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|------------------------------------------|---------|
+| `$name` | string | Variable descriptor. | None |
+| `$value` | mixed | Value to set, serialized if array/object. | None |
+| `$description` | string| Optional description. | `false` |
+| `$add` | boolean | Whether to add new entry if not existing. | `true` |
+| `$overwrite` | boolean | Whether to overwrite existing entry. | `true` |
+
+| Return Value | When does this return value occur? |
+|--------------|----------------------------------------------------------|
+| `boolean` | `true` if successful, `false` otherwise. |
+
+***
+
+### `form_start`
+
+Starts a web form session with CSRF token generation for secure editing.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|--------------------------|---------|
+| `$precookie` | string | Prefix for session variables to allow multiple form instances. | `""` |
+
+| Return Value | When does this return value occur? |
+|--------------|-------------------------------------------|
+| `void` | Always. |
+
+***
+
+### `form_end`
+
+Ends a web form session updating CSRF tokens.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|--------------------------|---------|
+| `$precookie` | string | Prefix for session variables. | `""` |
+
+| Return Value | When does this return value occur? |
+|--------------|-------------------------------------------|
+| `void` | Always. |
+
+***
+
+### `form`
+
+Generates and processes an HTML form to edit a stored variable with various input types and CSRF protection.
+
+| Parameter | Type | Description | Default |
+|-----------|-------|-------------------------------------------------------------------------------------------------------------------|---------|
+| `$varname` | string | Variable descriptor to edit. | None |
+| `$type` | string | Form input type (`int`, `text`, `string`, `select`). | `"int"` |
+| `$selectarray` | array | For select inputs, list of options to show. | `array()` |
+| `$precookie` | string | Prefix for session and form element names to isolate forms. | `""` |
+| `$button_class` | string | CSS class for submit button styling. | `"btn btn-warning waves-effect waves-light"` |
+| `$itemclass` | string | CSS class for form input styling. | `"form-control"` |
+| `$editbuttonname` | string | Text for submit button. | `"Edit"` |
+
+| Return Value | When does this return value occur? |
+|--------------|-------------------------------------------------------------------------------------------------|
+| `int` | Always returns `0`. |
+
+***
 
 ## Example
 
-### Constructing the Class
-
 ```php
-$mysql = new x_class_mysql(...); // Assumes mysql_con is a valid class
-$var = new x_class_var($mysql, 'my_table', 'my_section');
-```
+<?php
+// Example usage:
 
-### Initializing Constants
+// Use your MySQL DB connection object compatible with x_class_mysql
+$db = new x_class_mysql(...);
 
-```php
-$var->init_constant();
-```
+// Initialize variable manager with section "SiteConfig"
+$varManager = new x_class_var($db, 'configuration_table', 'SiteConfig');
 
-### Adding a New Variable
+// Add or update a variable
+$varManager->add('MAX_USERS', 100, 'Maximum allowed users', true);
 
-```php
-$var->add('MY_VAR', 'value', 'Description of MY_VAR');
-```
+// Check if a variable exists
+if ($varManager->exists('MAX_USERS')) {
+    echo 'Max users: ' . $varManager->get('MAX_USERS');
+}
 
-### Updating an Existing Variable
+// Define all variables in section as constants
+$varManager->init_constant();
 
-```php
-$var->setup('MY_VAR', 'new_value', 'Updated description');
-```
+// Render a form to edit a variable on a web page
+echo $varManager->form('MAX_USERS', 'int');
 
-### Deleting a Variable
-
-```php
-$var->del('MY_VAR');
-```
-
-### Generating a Form
-
-```php
-echo $var->form('MY_VAR', 'text', [], '', 'btn-primary', 'form-control');
+// Delete a variable
+$varManager->del('MAX_USERS');
+?>
 ```
 

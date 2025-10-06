@@ -1,10 +1,12 @@
 # CSS Classes
 
-Bugfish CSS Framework simplifies web design with a robust set of pre-built classes for fast, responsive layouts. Speed up development and create professional designs effortlessly. To use, include the `xcss_xfpe.css` file from the css folder.
+## Introduction
+
+Bugfish CSS Framework simplifies web design with a robust set of pre-built classes for fast, responsive layouts. Speed up development and create professional designs effortlessly. To use, include the `_framework/css/xcss_xfpe.css` file.
 
 
-!!! info "Add _f to a class name to apply `!important` automatically."
-	
+!!! info "General Notice"
+	Add _f to a class name to apply `!important` automatically.	
 
 ## Column/Rows
 

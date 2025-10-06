@@ -30,8 +30,10 @@
         <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
       
       
-      
 
+
+    
+    
   
     <script type="application/ld+json">
     {
@@ -78,9 +80,6 @@
 
    
 
-
-    
-    
       
     
     
@@ -89,7 +88,9 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../extra.css">
+      <link rel="stylesheet" href="../insert_css/extra.css">
+    
+      <link rel="stylesheet" href="../insert_css/neoteroi-mkdocs.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,6 +596,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../functions/x_folder.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_folder.php
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../functions/x_library.html" class="md-nav__link">
         
   
@@ -637,11 +659,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/x_search.html" class="md-nav__link">
+      <a href="../functions/x_table.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    x_search.php
+    x_table.php
   </span>
   
 
@@ -658,11 +680,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/x_table.html" class="md-nav__link">
+      <a href="../functions/x_thumbnail.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    x_table.php
+    x_thumbnail.php
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/x_search.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_search.php
   </span>
   
 
@@ -958,9 +1001,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Table
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      MySQL Table
     </span>
   </a>
   
@@ -1095,6 +1147,48 @@
   
   <span class="md-ellipsis">
     x_class_log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="x_class_block.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_class_block
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="x_class_lang.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_class_lang
   </span>
   
 
@@ -1300,53 +1394,11 @@
   
   
     <li class="md-nav__item">
-      <a href="x_class_block.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    x_class_block
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="x_class_table.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     x_class_table
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="x_class_lang.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    x_class_lang
   </span>
   
 
@@ -1594,9 +1646,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Table
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      MySQL Table
     </span>
   </a>
   
@@ -1708,6 +1769,7 @@
 
 
 <div><h1 id="php-class-x_class_hitcounter">PHP Class: <code>x_class_hitcounter</code></h1>
+<h2 id="introduction">Introduction</h2>
 <p>The <code>x_class_hitcounter</code> class is designed to track and manage hits on specific URLs within a section of a website. It counts both unique "arrivals" (first visits by a user) and "switches" (subsequent hits to the same URL during a session). The class relies on MySQL for data storage and can dynamically create its own table if it doesn't exist.</p>
 <ul>
 <li><strong>Session Management:</strong> The class relies on PHP sessions to track arrivals and switches, ensuring unique hits within a session.</li>
@@ -1736,7 +1798,7 @@
 <li><code>x_class_mysql</code>: Required for database operations.</li>
 </ul>
 </div>
-<h2 id="table">Table</h2>
+<h2 id="mysql-table">MySQL Table</h2>
 <p>This section explains the table structure that will be automatically created by the hit counter class to log site visits. The table captures detailed information about each visit, including the URL, visit counts, and associated sections. Below is a summary of the columns and keys used in the table, along with their intended purpose.</p>
 <div class="admonition note">
 <p class="admonition-title">The table will be automatically installed upon constructor execution.</p>
@@ -2035,7 +2097,7 @@
     
       <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
-        <script src="../extra.js"></script>
+        <script src="../insert_js/extra.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

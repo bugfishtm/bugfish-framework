@@ -1,151 +1,150 @@
 # PHP Class: `x_class_lang`
 
-The `x_class_lang` class is a PHP-based localization and translation management utility that helps manage multilingual content in applications. It supports database-backed translation, with optional file-based fallback. This class is designed to store, retrieve, add, and manage language-specific key-value pairs for different sections of an application, facilitating seamless translation and localization.
+## Introduction
 
-- **File-based vs Database-based Operation:** If a `$file_name` is provided in the constructor, the class operates in file mode and will not interact with the database.  
-- **Table Creation:** If the table does not exist, it is automatically created.  
-- **Substitutions:** Use `%repsub%` as a placeholder in translations to dynamically insert content.   
+The `x_class_lang` class manages language translations for a multi-language system using either a MySQL database table or a flat file. It provides methods to add, delete, and retrieve translation strings keyed by identifiers, supporting language-specific and section-specific translations. The class can load translations from a database or from a file and allows translation string substitution and extension at runtime.
 
 Use the class by including `/_framework/classes/x_class_lang.php`.
 
 !!! warning "Dependencies"
-	- PHP 7.0-7.4
-	- PHP 8.0-8.4
-	
-!!! warning "PHP-Modules"
-	- `mysqli`: The PHP MySQLi extension must be installed and enabled.  
+	- PHP 7.0-8.4
+	- PHP `mysqli` or compatible MySQL handler extension
+	- Requires an instance of a MySQL-like database class (`x_class_mysql` or similar) for DB operations
 
-!!! warning "PHP-Classes"
-	- `x_class_mysql`: Required for database operations.
+## MySQL Table
 
+The class uses a MySQL table to store translation entries. This table will be automatically created if missing.
 
-## Table
+| Column Name   | Data Type     | Attributes                                                        | Description                                            |
+|---------------|---------------|------------------------------------------------------------------|--------------------------------------------------------|
+| `id`          | `int(9)`      | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`                      | Unique identifier for each translation entry          |
+| `identificator`| `varchar(512)`| `NOT NULL`                                                       | Unique key or identifier for the translation string   |
+| `lang`        | `varchar(16)` | `NOT NULL`                                                       | Language code of the translation                        |
+| `translation` | `text`        |                                                                  | Translated text corresponding to the identifier       |
+| `section`     | `varchar(128)`| `DEFAULT ''`                                                     | Section or context this translation belongs to         |
+| `creation`    | `datetime`    | `DEFAULT CURRENT_TIMESTAMP`                                     | Timestamp when the entry was created                    |
+| `modification`| `datetime`    | `DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP`         | Timestamp updated when the entry is modified           |
 
-This section describes the table structure used by the Translation class to store translation keys and their corresponding values. The table is automatically created by the class if needed. Below is a summary of the columns and keys used in the table, along with their purposes.
-
-!!! note "The table will be automatically installed upon constructor execution."
-
-| Column Name     | Data Type    | Attributes                                    | Description                                                                                         |
-|-----------------|--------------|-----------------------------------------------|-----------------------------------------------------------------------------------------------------|
-| `id`            | `int(9)`     | `NOT NULL`, `AUTO_INCREMENT`, `PRIMARY KEY`  | A unique identifier for each translation entry, ensuring that each record can be uniquely tracked. |
-| `identificator` | `varchar(512)` | `NOT NULL`                                  | A descriptor or key for the translation, used to identify the specific string or text to be translated. |
-| `lang`          | `varchar(16)`  | `NOT NULL`                                  | Indicates the language code (e.g., 'en', 'fr') for the translation, specifying the language of the text. |
-| `translation`   | `text`       | `NULL`                                      | Contains the translated text or description, providing the actual translation for the key.          |
-| `section`       | `varchar(128)` | `DEFAULT ''`                                | For Multi Site Purposes to split database data in categories.  |
-| `creation`      | `datetime`   | `DEFAULT CURRENT_TIMESTAMP`                 | Records the date and time when the translation entry was created. Automatically set upon insertion. |
-| `modification`  | `datetime`   | `DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP` | Logs the date and time of the last modification to the translation entry. Automatically updated on changes. |
-
-| Key Name      | Key Type  | Columns | Usage                                                                                                  |
-|---------------|-----------|---------|--------------------------------------------------------------------------------------------------------|
-| `PRIMARY KEY` | Primary   | `id`    | Ensures that each translation entry is uniquely identifiable, allowing for precise record management. |
-| `x_class_lang` | Unique    | `identificator`, `lang`, `section` | Ensures that each combination of `identificator`, `lang`, and `section` is unique, preventing duplicate translations for the same key, language, and section. |
-
-## Properties
-
-| Variable Name | Type    | Access    | Description |
-|---------------|---------|-----------|-------------|
-| `$mysql`      | object  | private   | MySQL connection object for database interactions. |
-| `$table`      | string  | private   | Database table name for storing translations. |
-| `$section`    | string  | private   | The section or module within the application to which the translations belong. |
-| `$lang`       | string  | private   | Current language code (e.g., 'en', 'fr'). |
-| `$array`      | array   | public    | In-memory array to store translations for quick access. |
-| `$filemode`   | boolean | private   | Flag to indicate if the class operates in file-based mode instead of database mode. |
-
-## Constructor
-
-```php
-function __construct($x_class_mysql = false, $table = false, $lang = "none", $section = "none", $file_name = false)
-```
-
-- **Parameters:**
-
-| Parameter | Type   | Description |
-|-----------|--------|-------------|
-| `$mysql`   | object | MySQL database object, required if using database mode. |
-| `$table`   | string | Table name where translations are stored. |
-| `$lang`    | string | Language code (e.g., 'en'). |
-| `$section` | string | Section name to scope translations. |
-| `$file_name` | string | Optional: Path to a file for file-based translations. |
-
-- **Description:** Initializes the class either in database mode or file mode, depending on provided parameters.
+| Key Name                 | Key Type | Columns                        | Usage                                     |
+|--------------------------|----------|--------------------------------|-------------------------------------------|
+| `PRIMARY KEY`            | Primary  | `id`                           | Unique identifier primary key             |
+| `x_class_lang_unique`    | Unique   | `identificator`, `lang`, `section` | Ensures a unique translation per identifier/language/section |
 
 ## Methods
 
-#### `create_table(..)`
+***
+
+### `__construct`
+
+Initializes the class for translations with MySQL or file mode.
+
+| Parameter  | Type    | Description                                                     | Default       |
+|------------|---------|-----------------------------------------------------------------|---------------|
+| `$mysql`   | object  | MySQL handler instance for DB operations                        | `false`       |
+| `$table`   | string  | Table name for storing translations                             | `false`       |
+| `$lang`    | string  | Language code to load/manage translations                       | `"none"`      |
+| `$section` | string  | Section identifier to scope translations                        | `"none"`      |
+| `$file_name`| string | Optional filename to load translations from a flat file        | `false`       |
+
+| Return Value | When does this occur?               |
+|--------------|------------------------------------|
+| `int` 0      | If initialized with no DB operations needed |
+
+***
+
+### `create_table`
+
+Creates the translation table if not existing.
+
+| Parameters | None |
+|------------|------|
+| Return Value | `boolean` true on successful table creation, false otherwise |
+
+***
+
+### `init`
+
+Loads all translations for the current language and section into an array for fast access.
+
+| Parameters | None |
+|------------|-------|
+| Return Value | `void` or `false` if in file mode |
+
+***
+
+### `delete`
+
+Deletes a translation key from the current or specified language and section.
+
+| Parameter | Type     | Description                                   | Default    |
+|-----------|----------|-----------------------------------------------|------------|
+| `$key`    | string   | Translation key to delete                      | None       |
+| `$lang`   | string   | Optional language code, defaults to loaded language | `false` |
+| Return Value | `boolean` success or failure of deletion |
+
+***
+
+### `add`
+
+Adds a new translation entry or overrides existing for the current or specified language and section.
+
+| Parameter | Type   | Description                       | Default   |
+|-----------|--------|---------------------------------|-----------|
+| `$key`    | string | Translation key                  | None      |
+| `$text`   | string | Translation text                 | None      |
+| `$lang`   | string | Optional language code           | `false`   |
+| Return Value | `boolean` success or failure of insert |
+
+***
+
+### `translate`
+
+Retrieves the translation for a given key for the loaded language and substitutes placeholders if provided.
+
+| Parameter      | Type       | Description                                   | Default   |
+|----------------|------------|-----------------------------------------------|-----------|
+| `$key`         | string     | Translation key to fetch                       | None      |
+| `$substitution`| array|null | Optional array of substitution values          | `false`   |
+| Return Value | `string` Translated and substituted string or key if not found |
+
+***
+
+### `extend`
+
+Modifies or adds a key/value pair in the loaded translation array at runtime.
+
+| Parameter   | Type      | Description                                | Default  |
+|-------------|-----------|--------------------------------------------|----------|
+| `$key`      | string    | Translation key                            | None     |
+| `$value`    | string    | Translation value                          | None     |
+| `$overwrite`| boolean   | Overwrite existing value if `true`        | `true`   |
+| Return Value | `void` |
+
+***
+
+## Example
 
 ```php
-private function create_table()
+<?php
+// Using MySQL instance for DB-backed translations
+$db = new x_class_mysql(...);
+$lang = new x_class_lang($db, 'translations', 'en', 'website');
+
+// Add a translation
+$lang->add('greeting', 'Hello, world!');
+
+// Retrieve a translation
+echo $lang->translate('greeting'); // Outputs: Hello, world!
+
+// Substitute placeholders in translations
+$lang->add('welcome_user', 'Welcome, %repsub%!');
+echo $lang->translate('welcome_user', ['Alice']); // Outputs: Welcome, Alice!
+
+// Delete a translation entry
+$lang->delete('greeting');
+
+// Extend translation dynamically
+$lang->extend('farewell', 'Goodbye!', true);
+echo $lang->translate('farewell'); // Outputs: Goodbye!
+?>
 ```
-
-- **Parameters:** None
-- **Description:** Creates the translations table in the database if it doesn't already exist.
-- **Returns:** Boolean (True on success, False on failure)
-
-#### `init(..)`
-
-```php
-private function init()
-```
-
-- **Parameters:** None
-- **Description:** Loads translations from the database into the `$array` variable for the current language and section.
-- **Returns:** Void
-
-#### `delete(..)`
-
-```php
-public function delete($key, $lang = false)
-```
-
-| Parameter | Type   | Description |
-|-----------|--------|-------------|
-| `$key`    | string | The translation key to delete. |
-| `$lang`   | string | Optional: Language code to delete the key from, defaults to current language. |
-
-- **Description:** Deletes a translation entry for a specific key from the database.
-- **Returns:** Boolean (True on success, False on failure)
-
-#### `add(..)`
-
-```php
-public function add($key, $text, $lang = false)
-```
-
-| Parameter | Type   | Description |
-|-----------|--------|-------------|
-| `$key`    | string | The translation key to add. |
-| `$text`   | string | The translation text to add. |
-| `$lang`   | string | Optional: Language code, defaults to the current language. |
-
-- **Description:** Adds a new translation entry to the database for a specific key.
-- **Returns:** Boolean (True on success, False on failure)
-
-#### `translate(..)`
-
-```php
-public function translate($key, $substitution = false)
-```
-
-| Parameter      | Type         | Description |
-|----------------|--------------|-------------|
-| `$key`         | string       | The translation key to fetch. |
-| `$substitution`| array        | Optional: Array of substitutions for placeholders in the translation text. |
-
-- **Description:** Retrieves a translation for the current language. If substitutions are provided, they replace placeholders in the translation.
-- **Returns:** String (Translation text)
-
-#### `extend(..)`
-
-```php
-public function extend($key, $value, $overwrite = true)
-```
-
-| Parameter  | Type    | Description |
-|------------|---------|-------------|
-| `$key`     | string  | The translation key to extend. |
-| `$value`   | string  | The translation text to associate with the key. |
-| `$overwrite` | boolean | Whether to overwrite existing translation if the key already exists. |
-
-- **Description:** Adds or updates an in-memory translation without affecting the database.
-- **Returns:** Void
-

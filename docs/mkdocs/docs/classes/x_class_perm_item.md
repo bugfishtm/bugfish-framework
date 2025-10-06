@@ -1,5 +1,7 @@
 # PHP Class: `x_class_perm_item`
 
+## Introduction
+
 The `x_class_perm_item` class provides functionality for managing permissions associated with a reference in a database table. It supports operations such as adding, removing, checking permissions, and managing the permissions of a specific reference.
 
 Use the class by including `/_framework/classes/x_class_perm_item.php`.

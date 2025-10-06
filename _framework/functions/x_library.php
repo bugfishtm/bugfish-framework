@@ -1,63 +1,37 @@
-<?php
-	/* 
-		 ______  _     _ _______ _______ _  ______ _     _ 
-		(____  \(_)   (_|_______|_______) |/ _____|_)   (_)
-		 ____)  )_     _ _   ___ _____  | ( (____  _______ 
-		|  __  (| |   | | | (_  |  ___) | |\____ \|  ___  |
-		| |__)  ) |___| | |___) | |     | |_____) ) |   | |
-		|______/ \_____/ \_____/|_|     |_(______/|_|   |_|
-		Copyright (C) 2024 Jan Maurice Dahlmanns [Bugfish]
+<?php                                                  
+	#	@@@@@@@  @@@  @@@  @@@@@@@  @@@@@@@@ @@@  @@@@@@ @@@  @@@ 
+	#	@@!  @@@ @@!  @@@ !@@       @@!      @@! !@@     @@!  @@@ 
+	#	@!@!@!@  @!@  !@! !@! @!@!@ @!!!:!   !!@  !@@!!  @!@!@!@! 
+	#	!!:  !!! !!:  !!! :!!   !!: !!:      !!:     !:! !!:  !!! 
+	#	:: : ::   :.:: :   :: :: :   :       :   ::.: :   :   : : 						
+	#		 ______  ______   ______   _________   ______  _   _   _   ______   ______   _    __ 
+	#		| |     | |  | \ | |  | | | | | | | \ | |     | | | | | | / |  | \ | |  | \ | |  / / 
+	#		| |---- | |__| | | |__| | | | | | | | | |---- | | | | | | | |  | | | |__| | | |-< <  
+	#		|_|     |_|  \_\ |_|  |_| |_| |_| |_| |_|____ |_|_|_|_|_/ \_|__|_/ |_|  \_\ |_|  \_\ 
+																							 
+	#	Copyright (C) 2025 Jan Maurice Dahlmanns [Bugfish]
 
-		This program is free software; you can redistribute it and/or
-		modify it under the terms of the GNU Lesser General Public License
-		as published by the Free Software Foundation; either version 2.1
-		of the License, or (at your option) any later version.
+	#	This program is free software; you can redistribute it and/or
+	#	modify it under the terms of the GNU Lesser General Public License
+	#	as published by the Free Software Foundation; either version 2.1
+	#	of the License, or (at your option) any later version.
 
-		This program is distributed in the hope that it will be useful,
-		but WITHOUT ANY WARRANTY; without even the implied warranty of
-		MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-		GNU Lesser General Public License for more details.
+	#	This program is distributed in the hope that it will be useful,
+	#	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	#	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	#	GNU Lesser General Public License for more details.
 
-		You should have received a copy of the GNU Lesser General Public License
-		along with this program; if not, see <https://www.gnu.org/licenses/>.
-	*/
-
-	########################################################################
-	// Recursive Copy a Directory
-	########################################################################
-	function x_copy_directory($src, $dst) { 
-		$dir = opendir($src);  
-		@mkdir($dst);  
-		while( $file = readdir($dir) ) {  
-			if (( $file != '.' ) && ( $file != '..' )) {  
-				if ( is_dir($src . '/' . $file) )  
-				{  
-					x_copy_directory($src . '/' . $file, $dst . '/' . $file);  
-				}  
-				else {  
-					copy($src . '/' . $file, $dst . '/' . $file);  
-				}  
-			}  
-		}  
-		closedir($dir); 
-	}  
-			
-	########################################################################
-	// Deny Folder Access by Creating HTAccess File in it
-	########################################################################
-	function x_htaccess_secure($path) {
-		if(!file_exists($path."/.htaccess")) {
-			file_put_contents($path."/.htaccess", "# Deny a Folders Access\r\nDeny from all");
-		}}
-		
+	#	You should have received a copy of the GNU Lesser General Public License
+	#	along with this program; if not, see <https://www.gnu.org/licenses/>.
+	
 	########################################################################
 	// Get the relative Folder from an URL
 	########################################################################
 	function x_getRelativeFolderFromURL($url) {
-			if(strpos($url, "http://")) { $url = substr($url, 7); }
-			elseif(strpos($url, "https://")) { $url = substr($url, 8); }
-			if(strpos($url, "/") > 1) { $url = substr($url, strpos($url, "/")); return $url; }
-			else { return "/"; }
+		if(strpos($url, "http://")) { $url = substr($url, 7); }
+		elseif(strpos($url, "https://")) { $url = substr($url, 8); }
+		if(strpos($url, "/") > 1) { $url = substr($url, strpos($url, "/")); return $url; }
+		else { return "/"; }
 	}	
 	
 	########################################################################
@@ -76,7 +50,7 @@
 	########################################################################
 	function x_connection_check($host, $port, $timeout = 1) {
 		$f = @fsockopen($host, $port, $errno, $errstr, $timeout);if ($f !== false) {$res = fread($f, 1024) ;if (strlen($res) > 0 && strpos($res,'220') === 0){@fclose($f);return true;}else{@fclose($f);return false;}} 
-		return false;}
+		return false; }
 		
 	########################################################################
 	// Check if current code is run in CLI
@@ -88,53 +62,9 @@
 		} else { return false; }}
 
 	########################################################################
-	// Recursive Delete a Folder
-	########################################################################
-	function x_rmdir($dir) {
-		if (is_dir($dir)) {
-			$objects = scandir($dir);
-			foreach ($objects as $object) {
-				if ($object != "." && $object != "..") {
-					if (filetype($dir . "/" . $object) == "dir") {
-						x_rmdir($dir . "/" . $object); 
-					} else {
-						unlink($dir . "/" . $object);
-					}
-				}
-			}
-			reset($objects);
-			rmdir($dir);
-		}}
-		
-	########################################################################
 	// Spawn HTML Redirect Tag
 	########################################################################
 	function x_html_redirect($url, $seconds = 0) { echo '<meta http-equiv="refresh" content="'.$seconds.'; url='.$url.'">';}	
-
-	########################################################################
-	// Create a Thumbnail and Return Object
-	########################################################################
-	function x_thumbnail($url, $filename, $width = 600, $height = true) {
-		 $image = ImageCreateFromString(file_get_contents($url));
-		 $height = $height === true ? (ImageSY($image) * $width / ImageSX($image)) : $height;
-		 $output = ImageCreateTrueColor($width, $height);
-		 ImageCopyResampled($output, $image, 0, 0, 0, 0, $width, $height, ImageSX($image), ImageSY($image));
-		 ImageJPEG($output, $filename, 95); 
-		 return $output; }
-
-	########################################################################
-	// Create a Thumbnail and write to File
-	########################################################################
-	function x_thumbnail_save($url,  $save_path = null, $width = 600, $height = true) {
-		  $image = imagecreatefrompng($url);
-		  $thumbnail = imagecreatetruecolor($width, $height);
-		  imagecopyresized($thumbnail, $image, 0, 0, 0, 0, $width, $height, imagesx($image), imagesy($image));
-		  imagedestroy($image);
-		  if ($save_path !== null) {
-			imagepng($thumbnail, $save_path);
-		  }
-		  imagedestroy($thumbnail);
-		  return true;}
 
 	########################################################################
 	// Various Functions for Validations

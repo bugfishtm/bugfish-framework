@@ -15,10 +15,15 @@ nav:
         - x_cookiebanner.php: functions/x_cookiebanner.md
         - x_curl.php: functions/x_curl.md
         - x_eventbox.php: functions/x_eventbox.md
+        - x_folder.php: functions/x_folder.md
         - x_library.php: functions/x_library.md
         - x_rss.php: functions/x_rss.md
-        - x_search.php: functions/x_search.md
         - x_table.php: functions/x_table.md
+        - x_thumbnail.php: functions/x_thumbnail.md
+        - x_search.php: functions/x_search.md
+        
+        
+        
     - PHP Classes:
         - x_class_2fa: classes/x_class_2fa.md
         - x_class_api: classes/x_class_api.md
@@ -32,6 +37,8 @@ nav:
         - x_class_hitcounter: classes/x_class_hitcounter.md
         - x_class_ipbl: classes/x_class_ipbl.md
         - x_class_log: classes/x_class_log.md
+        - x_class_block: classes/x_class_block.md
+        - x_class_lang: classes/x_class_lang.md
         - x_class_mail: classes/x_class_mail.md
         - x_class_mail_item: classes/x_class_mail_item.md
         - x_class_mail_template: classes/x_class_mail_template.md
@@ -41,9 +48,7 @@ nav:
         - x_class_perm_item: classes/x_class_perm_item.md
         - x_class_redis: classes/x_class_redis.md
         - x_class_referer: classes/x_class_referer.md
-        - x_class_block: classes/x_class_block.md
         - x_class_table: classes/x_class_table.md
-        - x_class_lang: classes/x_class_lang.md
         - x_class_user: classes/x_class_user.md
         - x_class_var: classes/x_class_var.md
         - x_class_version: classes/x_class_version.md
@@ -71,10 +76,11 @@ theme:
       accent: blue
 
 extra_css:
-  - extra.css
+  - insert_css/extra.css
+  - insert_css/neoteroi-mkdocs.css
 
 extra_javascript:
-  - extra.js
+  - insert_js/extra.js
 
 plugins:
     - mkdocstrings

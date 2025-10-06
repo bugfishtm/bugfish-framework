@@ -34,6 +34,9 @@
 
     
     
+      
+    
+    
     <script type="application/ld+json">
     {
       "@context": "http://schema.org",
@@ -81,7 +84,6 @@
       
 
 
-      
     
     
       
@@ -89,7 +91,9 @@
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
     
-      <link rel="stylesheet" href="../extra.css">
+      <link rel="stylesheet" href="../insert_css/extra.css">
+    
+      <link rel="stylesheet" href="../insert_css/neoteroi-mkdocs.css">
     
     <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -595,6 +599,27 @@
   
   
     <li class="md-nav__item">
+      <a href="../functions/x_folder.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_folder.php
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../functions/x_library.html" class="md-nav__link">
         
   
@@ -637,11 +662,11 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/x_search.html" class="md-nav__link">
+      <a href="../functions/x_table.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    x_search.php
+    x_table.php
   </span>
   
 
@@ -658,11 +683,32 @@
   
   
     <li class="md-nav__item">
-      <a href="../functions/x_table.html" class="md-nav__link">
+      <a href="../functions/x_thumbnail.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    x_table.php
+    x_thumbnail.php
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../functions/x_search.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_search.php
   </span>
   
 
@@ -916,9 +962,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Table
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      MySQL Table
     </span>
   </a>
   
@@ -1165,6 +1220,48 @@
   
   
     <li class="md-nav__item">
+      <a href="x_class_block.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_class_block
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="x_class_lang.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    x_class_lang
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="x_class_mail.html" class="md-nav__link">
         
   
@@ -1354,53 +1451,11 @@
   
   
     <li class="md-nav__item">
-      <a href="x_class_block.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    x_class_block
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="x_class_table.html" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     x_class_table
-  </span>
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="x_class_lang.html" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    x_class_lang
   </span>
   
 
@@ -1648,9 +1703,18 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#table" class="md-nav__link">
+  <a href="#introduction" class="md-nav__link">
     <span class="md-ellipsis">
-      Table
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mysql-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      MySQL Table
     </span>
   </a>
   
@@ -1816,6 +1880,7 @@
 
 
 <div><h1 id="php-class-x_class_debug">PHP Class: <code>x_class_debug</code></h1>
+<h2 id="introduction">Introduction</h2>
 <p>The <code>x_class_debug</code> class is designed to aid in debugging and monitoring of PHP applications. It provides functionality to check for required PHP modules, display error screens, log errors, and gather system information. This class is useful for developers who need to ensure that their application has all necessary PHP extensions and to monitor the application’s resource usage and performance.</p>
 <ul>
 <li><strong>Error Screen Customization</strong>: The <code>error_screen()</code> method provides a basic HTML template for displaying critical errors. Customize the HTML/CSS as needed for your application.</li>
@@ -1847,7 +1912,7 @@
 <li><strong><code>x_class_mysql</code></strong> — Required for MySQL Operations.</li>
 </ul>
 </div>
-<h2 id="table">Table</h2>
+<h2 id="mysql-table">MySQL Table</h2>
 <p>This section explains the table structure that will be automatically created by the debugging class to log JavaScript errors encountered by users. The table captures essential details such as the error message, user information, and the URL where the error occurred. Below is a summary of the columns and keys used in the table, along with their intended usage.</p>
 <div class="admonition note">
 <p class="admonition-title">The table will be automatically installed upon constructor execution.</p>
@@ -2291,7 +2356,7 @@
     
       <script src="../assets/javascripts/bundle.fe8b6f2b.min.js"></script>
       
-        <script src="../extra.js"></script>
+        <script src="../insert_js/extra.js"></script>
       
     
   <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});

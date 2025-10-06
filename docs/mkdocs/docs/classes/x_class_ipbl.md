@@ -1,5 +1,7 @@
 # PHP Class: `x_class_ipbl`
 
+## Introduction
+
 The `x_class_ipbl` class is used for managing IP-based blocking and failure counters using a MySQL database. It allows you to track IP addresses that have failed specific criteria and manage their block status accordingly. The class includes methods for checking if an IP is blocked, retrieving and updating counters, and unblocking IP addresses.
 
 Use the class by including `/_framework/classes/x_class_ipbl.php`.
@@ -15,7 +17,7 @@ Use the class by including `/_framework/classes/x_class_ipbl.php`.
 	- `x_class_mysql`: Required for database operations.
 
 
-## Table
+## MySQL Table
 
 This section describes the structure of the table used for logging IP addresses that have been blacklisted due to failure counts. The table will be automatically created by the class if required by its functionality. Below is a summary of the columns and keys in the table, along with their usage.
 

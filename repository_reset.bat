@@ -1,6 +1,11 @@
 @echo off
 setlocal enabledelayedexpansion
 
+rem Configurable variables
+set "REPO_URL=https://github.com/bugfishtm/bugfish-framework"
+set "BRANCH=main"
+set "COMMIT_MSG=Initial"
+
 rem Cool Output Messages
 echo ==============================
 echo Welcome to the Bugfish Git Repository Reset Script!
@@ -20,14 +25,6 @@ if /i not "!confirm!"=="y" (
     pause
     exit /b 1
 )
-
-rem Asking for the branch name
-set /p "branch=Enter the branch you want to reset (default is 'main'): "
-set /p "commit=Enter reset commit message (default is 'Initial'): "
-
-rem Set default branch to 'main' if no input is given
-if "!branch!"=="" set "branch=main"
-if "!commit!"=="" set "commit=Initial"
 
 rem Cool message before starting the Git commands
 echo ==============================
@@ -55,13 +52,12 @@ rem Stage all files
 git add .
 
 rem Create a new initial commit
-git commit -m !commit!
+git commit -m "!COMMIT_MSG!"
 
 rem Add the remote origin
-set /p REPO_URL="Enter your GitHub repository URL: "
 git remote add origin %REPO_URL%
-git checkout -b !branch!
-git push -f origin !branch!
+git checkout -b %BRANCH%
+git push -f origin %BRANCH%
 
 rem Completion message
 echo ==============================

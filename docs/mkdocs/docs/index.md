@@ -1,7 +1,7 @@
 # Bugfish Framework
 
 
-Powerful, flexible, and secure—elevate your web development with Bugfish PHP Framework.
+Powerful, flexible, and secure—elevate your web development with Bugfish PHP Framework. This documentation has been updated with version `4.10`.
 
 -----------
 
@@ -9,14 +9,16 @@ Powerful, flexible, and secure—elevate your web development with Bugfish PHP F
 
 Introducing the Bugfish PHP Framework: a robust toolkit designed to empower web developers with extensive functionality, flexibility, and top-notch security standards. With Bugfish, you gain access to a suite of classes and functions that not only streamline development but also enhance performance, ensuring your web applications operate at peak efficiency. Join the Bugfish PHP Framework community today and unleash the full potential of your web development projects.
 
+-----------
+
 ## Requirements
 
-### PHP Version
+### PHP: Version
 
-- PHP 8.4/8.3 is recommended.
-- You can find specific requirements in the different documentation sections of our libraries.
+- PHP 8.4 is recommended.
+- Specific classes/functions requirements are listed in our documentation..
 
-### PHP Modules
+### PHP: Modules
 
 - **`mysqli`** – MySQL database connectivity using improved extension.
 - **`gd`** – Image processing and manipulation (e.g., thumbnails).
@@ -33,11 +35,18 @@ Introducing the Bugfish PHP Framework: a robust toolkit designed to empower web 
 - **`libxml` / `simplexml`** – Core XML parsing library and simplified interface.
 - **`fileinfo`** – Detects file types based on content.
 - **`json`** – Parses and encodes JSON data.
-- You can find specific requirements in the different documentation sections of our libraries.
+- Specific classes/functions requirements are listed in our documentation..
 
-## PHP Library
 
-Discover a collection of indispensable PHP functions crafted for seamless integration across various projects. Witness how these functions expedite and refine coding processes within web development. Comprehensive documentation for each function is provided below. To incorporate these functions seamlessly, include the PHP files within the designated `_functions` subfolder in the overarching `_framework` folder. This strategic approach optimizes coding efficiency and enhances web project performance.
+-----------
+
+## Framework
+
+Below is a list of all files that are included in the framework, along with their corresponding documentation. Each entry provides an overview of the file’s purpose and how it fits into the overall structure of the framework.
+
+### PHP: Functions
+
+Discover a collection of indispensable PHP functions crafted for seamless integration across various projects. Witness how these functions expedite and refine coding processes within web development. Comprehensive documentation for each function is provided below. To incorporate these functions seamlessly, include the PHP files within the designated `_framework/functions/x_*.php` folder.
 
 | Name             | Description                                               | License  |
 |------------------|-----------------------------------------------------------|----------|
@@ -46,12 +55,14 @@ Discover a collection of indispensable PHP functions crafted for seamless integr
 | [x_cookiebanner.php](./_functions/x_cookiebanner.html) | PHP code to display and manage cookie consent banners. | LGPL-2.1 |
 | [x_curl.php](./functions/x_curl.html)       | PHP wrapper or helper functions for cURL HTTP requests. | LGPL-2.1 |
 | [x_eventbox.php](./functions/x_eventbox.html)   | PHP component for displaying or managing event boxes/messages. | LGPL-2.1 |
+| [x_folder.php](./functions/x_folder.html)    | Collection of utility functions for folder operations in PHP.  | LGPL-2.1 |
 | [x_library.php](./functions/x_library.html)    | Collection of utility functions for general use in PHP.  | LGPL-2.1 |
 | [x_rss.php](./functions/x_rss.html)        | PHP script to generate or parse RSS feeds.               | LGPL-2.1 |
-| [x_search.php](./functions/x_search.html)     | PHP functions for search implementation and indexing.    | LGPL-2.1 |
 | [x_table.php](./functions/x_table.html)      | PHP helper for generating or manipulating HTML tables.   | LGPL-2.1 |
+| [x_thumbnail.php](./functions/x_thumbnail.html)      | Collection of utility functions for thumbnail operations in PHP.   | LGPL-2.1 |
+| [x_search.php](./functions/x_search.html)     | PHP functions for search implementation and indexing.    | LGPL-2.1 |
 
-## PHP Classes
+### PHP: Classes
 
 These classes, located in `/_framework/classes/x_*`, are crucial for their functionality, efficiency, and thorough testing across various websites. They enhance development and save time. 
 
@@ -78,7 +89,7 @@ Note: Some classes require a database connection. They will install necessary ta
 | [x_class_mail_template](./classes/x_class_mail_template.html) | Creates mail templates with substitutions and footer/header options, compatible with `x_class_mail`. Simplifies the preparation of email templates. | LGPL-2.1 |
 | [x_class_mysql](./classes/x_class_mysql.html) | Provides MySQL database handling capabilities with additional features. Most classes need an `x_class_mysql` object to run properly. Includes a database logging system to store errors and more. | LGPL-2.1 |
 | [x_class_mysql_item](./classes/x_class_mysql_item.html) | Provides MySQL database handling capabilities for single database table elements. | LGPL-2.1 |
-| [x_class_phpmailer](https://github.com/PHPMailer/PHPMailer) | Manages email sending operations within the framework. Note: This class is from PHPMailer, not created by Bugfish. | LGPL-2.1 |
+| [x_class_mail_phpmailer](https://github.com/PHPMailer/PHPMailer) | Manages email sending operations within the framework. Note: This class is from PHPMailer, not created by Bugfish. | LGPL-2.1 |
 | [x_class_perm](./classes/x_class_perm.html) | Controls user permissions and management functionalities. Ideal for implementing a permission system. | LGPL-2.1 |
 | [x_class_perm_item](./classes/x_class_perm_item.html) | Controls user permissions, including single-item permission objects. Ideal for implementing a permission system. | LGPL-2.1 |
 | [x_class_referer](./classes/x_class_referer.html) | Logs visitor referrers with configuration functions to control how referrers are saved in the database. | LGPL-2.1 |
@@ -86,23 +97,25 @@ Note: Some classes require a database connection. They will install necessary ta
 | [x_class_table](./classes/x_class_table.html) | Simplifies the creation of dynamic HTML tables with PHP editing capabilities. | LGPL-2.1 |
 | [x_class_user](./classes/x_class_user.html) | Creates various types of user logins with full functionality for password recovery, mail editing, and token operations. A comprehensive login/authentication and token system. | LGPL-2.1 |
 | [x_class_var](./classes/x_class_var.html) | Controls setup variables for websites and includes a function for creating forms to change these values. Ideal for managing constants. | LGPL-2.1 |
-| [x_class_zip](./classes/x_class_zip.html) | Enables file compression and decompression, compatible with `x_class_crypt` for direct encryption and decryption. Requires PHP Module ZIP. | LGPL-2.1 |
 | [x_class_version](./classes/x_class_version.html) | Retrieves version and author information about the currently included framework. | LGPL-2.1 |
+| [x_class_zip](./classes/x_class_zip.html) | Enables file compression and decompression, compatible with `x_class_crypt` for direct encryption and decryption. Requires PHP Module ZIP. | LGPL-2.1 |
 
-## CSS Library
+### CSS: Classes
 
 Introducing the "Bugfish CSS Framework" – a solution for efficient web design. Simplify your development process with a comprehensive collection of pre-built classes designed to expedite the creation of responsive web layouts. To use it, include the CSS files located in the `css` folder.
+
+Find the CSS Classes file in: `/_framework/css/xcss_xfpe.css`
 
 | Name | License |
 |------|---------|
 | [CSS Classes Library](./css/index.html) | LGPL-2.1 |
 
 
-## JavaScript Library
+### JavaScript: Functions
 
 Access a comprehensive array of JavaScript functions designed for integration across diverse projects, enhancing coding speed and efficiency in web development. Detailed documentation for each function is provided below. To incorporate these functions, include the JavaScript file in the `_javascript` subfolder within the central `_framework` folder. This implementation optimizes your coding process and elevates your web project's performance.
 
-Find the JavaScript function file in: `/_framework/javascript/*.js`
+Find the JavaScript function file in: `/_framework/javascript/xjs_library.js`
 
 | Name | License |
 |------|---------|

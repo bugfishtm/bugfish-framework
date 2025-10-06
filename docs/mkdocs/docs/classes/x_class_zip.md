@@ -1,5 +1,7 @@
 # PHP Class: `x_class_zip`
 
+## Introduction
+
 The `x_class_zip` class provides methods for compressing files and directories into ZIP archives and extracting them. It supports optional encryption and decryption of ZIP files using a provided encryption class. 
 
 Use the class by including `/_framework/classes/x_class_zip.php`.
