@@ -173,7 +173,7 @@ class x_class_user {
 							`fk_user` int(10) NOT NULL COMMENT 'User Relation',
 							`creation` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Creation Date',
 							`modification` datetime NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Modification Date',
-							PRIMARY KEY (`id`), CONSTRAINT ".$this->table_ext."_unique UNIQUE (`fk_user`,`fk_group`));");	}}	
+							PRIMARY KEY (`id`), CONSTRAINT ".$this->table_ext."_unique UNIQUE (`fk_user`));");	}}	
 	public function extrafield_add_field($string) { $x = $this->mysql->log_status(); $this->mysql->log_disable(); $y =   $this->mysql->query("ALTER TABLE `".$this->table_ext."` ADD COLUMN ".$string." ;"); if($x) {$this->mysql->log_enable();}return $y; }
 	public function extrafield_del_field($fieldname) { $x = $this->mysql->log_status(); $this->mysql->log_disable(); $y =  $this->mysql->query("ALTER TABLE `".$this->table_ext."` DROP COLUMN ".$fieldname." ;"); if($x) {$this->mysql->log_enable();} return $y; }	
 	public function extrafield_get($id) {
@@ -470,6 +470,7 @@ class x_class_user {
 								  `user_2fa` text DEFAULT NULL COMMENT 'Users 2FA key',
 								  `user_initial` int(1) DEFAULT 0 COMMENT '1 if this user is initial created user',
 								  `user_rank` int(9) NULL DEFAULT NULL COMMENT 'Users Rank',
+								  `user_status` int(9) NULL DEFAULT NULL COMMENT 'User Status',
 								  `user_confirmed` tinyint(1) DEFAULT '0' COMMENT 'User Activation Status',
 								  `user_disabled` int(1) DEFAULT 0 COMMENT '1 - User is Disabled',
 								  `user_blocked` tinyint(1) DEFAULT '0' COMMENT 'User Blocked/Disabled Status',

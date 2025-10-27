@@ -52,7 +52,7 @@ Discover a collection of indispensable PHP functions crafted for seamless integr
 |------------------|-----------------------------------------------------------|----------|
 | [x_button.php](./functions/x_button.html)    | PHP script providing button UI components or helpers.    | LGPL-2.1 |
 | [x_captcha.php](./functions/x_captcha.html)   | PHP implementation of CAPTCHA for spam prevention.       | LGPL-2.1 |
-| [x_cookiebanner.php](./_functions/x_cookiebanner.html) | PHP code to display and manage cookie consent banners. | LGPL-2.1 |
+| [x_cookiebanner.php](./functions/x_cookiebanner.html) | PHP code to display and manage cookie consent banners. | LGPL-2.1 |
 | [x_curl.php](./functions/x_curl.html)       | PHP wrapper or helper functions for cURL HTTP requests. | LGPL-2.1 |
 | [x_eventbox.php](./functions/x_eventbox.html)   | PHP component for displaying or managing event boxes/messages. | LGPL-2.1 |
 | [x_folder.php](./functions/x_folder.html)    | Collection of utility functions for folder operations in PHP.  | LGPL-2.1 |
